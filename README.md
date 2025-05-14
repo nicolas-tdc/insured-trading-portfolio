@@ -15,8 +15,10 @@
 - Node.js + Angular CLI v19
 - Maven 4.0+
 
-## Backend Setup
+## Running the Application
 
-1. Clone the repo
-2. Navigate to `backend/`
-3. Run with: `./mvnw spring-boot:run`
+To start the full platform locally:
+
+```bash
+./run.sh
+```
