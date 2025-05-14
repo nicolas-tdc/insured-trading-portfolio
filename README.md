@@ -17,8 +17,14 @@
 
 ## Running the Application
 
-To start the full platform locally:
+To start the app in production mode:
 
 ```bash
 ./run.sh
+```
+
+To start the app in development mode with hot-reload:
+
+```bash
+./run.sh dev
 ```
