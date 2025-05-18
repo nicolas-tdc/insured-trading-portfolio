@@ -90,7 +90,7 @@ while true; do
       exit 1
     fi
 
-    echo "Retrying in 5 seconds..."
+    echo "Retrying in 10 seconds..."
     sleep 10
   fi
 done
