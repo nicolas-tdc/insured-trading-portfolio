@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -e
+
+# Check Docker is available
+if ! command -v docker &> /dev/null; then
+  echo "❌ Docker not found. Please install Docker. Exiting..."
+  exit 1
+fi
+
+# Check if Docker Compose is available
+if ! command -v docker compose &> /dev/null; then
+  echo "❌ Docker Compose not found. Please install Docker Compose. Exiting..."
+  exit 1
+fi
+
+# Set the mode based on the first argument
+mode=""
+if [ "$1" == "dev" ]; then
+  mode="dev"
+  echo "Killing in DEV mode (hot-reload enabled)"
+else
+  echo "Killing in PROD mode"
+fi
+
+kill_service() {
+    local service_dir=$1
+
+    local kill_script="kill.sh"
+
+    if [ -f "$kill_script" ]; then
+        cd "$service_dir"
+        bash "$kill_script" $mode > /dev/null 2>&1 &
+        cd ..
+    else
+        echo "$kill_script not found in $service_dir."
+    fi
+}
+
+kill_service_process() {
+    local pid_file=$1
+
+    if [ -f "$pid_file" ] ; then
+        service_pid=$(cat "$pid_file")
+        if ps -p $service_pid > /dev/null; then
+            kill -9 $service_pid
+        fi
+
+        rm -f "$pid_file"
+    fi
+}
+export -f kill_service_process
+
+# Kill database
+echo "Killing Database..."
+kill_service "database"
+
+# Kill Backend
+echo "Killing Backend..."
+kill_service "backend"
+
+# Kill Frontend
+echo "Killing Frontend..."
+kill_service "frontend"
+
+echo "🔻Application stopping..."
