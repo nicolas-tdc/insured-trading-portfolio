@@ -16,7 +16,6 @@ Thumbs.db
 
 # Logs & Misc
 *.log
-*.sql
 *.bak
 *.tmp
 *.temp

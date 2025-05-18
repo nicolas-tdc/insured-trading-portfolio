@@ -10,17 +10,18 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      use-new-id-generator-mappings: false
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   sql:
     init:
       mode: always
+      schema-locations: classpath:database/schema.sql
+      data-locations: classpath:database/data.sql
 
 server:
   port: 8080
 
 logging:
   level:
-    com.insurancebanking.app: DEBUG
+    com.insurancebanking.platform: DEBUG
