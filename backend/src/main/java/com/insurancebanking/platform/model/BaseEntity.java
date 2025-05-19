@@ -1,5 +1,3 @@
-// backend/src/main/java/com/insurancebanking/app/model/BaseEntity.java
-
 package com.insurancebanking.platform.model;
 
 import java.time.LocalDateTime;
