@@ -21,3 +21,6 @@ Thumbs.db
 *.temp
 *.orig
 *~
+
+# Environment files
+**/.env
