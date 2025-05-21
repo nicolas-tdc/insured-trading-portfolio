@@ -1,5 +1,6 @@
 # Environment files
 **/.env
+**/pid
 
 # OS Files
 .DS_Store
