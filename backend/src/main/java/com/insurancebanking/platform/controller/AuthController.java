@@ -29,7 +29,7 @@ import com.insurancebanking.platform.repository.UserRepository;
 import com.insurancebanking.platform.security.JwtUtils;
 import com.insurancebanking.platform.security.UserDetailsImpl;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.url}")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

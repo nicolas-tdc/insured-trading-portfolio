@@ -18,10 +18,13 @@ spring:
       data-locations: classpath:database/data.sql
   jwt:
     secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION}
+    expiration: ${JWT_EXPIRATION:3600}
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+
+frontend:
+  url: ${FRONTEND_URL:http://localhost:4200}
 
 logging:
   level:
