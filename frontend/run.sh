@@ -12,7 +12,7 @@ if [[ "$MODE" == "dev" ]]; then
   ng serve --port $NG_PORT --proxy-config proxy.conf.json &
   echo $! > pid
 else
-  ng build --prod
-  ng serve --prod --port $NG_PORT &
+  ng build --configuration=production
+  ng serve --port $NG_PORT --proxy-config proxy.conf.json
   echo $! > pid
 fi
