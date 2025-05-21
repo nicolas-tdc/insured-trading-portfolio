@@ -1,12 +1,10 @@
--- database/data.sql
-
 INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER'), ('ROLE_ADMIN');
 
 -- Mock User
 INSERT INTO users (email, password, first_name, last_name)
 VALUES (
     'customer@example.com',
-    '$2a$10$eI7t6gZbQl8R9jXvKzTmCeDfLdJcU6yWxYHnOwGqZiMhVrBkP3LmS', -- bcrypt('password')
+    '$2a$10$Z/PLrjclzS69tt/lriihC.WNDF/q.7VFjL4aZQDYwPuQ7C2jCBZza',
     'John',
     'Doe'
 );
