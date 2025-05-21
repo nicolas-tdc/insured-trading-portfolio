@@ -1,0 +1,13 @@
+<header>
+  <nav>
+    <a routerLink="/">Home</a>
+    <div *ngIf="authService.isLoggedIn(); else loginLink">
+      <span>Welcome, {{ authService.getUser().email }}</span>
+      <button (click)="authService.logout()">Logout</button>
+    </div>
+    <ng-template #loginLink>
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    </ng-template>
+  </nav>
+</header>
