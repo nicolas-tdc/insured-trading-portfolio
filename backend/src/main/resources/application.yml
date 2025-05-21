@@ -16,6 +16,9 @@ spring:
       mode: always
       schema-locations: classpath:database/schema.sql
       data-locations: classpath:database/data.sql
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION}
 
 server:
   port: 8080
