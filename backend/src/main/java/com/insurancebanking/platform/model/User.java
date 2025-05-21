@@ -3,6 +3,9 @@ package com.insurancebanking.platform.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -48,11 +51,11 @@ public class User extends BaseEntity {
     private String status = "active";
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @JoinTable(
         name = "user_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 }
