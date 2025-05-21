@@ -24,6 +24,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class User extends BaseEntity {
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
