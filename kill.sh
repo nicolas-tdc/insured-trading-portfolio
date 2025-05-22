@@ -9,7 +9,6 @@ check_requirements() {
       echo "❌ $req not found. Please install or update $req. Exiting..."
       exit 1
     fi
-    echo "✅ $req is installed."
   done
 
   if ! docker compose version &> /dev/null; then

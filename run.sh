@@ -9,7 +9,6 @@ check_requirements() {
       echo "❌ $req not found. Please install or update $req. Exiting..."
       exit 1
     fi
-    echo "✅ $req is installed."
   done
 
   if ! docker compose version &> /dev/null; then
@@ -20,8 +19,8 @@ check_requirements() {
 
 run_service() {
     local service_dir=$1
-    local $mode=$2
-    local debug=$2
+    local mode=$2
+    local debug=$3
 
     local run_script="run.sh"
 
@@ -106,7 +105,7 @@ echo -e "\e[33mStarting\e[0m Backend..."
 run_service "backend" "$mode"
 
 # Check if Backend service is accessible
-echo -e "\e[33mWaiting\e[0m for backend..."
+echo -e "\e[33mWaiting for\e[0m Backend..."
 check_url "http://localhost:8080" 10 10
 
 # Start Frontend
@@ -114,5 +113,5 @@ echo -e "\e[33mStarting\e[0m Frontend..."
 run_service "frontend" "$mode"
 
 # Check if Frontend service is accessible
-echo -e "\e[33mWaiting\e[0m for frontend..."
+echo -e "\e[33mWaiting for\e[0m Frontend..."
 check_url "http://localhost:4200" 10 10
