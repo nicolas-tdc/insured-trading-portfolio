@@ -15,9 +15,9 @@ if ! command -v docker compose &> /dev/null; then
 fi
 
 # Set the mode based on the first argument
-mode=""
+MODE=""
 if [ "$1" == "dev" ]; then
-  mode="dev"
+  MODE="dev"
   echo "Killing in DEV mode (hot-reload enabled)"
 else
   echo "Killing in PROD mode"
@@ -30,7 +30,7 @@ kill_service() {
 
     if [ -f "$kill_script" ]; then
         cd "$service_dir"
-        bash "$kill_script" $mode > /dev/null 2>&1 &
+        bash "$kill_script" "$MODE" > /dev/null 2>&1 &
         cd ..
     else
         echo "$kill_script not found in $service_dir."
