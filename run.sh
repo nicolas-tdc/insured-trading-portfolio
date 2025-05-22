@@ -2,47 +2,25 @@
 
 set -a
 
-# Check Docker is available
-if ! command -v docker &> /dev/null; then
-  echo "❌ Docker not found. Please install Docker. Exiting..."
-  exit 1
-fi
+check_requirements() {
+  local requirements=("docker" "curl" "ng" "npm" "node" "java" "mvn")
+  for req in "${requirements[@]}"; do
+    if ! command -v "$req" &> /dev/null; then
+      echo "❌ $req not found. Please install or update $req. Exiting..."
+      exit 1
+    fi
+    echo "✅ $req is installed."
+  done
 
-# Check if Docker Compose is available
-if ! command -v docker compose &> /dev/null; then
-  echo "❌ Docker Compose not found. Please install Docker Compose. Exiting..."
-  exit 1
-fi
-
-# Check if curl is available
-if ! command -v curl &> /dev/null; then
-  echo "❌ curl not found. Please install curl. Exiting..."
-  exit 1
-fi
-
-# Set the mode based on the first argument
-MODE=""
-if [ "$1" == "dev" ]; then
-  MODE="dev"
-  echo "Development mode enabled"
-fi
-
-# Load global env if exists
-echo "Loading environment variables..."
-if [ -f .env ]; then
-  export $(grep -v '^#' .env | xargs)
-fi
-
-# Kill running services
-echo "Killing existing services..."
-if [ -f "kill.sh" ]; then
-  bash ./kill.sh "$MODE" > /dev/null 2>&1
-else
-  echo "kill.sh not found."
-fi
+  if ! docker compose version &> /dev/null; then
+    echo "❌ Docker Compose (v2 plugin) not found. Please install it."
+    exit 1
+  fi
+}
 
 run_service() {
     local service_dir=$1
+    local $mode=$2
     local debug=$2
 
     local run_script="run.sh"
@@ -52,10 +30,10 @@ run_service() {
 
         if [ "$debug" == "debug" ]; then
           echo "Debug enabled"
-          bash "$run_script" "$MODE"
+          bash "$run_script" "$mode"
         else
           echo "Debug disabled"
-          bash "$run_script" "$MODE" > /dev/null 2>&1 &
+          bash "$run_script" "$mode" > /dev/null 2>&1 &
         fi
 
         cd ..
@@ -86,7 +64,7 @@ check_url() {
       echo "Testing $url [$try_count/$max_tries]"
 
       if [ $try_count -ge $max_tries ]; then
-        echo "❌ Application is not accessible after $max_tries tries. Exiting..."
+        echo "❌ Not accessible after $max_tries tries. Exiting..."
         exit 1
       fi
 
@@ -96,13 +74,36 @@ check_url() {
   done
 }
 
+check_requirements
+
+# Set the mode based on the first argument
+mode=""
+if [ "$1" == "dev" ]; then
+  mode="dev"
+  echo "Development mode enabled"
+fi
+
+# Load global env if exists
+echo "Loading environment variables..."
+if [ -f .env ]; then
+  export $(grep -v '^#' .env | xargs)
+fi
+
+# Kill running services
+echo "Killing existing services..."
+if [ -f "kill.sh" ]; then
+  bash ./kill.sh "$mode" > /dev/null 2>&1
+else
+  echo "kill.sh not found."
+fi
+
 # Start Database
 echo -e "\e[33mStarting\e[0m Database..."
-run_service "database"
+run_service "database" "$mode"
 
 # Start Backend
 echo -e "\e[33mStarting\e[0m Backend..."
-run_service "backend"
+run_service "backend" "$mode"
 
 # Check if Backend service is accessible
 echo -e "\e[33mWaiting\e[0m for backend..."
@@ -110,7 +111,7 @@ check_url "http://localhost:8080" 10 10
 
 # Start Frontend
 echo -e "\e[33mStarting\e[0m Frontend..."
-run_service "frontend"
+run_service "frontend" "$mode"
 
 # Check if Frontend service is accessible
 echo -e "\e[33mWaiting\e[0m for frontend..."

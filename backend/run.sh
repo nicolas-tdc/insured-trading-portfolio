@@ -6,9 +6,9 @@ if [ -f .env ]; then
   source .env
 fi
 
-MODE="$1"
+mode="$1"
 
-if [[ "$MODE" == "dev" ]]; then
+if [[ "$mode" == "dev" ]]; then
   ./mvnw spring-boot:run &
   echo $! > pid
 else

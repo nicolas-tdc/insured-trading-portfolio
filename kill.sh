@@ -2,24 +2,21 @@
 
 set -e
 
-# Check Docker is available
-if ! command -v docker &> /dev/null; then
-  echo "❌ Docker not found. Please install Docker. Exiting..."
-  exit 1
-fi
+check_requirements() {
+  local requirements=("docker")
+  for req in "${requirements[@]}"; do
+    if ! command -v "$req" &> /dev/null; then
+      echo "❌ $req not found. Please install or update $req. Exiting..."
+      exit 1
+    fi
+    echo "✅ $req is installed."
+  done
 
-# Check if Docker Compose is available
-if ! command -v docker compose &> /dev/null; then
-  echo "❌ Docker Compose not found. Please install Docker Compose. Exiting..."
-  exit 1
-fi
-
-# Set the mode based on the first argument
-MODE=""
-if [ "$1" == "dev" ]; then
-  MODE="dev"
-  echo "Development mode enabled"
-fi
+  if ! docker compose version &> /dev/null; then
+    echo "❌ Docker Compose (v2 plugin) not found. Please install it."
+    exit 1
+  fi
+}
 
 kill_service() {
     local service_dir=$1
@@ -28,7 +25,7 @@ kill_service() {
 
     if [ -f "$kill_script" ]; then
         cd "$service_dir"
-        bash "$kill_script" "$MODE" > /dev/null 2>&1 &
+        bash "$kill_script" "$mode" > /dev/null 2>&1 &
         cd ..
     else
         echo "$kill_script not found in $service_dir."
@@ -48,6 +45,13 @@ kill_service_process() {
     fi
 }
 export -f kill_service_process
+
+# Set the mode based on the first argument
+mode=""
+if [ "$1" == "dev" ]; then
+  mode="dev"
+  echo "Development mode enabled"
+fi
 
 # Kill database
 echo -e "\e[33mKilling\e[0m Database..."

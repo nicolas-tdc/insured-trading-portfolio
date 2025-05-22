@@ -6,9 +6,9 @@ if [ -f .env ]; then
   source .env
 fi
 
-MODE="$1"
+mode="$1"
 
-if [[ "$MODE" == "dev" ]]; then
+if [[ "$mode" == "dev" ]]; then
   ng serve --port $NG_PORT --proxy-config proxy.conf.json &
   echo $! > pid
 else
