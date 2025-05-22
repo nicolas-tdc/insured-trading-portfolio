@@ -18,9 +18,7 @@ fi
 MODE=""
 if [ "$1" == "dev" ]; then
   MODE="dev"
-  echo "Killing in DEV mode (hot-reload enabled)"
-else
-  echo "Killing in PROD mode"
+  echo "Development mode enabled"
 fi
 
 kill_service() {
@@ -52,15 +50,15 @@ kill_service_process() {
 export -f kill_service_process
 
 # Kill database
-echo "Killing Database..."
+echo -e "\e[33mKilling\e[0m Database..."
 kill_service "database"
 
 # Kill Backend
-echo "Killing Backend..."
+echo -e "\e[33mKilling\e[0m Backend..."
 kill_service "backend"
 
 # Kill Frontend
-echo "Killing Frontend..."
+echo -e "\e[33mKilling\e[0m Frontend..."
 kill_service "frontend"
 
-echo "🔻Application stopping..."
+echo -e "🔻\e[32mStopped application\e[0m"
