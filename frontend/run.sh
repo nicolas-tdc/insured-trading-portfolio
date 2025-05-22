@@ -13,6 +13,5 @@ if [[ "$MODE" == "dev" ]]; then
   echo $! > pid
 else
   ng build --configuration=production
-  ng serve --port $NG_PORT --proxy-config proxy.conf.json
   echo $! > pid
 fi
