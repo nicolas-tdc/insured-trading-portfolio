@@ -27,5 +27,13 @@ frontend:
   url: ${FRONTEND_URL:http://localhost:4200}
 
 logging:
+  charset:
+    console: UTF-8
   level:
-    "[com.insurancebanking.platform]": DEBUG
+    root: INFO
+    org:
+      springframework:
+        web: DEBUG
+    com:
+      example:
+        insurancebanking: DEBUG
