@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @MappedSuperclass
@@ -21,7 +22,9 @@ public abstract class BaseEntity {
     @GeneratedValue(generator = "UUID")
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @Setter
+    @Getter
+    protected UUID id;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
