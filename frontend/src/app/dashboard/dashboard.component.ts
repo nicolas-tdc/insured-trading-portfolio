@@ -1,27 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../models/user.model';
+import { BankingService } from '../services/banking.service';
+import { Account } from '../models/account.model';
+import { Transaction } from '../models/transaction.model';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
+  imports: [CommonModule, FormsModule],
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent {
-  // Non-null assertion
-  user!: User;
+export class DashboardComponent implements OnInit {
+  user: any = null;
+  accounts: Account[] = [];
+  selectedAccountNumber: string | null = null;
+  transactionAccountNumber: string | null = null;
+  targetAccountNumber: string = '';
+  transferAmount: number = 0;
+  transactions: Transaction[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private bankingService: BankingService
+  ) {}
 
   ngOnInit(): void {
-    const currentUser = this.authService.getUser();
-    if (!currentUser) {
-      throw new Error('User not found in dashboard');
+    this.user = this.authService.getUser();
+    this.loadAccounts();
+  }
+
+  loadAccounts(): void {
+    this.bankingService.getAccounts().subscribe(accounts => {
+      this.accounts = accounts;
+      accounts.forEach(account => {
+        console.log(`Account ID: ${account.id}, Balance: ${account.balance}`);
+      }
+      );
+    });
+  }
+
+  openAccount(): void {
+    this.bankingService.openAccount().subscribe(() => {
+      this.loadAccounts();
+    });
+  }
+
+  viewTransactions(accountId: string): void {
+    this.transactionAccountNumber = accountId;
+    this.bankingService.getTransactions(accountId).subscribe(txs => {
+      this.transactions = txs;
+    });
+  }
+
+  showTransferForm(accountId: string): void {
+    this.selectedAccountNumber = accountId;
+  }
+
+  performTransfer(sourceAccountNumber: string): void {
+    if (!this.targetAccountNumber || this.transferAmount <= 0) {
+      alert('Please enter valid details');
+      return;
     }
-    this.user = currentUser;
+
+    this.bankingService.transfer(sourceAccountNumber, this.targetAccountNumber, this.transferAmount).subscribe(() => {
+      this.selectedAccountNumber = null;
+      this.loadAccounts();
+    });
   }
 
   logout(): void {
