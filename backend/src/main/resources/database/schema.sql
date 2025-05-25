@@ -56,6 +56,27 @@ CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id);
 DROP INDEX IF EXISTS idx_accounts_account_number;
 CREATE INDEX IF NOT EXISTS idx_accounts_account_number ON accounts(account_number);
 
+-- Transactions
+DROP TABLE IF EXISTS transactions CASCADE;
+CREATE TABLE IF NOT EXISTS transactions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    source_account_id UUID NOT NULL,
+    target_account_id UUID NOT NULL,
+    amount NUMERIC(15, 2) NOT NULL,
+    type VARCHAR(30) NOT NULL,
+    description TEXT,
+    balance_after NUMERIC(15, 2),
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (source_account_id) REFERENCES accounts(id),
+    FOREIGN KEY (target_account_id) REFERENCES accounts(id)
+);
+
+DROP INDEX IF EXISTS idx_transactions_account_id;
+CREATE INDEX idx_transactions_source_account_id ON transactions(source_account_id);
+
+DROP INDEX IF EXISTS idx_transactions_target_account_id;
+CREATE INDEX idx_transactions_target_account_id ON transactions(target_account_id);
+
 -- Policies
 DROP TABLE IF EXISTS policies CASCADE;
 CREATE TABLE IF NOT EXISTS policies (
@@ -77,22 +98,6 @@ DROP INDEX IF EXISTS idx_policies_user_id;
 CREATE INDEX IF NOT EXISTS idx_policies_user_id ON policies(user_id);
 DROP INDEX IF EXISTS idx_policies_policy_number;
 CREATE INDEX IF NOT EXISTS idx_policies_policy_number ON policies(policy_number);
-
--- Transactions
-DROP TABLE IF EXISTS transactions CASCADE;
-CREATE TABLE IF NOT EXISTS transactions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    account_id UUID NOT NULL,
-    amount NUMERIC(15, 2) NOT NULL,
-    type VARCHAR(30) NOT NULL,
-    description TEXT,
-    balance_after NUMERIC(15, 2),
-    created_at TIMESTAMP DEFAULT NOW(),
-    FOREIGN KEY (account_id) REFERENCES accounts(id)
-);
-
-DROP INDEX IF EXISTS idx_transactions_account_id;
-CREATE INDEX IF NOT EXISTS idx_transactions_account_id ON transactions(account_id);
 
 -- Notifications
 DROP TABLE IF EXISTS notifications CASCADE;
