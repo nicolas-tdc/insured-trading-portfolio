@@ -1,12 +1,16 @@
 package com.insurancebanking.platform.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.insurancebanking.platform.dto.common.MessageResponse;
 import com.insurancebanking.platform.model.Account;
 import com.insurancebanking.platform.model.Transaction;
 import com.insurancebanking.platform.repository.AccountRepository;
@@ -22,54 +26,78 @@ public class TransactionService {
     @Autowired
     AccountRepository accountRepository;
 
-    public Transaction recordTransfer(Account from, Account to, BigDecimal amount, String description) {
+    public ResponseEntity<MessageResponse> checkTransfer(
+        Account sourceAccount,
+        Account targetAccount,
+        BigDecimal amount
+        ) {
+
+        if (sourceAccount == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                "Invalid source account"));
+        }
+        
+        if (targetAccount == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                "Invalid target account"));
+        }
+
+        // Ensure source and target accounts are different
+        if (sourceAccount.getId().equals(targetAccount.getId())) {
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                "Source and target accounts must be different"));
+        }
+
         // Ensure amount is positive
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Transfer amount must be positive");
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                "Amount must be positive"));
         }
 
-        // Ensure sender has enough funds
-        if (from.getBalance().compareTo(amount) < 0) {
-            throw new IllegalArgumentException("Insufficient balance");
+        if (sourceAccount.getBalance().compareTo(amount) < 0) {
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                "Insufficient balance"));
         }
 
+        return ResponseEntity.ok(new MessageResponse("Transfer successful"));
+    }
+
+    public Transaction recordTransfer(Account sourceAccount, Account targetAccount, BigDecimal amount, String description) {
         // Calculate new balances
-        BigDecimal newFromBalance = from.getBalance().subtract(amount);
-        BigDecimal newToBalance = to.getBalance().add(amount);
+        BigDecimal newFromBalance = sourceAccount.getBalance().subtract(amount);
+        BigDecimal newToBalance = targetAccount.getBalance().add(amount);
 
         // Create transactions
-        Transaction fromTx = Transaction.builder()
-                .account(from)
+        Transaction transaction = Transaction.builder()
+                .sourceAccount(sourceAccount)
+                .targetAccount(targetAccount)
                 .amount(amount.negate())
-                .type("TRANSFER_OUT")
+                .type("TRANSFER")
                 .description(description)
                 .balanceAfter(newFromBalance)
                 .build();
 
-        Transaction toTx = Transaction.builder()
-                .account(to)
-                .amount(amount)
-                .type("TRANSFER_IN")
-                .description(description)
-                .balanceAfter(newToBalance)
-                .build();
-
         // Save both transactions
-        transactionRepository.save(fromTx);
-        transactionRepository.save(toTx);
+        transactionRepository.save(transaction);
 
         // Update account balances
-        from.setBalance(newFromBalance);
-        to.setBalance(newToBalance);
+        sourceAccount.setBalance(newFromBalance);
+        targetAccount.setBalance(newToBalance);
 
         // Save updated accounts
-        accountRepository.save(from);
-        accountRepository.save(to);
+        accountRepository.save(sourceAccount);
+        accountRepository.save(targetAccount);
 
-        return fromTx;
+        return transaction;
     }
 
     public List<Transaction> getAccountTransactions(Account account) {
-        return transactionRepository.findByAccount_Id(account.getId());
+        UUID accountId = account.getId();
+        List<Transaction> transactions = new ArrayList<>();
+
+        transactions.addAll(transactionRepository.findByTargetAccount_Id(accountId));
+        transactions.addAll(transactionRepository.findBySourceAccount_Id(accountId));
+
+        return transactions;
     }
 }
