@@ -36,7 +36,6 @@ public class AccountService {
 
     public Account getAccountByAccountNumber(String accountNumber, UUID userId) {
         return accountRepository.findByAccountNumber(accountNumber)
-                .filter(a -> a.getUser().getId().equals(userId))
                 .orElse(null);
     }
 
