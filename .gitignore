@@ -1,6 +1,7 @@
 # Environment files
 **/.env
 **/pid
+**/debug.txt
 
 # OS Files
 .DS_Store
