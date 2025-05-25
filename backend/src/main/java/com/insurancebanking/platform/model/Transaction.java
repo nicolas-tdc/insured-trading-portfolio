@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,9 +30,15 @@ public class Transaction extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
-    @JsonIgnore
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @JsonBackReference
+    @JoinColumn(name = "source_account_id", nullable = false)
+    private Account sourceAccount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JsonBackReference
+    @JoinColumn(name = "target_account_id", nullable = false)
+    private Account targetAccount;
 
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;
@@ -48,8 +54,10 @@ public class Transaction extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Transaction{" +
+        return "Transaction{" + 
                 "id=" + id +
+                "sourceAccount" + sourceAccount.getAccountNumber() +
+                "targetAccount" + targetAccount.getAccountNumber() +
                 ", amount=" + amount +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
