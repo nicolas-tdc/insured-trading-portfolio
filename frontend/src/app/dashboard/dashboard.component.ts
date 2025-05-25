@@ -1,44 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { BankingService } from '../services/banking.service';
-import { Account } from '../models/account.model';
-import { Transaction } from '../models/transaction.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { AuthService } from '../core/services/auth.service';
+
+import { AccountsService } from '../core/services/accounts.service';
+import { Account, Transaction, TransferRequest } from '../core/models';
+
+import { PoliciesService } from '../core/services/policies.service';
+import { Policy } from '../core/models';
 
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, FormsModule],
-  standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
   user: any = null;
+
   accounts: Account[] = [];
-  selectedAccountNumber: string | null = null;
-  transactionAccountNumber: string | null = null;
+  selectedAccountId: string | null = null;
+  transactionAccountId: string | null = null;
   targetAccountNumber: string = '';
   transferAmount: number = 0;
   transactions: Transaction[] = [];
 
+  policies: Policy[] = [];
+  selectedPolicyType: string = 'life';
+  coverageAmount: number = 100000;
+
   constructor(
     private authService: AuthService,
-    private bankingService: BankingService
+    private bankingService: AccountsService,
+    private insuranceService: PoliciesService
   ) {}
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.loadAccounts();
+    this.loadPolicies();
   }
 
   loadAccounts(): void {
     this.bankingService.getAccounts().subscribe(accounts => {
       this.accounts = accounts;
-      accounts.forEach(account => {
-        console.log(`Account ID: ${account.id}, Balance: ${account.balance}`);
-      }
-      );
     });
   }
 
@@ -48,25 +54,51 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  loadPolicies(): void {
+    this.insuranceService.getPolicies().subscribe(policies => {
+      this.policies = policies;
+    });
+  }
+
+  applyForPolicy(): void {
+    if (!this.selectedAccountId || this.coverageAmount <= 0) {
+      alert ('Please enter valid details');
+      return;
+    }
+
+    this.insuranceService.applyPolicy(
+      this.selectedPolicyType, this.coverageAmount, this.selectedAccountId
+    ).subscribe(() => {
+      this.selectedAccountId = null;
+      this.loadPolicies();
+    });
+  }
+
   viewTransactions(accountId: string): void {
-    this.transactionAccountNumber = accountId;
+    this.transactionAccountId = accountId;
     this.bankingService.getTransactions(accountId).subscribe(txs => {
       this.transactions = txs;
     });
   }
 
   showTransferForm(accountId: string): void {
-    this.selectedAccountNumber = accountId;
+    this.selectedAccountId = accountId;
   }
 
-  performTransfer(sourceAccountNumber: string): void {
+  performTransfer(sourceAccountId: string): void {
     if (!this.targetAccountNumber || this.transferAmount <= 0) {
       alert('Please enter valid details');
       return;
     }
 
-    this.bankingService.transfer(sourceAccountNumber, this.targetAccountNumber, this.transferAmount).subscribe(() => {
-      this.selectedAccountNumber = null;
+    const transferRequest: TransferRequest = {
+      sourceAccountId: sourceAccountId,
+      targetAccountNumber: this.targetAccountNumber,
+      amount: this.transferAmount,
+    };
+
+    this.bankingService.transfer(transferRequest).subscribe(() => {
+      this.selectedAccountId = null;
       this.loadAccounts();
     });
   }

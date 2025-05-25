@@ -1,16 +1,22 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { LoginRequest } from '../../models/auth-response.model';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import {
+  AuthService,
+  LoginRequest,
+} from '../../core';
+
 @Component({
-  selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  imports: [
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class LoginComponent {
   form: LoginRequest = {
@@ -18,7 +24,10 @@ export class LoginComponent {
     password: '',
   };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) { }
 
   onSubmit(): void {
     this.authService.login(this.form).subscribe({

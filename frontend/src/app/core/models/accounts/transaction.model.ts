@@ -1,6 +1,9 @@
 export interface Transaction {
   id: string;
-  accountId: string;
+  sourceAccountNumber: string;
+  sourceUserEmail: string;
+  targetAccountNumber: string;
+  targetUserEmail: string;
   amount: number;
   type: string;
   description: string;

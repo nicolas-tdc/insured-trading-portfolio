@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Account } from '../models/account.model';
-import { Transaction } from '../models/transaction.model';
+import { Account, Transaction, TransferRequest } from '../models';
 
 @Injectable({ providedIn: 'root' })
-export class BankingService {
+export class AccountsService {
   private apiUrl = '/api/banking';
 
   constructor(private http: HttpClient) {}
@@ -26,12 +25,8 @@ export class BankingService {
     return this.http.post<Account>(`${this.apiUrl}/open-account`, {});
   }
 
-  transfer(source: string, target: string, amount: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/transfer`, {
-      sourceAccountNumber: source,
-      targetAccountNumber: target,
-      amount: amount,
-    });
+  transfer(transferRequest: TransferRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/transfer`, transferRequest);
   }
 
   getTransactions(accountId: string): Observable<Transaction[]> {

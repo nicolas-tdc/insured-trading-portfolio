@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { LoginRequest, SignupRequest, JwtResponse } from '../models/auth-response.model';
+import { LoginRequest, SignupRequest, JwtResponse } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

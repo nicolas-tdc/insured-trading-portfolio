@@ -19,14 +19,14 @@
   <button (click)="viewTransactions(account.id)">View Transactions</button>
   <button (click)="showTransferForm(account.id)">Transfer</button>
 
-  <div *ngIf="selectedAccountNumber === account.id">
-    <h4>Transfer Money</h4>
-    <input [(ngModel)]="targetAccountNumber" placeholder="Target Account ID" />
+  <div *ngIf="selectedAccountId === account.id">
+    <h4>Transfer</h4>
+    <input [(ngModel)]="targetAccountNumber" placeholder="Target Account Number" />
     <input [(ngModel)]="transferAmount" placeholder="Amount" type="number" />
     <button (click)="performTransfer(account.id)">Send</button>
   </div>
 
-  <div *ngIf="transactionAccountNumber === account.id">
+  <div *ngIf="transactionAccountId === account.id">
     <h4>Recent Transactions</h4>
     <ul>
       <li *ngFor="let tx of transactions">
@@ -35,3 +35,34 @@
     </ul>
   </div>
 </div>
+
+<h3>Your Policies</h3>
+
+<div *ngIf="policies.length === 0">
+  You have no active policies.
+</div>
+
+<div *ngFor="let policy of policies" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px;">
+  <p><strong>Type:</strong> {{ policy.type }}</p>
+  <p><strong>Coverage:</strong> ${{ policy.coverageAmount.toFixed(2) }}</p>
+  <p><strong>Premium:</strong> ${{ policy.premium.toFixed(2) }} / month</p>
+  <p><strong>Status:</strong> {{ policy.status }}</p>
+  <p><strong>Account:</strong> {{ policy.accountId }}</p>
+</div>
+
+<h4>Apply for New Policy</h4>
+<select [(ngModel)]="selectedPolicyType">
+  <option value="life">Life Insurance</option>
+  <option value="auto">Auto Insurance</option>
+  <option value="home">Home Insurance</option>
+</select>
+
+<input type="number" [(ngModel)]="coverageAmount" placeholder="Coverage Amount" />
+
+<select [(ngModel)]="selectedAccountId">
+  <option *ngFor="let account of accounts" [value]="account.id">
+    {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
+  </option>
+</select>
+
+<button (click)="applyForPolicy()">Apply Policy</button>

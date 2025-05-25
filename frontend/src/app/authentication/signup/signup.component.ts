@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { SignupRequest } from '../../models/auth-response.model';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import {
+  AuthService,
+  SignupRequest,
+} from '../../core';
+
 @Component({
-  selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css'],
+  imports: [CommonModule, FormsModule],
 })
-export class RegisterComponent {
+export class SignupComponent {
   form: SignupRequest = {
     firstName: '',
     lastName: '',
@@ -20,7 +23,10 @@ export class RegisterComponent {
     password: '',
   };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onSubmit(): void {
     this.authService.register(this.form).subscribe({
