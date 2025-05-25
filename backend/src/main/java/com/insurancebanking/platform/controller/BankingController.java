@@ -33,7 +33,6 @@ public class BankingController {
 
     @Autowired
     TransactionService transactionService;
-
     @GetMapping(value="/accounts", produces="application/json")
     public ResponseEntity<List<AccountResponse>> getUserAccounts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = new User();
@@ -64,10 +63,10 @@ public class BankingController {
         return checkResult;
     }
 
-    @GetMapping(value="/transactions/{accountNumber}", produces="application/json")
-    public ResponseEntity<List<?>> getTransactions(@PathVariable String accountNumber,
+    @GetMapping(value="/transactions/{accountId}", produces="application/json")
+    public ResponseEntity<List<?>> getTransactions(@PathVariable String accountId,
                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Account account = accountService.getAccountByAccountNumber(accountNumber, userDetails.getId());
+        Account account = accountService.getAccountById(accountId, userDetails.getId());
         if (account == null) {
             return ResponseEntity.badRequest().body(List.of("Invalid account"));
         }
