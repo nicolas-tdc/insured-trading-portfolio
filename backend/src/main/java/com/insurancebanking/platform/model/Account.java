@@ -8,7 +8,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,27 +50,44 @@ public class Account extends BaseEntity {
 
     @Column(name = "currency")
     @Builder.Default
-    private String currency = "USD";
+    private final String currency = "USD";
 
     @Column(name = "status")
     @Builder.Default
-    private String status = "active";
+    private final String status = "active";
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SELECT)
+    @JsonManagedReference
+    @Builder.Default
+    private final Set<Transaction> transactions = new LinkedHashSet<>();
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
-    @JsonIgnore
+    @JsonManagedReference
     @Builder.Default
-    private Set<Transaction> transactions = new LinkedHashSet<>();
+    private final Set<Policy> policies = new LinkedHashSet<>();
+
+    public Set<Policy> getPolicies() {
+        return policies;
+    }
 
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", type='" + type + '\'' +
+                "user.email='" + user.getEmail() + "'" +
+                ", accountNumber='" + accountNumber + "'" +
+                ", type='" + type + "'" +
                 ", balance=" + balance +
-                ", currency='" + currency + '\'' +
-                ", status='" + status + '\'' +
+                ", currency='" + currency + "'" +
+                ", status='" + status + "'" +
+                ", transactions.size='" + transactions.size() + "'" +
+                ", policies.size='" + policies.size() + "'" +
                 '}';
     }
 }
