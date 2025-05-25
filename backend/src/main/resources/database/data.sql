@@ -1,15 +1,17 @@
 -- Roles
-INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER'), ('ROLE_ADMIN');
+INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER'), ('ROLE_ADMIN'), ('ROLE_ADVISOR');
 
 -- Test users
 INSERT INTO users (first_name, last_name, email, password) VALUES
-('test', 'test', 'test@test.com', '$2a$12$5REZR0NrwQ.qkXixzAhBVeH.vGX2lKQePM7gli5./kuctzB7Z4SBK'), -- password=test
-('tost', 'tost', 'tost@tost.com', '$2a$12$gq6tQMSlk/4e0fwWxKBpa.ZEgJ4xRHtgPBbq6TLkmaeaFMPuZLbHu'), -- password=tost
-('admin', 'admin', 'admin@admin.com', '$2a$12$SAIU47j4EGw01ClQHIjkEOqt7D8NasFh1MkVOArDUcN5Md4xF.c8G'); -- password=admin
+('admin', 'platform', 'admin@platform.com', '$2y$10$/E/zWZ89sm3Gh93yOGWl5OA2zLqZXFQJeYNAgoGeLR8Pw7y1qXCtS'); -- password=admin
+('advisor', 'platform', 'advisor@platform.com', '$2y$10$lEOZqq8aWkP7c3lXlbwr9OnNCXmeviqFNhQSSEzmmxEh1/aG9hatC'); -- password=advisor
+('jane', 'doe', 'jane@customer.com', '$2y$10$mxxdM2BYtrP./jqt3Bus8OwS/ckNrIBapl/sks6Tmeil23ZAamQYK'), -- password=jane
+('john', 'doe', 'john@customer.com', '$2y$10$dOauAs9DZCqoWr6ukgQORuNPETGu6nri8hK.Lfy1Y7GRKFCvVwgY2'), -- password=john
 
 -- Assign roles to users
 INSERT INTO user_roles (user_id, role_id)
 SELECT u.id, r.id FROM users u, roles r
-WHERE (u.email = 'test@test.com' AND r.name = 'ROLE_CUSTOMER')
-   OR (u.email = 'tost@tost.com' AND r.name = 'ROLE_CUSTOMER')
-   OR (u.email = 'admin@admin.com' AND r.name = 'ROLE_ADMIN');
+WHERE (u.email = 'admin@platform.com' AND r.name = 'ROLE_ADMIN')
+   OR (u.email = 'advisor@platform.com' AND r.name = 'ROLE_ADVISOR')
+   OR (u.email = 'john@customer.com' AND r.name = 'ROLE_CUSTOMER')
+   OR (u.email = 'jane@customer.com' AND r.name = 'ROLE_CUSTOMER');
