@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.insurancebanking.platform.dto.AccountDto;
+import com.insurancebanking.platform.dto.banking.AccountResponse;
+import com.insurancebanking.platform.dto.banking.TransferRequest;
+import com.insurancebanking.platform.dto.common.MessageResponse;
 import com.insurancebanking.platform.model.Account;
 import com.insurancebanking.platform.model.User;
-import com.insurancebanking.platform.payload.request.TransferRequest;
-import com.insurancebanking.platform.payload.response.MessageResponse;
 import com.insurancebanking.platform.security.UserDetailsImpl;
 import com.insurancebanking.platform.service.AccountService;
 import com.insurancebanking.platform.service.TransactionService;
@@ -35,10 +35,14 @@ public class BankingController {
     TransactionService transactionService;
 
     @GetMapping(value="/accounts", produces="application/json")
-    public ResponseEntity<List<Account>> getUserAccounts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<AccountResponse>> getUserAccounts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = new User();
         user.setId(userDetails.getId());
-        return ResponseEntity.ok(accountService.getUserAccounts(user));
+        List<Account> accounts = accountService.getUserAccounts(user);
+        List<AccountResponse> responses = accounts.stream()
+            .map(AccountResponse::from)
+            .toList();
+        return ResponseEntity.ok(responses);
     }
 
     @PostMapping(value="/transfer", produces="application/json")
@@ -46,20 +50,18 @@ public class BankingController {
                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UUID userId = userDetails.getId();
 
-        Account fromAccount = accountService.getAccountByAccountNumber(request.getSourceAccountNumber(), userId);
-        Account toAccount = accountService.getAccountByAccountNumber(request.getTargetAccountNumber(), userId);
+        String sourceId = request.getSourceAccountId();
+        String targetAccountNumber = request.getTargetAccountNumber();
 
-        if (fromAccount == null || toAccount == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Invalid account(s)"));
+        Account fromAccount = accountService.getAccountById(sourceId, userId);
+        Account toAccount = accountService.getAccountByAccountNumber(targetAccountNumber, userId);
+
+        ResponseEntity<MessageResponse> checkResult = transactionService.checkTransfer(fromAccount, toAccount, request.getAmount());
+        if (checkResult.getStatusCode().is2xxSuccessful()) {
+            transactionService.recordTransfer(fromAccount, toAccount, request.getAmount(), "Transfer");
         }
 
-        if (fromAccount.getBalance().compareTo(request.getAmount()) < 0) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Insufficient balance"));
-        }
-
-        transactionService.recordTransfer(fromAccount, toAccount, request.getAmount(), "Transfer");
-
-        return ResponseEntity.ok(new MessageResponse("Transfer successful"));
+        return checkResult;
     }
 
     @GetMapping(value="/transactions/{accountNumber}", produces="application/json")
@@ -73,10 +75,10 @@ public class BankingController {
     }
 
     @PostMapping(value="/open-account", produces="application/json")
-    public ResponseEntity<AccountDto> openNewAccount(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<AccountResponse> openNewAccount(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UUID userId = userDetails.getId();
         Account newAccount = accountService.createAccountForUserId(userId);
 
-        return ResponseEntity.ok(AccountDto.from(newAccount));
+        return ResponseEntity.ok(AccountResponse.from(newAccount));
     }
 }
