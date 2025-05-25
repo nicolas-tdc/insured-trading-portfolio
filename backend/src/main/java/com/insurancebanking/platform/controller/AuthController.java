@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insurancebanking.platform.dto.auth.JwtResponse;
+import com.insurancebanking.platform.dto.auth.LoginRequest;
+import com.insurancebanking.platform.dto.auth.SignupRequest;
+import com.insurancebanking.platform.dto.common.MessageResponse;
 import com.insurancebanking.platform.model.Role;
 import com.insurancebanking.platform.model.User;
-import com.insurancebanking.platform.payload.request.LoginRequest;
-import com.insurancebanking.platform.payload.request.SignupRequest;
-import com.insurancebanking.platform.payload.response.JwtResponse;
-import com.insurancebanking.platform.payload.response.MessageResponse;
 import com.insurancebanking.platform.repository.RoleRepository;
 import com.insurancebanking.platform.repository.UserRepository;
 import com.insurancebanking.platform.security.JwtUtils;
