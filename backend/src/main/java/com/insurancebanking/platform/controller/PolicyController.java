@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insurancebanking.platform.dto.policy.PolicyResponse;
 import com.insurancebanking.platform.model.Account;
 import com.insurancebanking.platform.model.Policy;
 import com.insurancebanking.platform.model.User;
@@ -30,10 +31,14 @@ public class PolicyController {
     AccountService accountService;
 
     @GetMapping("/policies")
-    public ResponseEntity<List<Policy>> getUserPolicies(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<PolicyResponse>> getUserPolicies(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = new User();
         user.setId(userDetails.getId());
-        return ResponseEntity.ok(policyService.getUserPolicies(user));
+        List<Policy> policies = policyService.getUserPolicies(user);
+        List<PolicyResponse> responses = policies.stream()
+            .map(PolicyResponse::from)
+            .toList();
+        return ResponseEntity.ok(responses);
     }
 
     @PostMapping("/apply-policy")
