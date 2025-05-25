@@ -1,5 +1,9 @@
 package com.insurancebanking.platform.model;
 
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -22,7 +26,13 @@ public class Policy extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    @JsonBackReference
+    private Account account;
 
     @Column(name = "policy_number", unique = true, nullable = false)
     private String policyNumber;
@@ -37,10 +47,10 @@ public class Policy extends BaseEntity {
     private Double premium;
 
     @Column(name = "start_date")
-    private String startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private String endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "status")
     @Builder.Default
