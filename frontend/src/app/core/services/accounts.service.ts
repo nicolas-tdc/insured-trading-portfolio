@@ -12,12 +12,6 @@ export class AccountsService {
 
   getAccounts(): Observable<Account[]> {
     const accounts: Observable<Account[]> = this.http.get<Account[]>(`${this.apiUrl}/accounts`);
-    console.log('Accounts loaded:', accounts);
-    accounts.subscribe(data => {
-      for (const account of data) {
-        console.log(`Account ID: ${account.id}, Balance: ${account.balance}`);
-      }
-    });
     return accounts;
   }
 
