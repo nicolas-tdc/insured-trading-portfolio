@@ -72,6 +72,12 @@ public class User extends BaseEntity {
     @Builder.Default
     private Set<Account> accounts = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SELECT)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Policy> policies = new LinkedHashSet<>();
+
     @Override
     public String toString() {
         return "User{" +
