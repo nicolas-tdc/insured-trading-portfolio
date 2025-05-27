@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class JwtResponse {
+
     // Constructors
+
     public JwtResponse() {}
     public JwtResponse(String token, UUID id, String email, List<String> roles) {
         this.token = token;
@@ -13,7 +15,8 @@ public class JwtResponse {
         this.roles = roles;
     }
 
-    // Fields
+    // Properties
+
     private String token;
     private String type = "Bearer";
     private UUID id;
@@ -21,6 +24,7 @@ public class JwtResponse {
     private List<String> roles;
 
     // Getters
+
     public String getToken() { return token; }
     public String getType() { return type; }
     public UUID getId() { return id; }
@@ -28,6 +32,7 @@ public class JwtResponse {
     public List<String> getRoles() { return roles; }
 
     // Setters
+
     public void setToken(String token) { this.token = token; }
     public void setType(String type) { this.type = type; }
     public void setId(UUID id) { this.id = id; }
