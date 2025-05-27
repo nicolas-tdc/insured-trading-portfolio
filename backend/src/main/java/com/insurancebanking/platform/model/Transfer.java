@@ -20,13 +20,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "transfers")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Transaction extends BaseEntity {
+public class Transfer extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
@@ -49,19 +49,15 @@ public class Transaction extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "balance_after", precision = 19, scale = 4)
-    private BigDecimal balanceAfter;
-
     @Override
     public String toString() {
-        return "Transaction{" + 
+        return "Transfer{" + 
                 "id=" + id +
                 "sourceAccount" + sourceAccount.getAccountNumber() +
                 "targetAccount" + targetAccount.getAccountNumber() +
                 ", amount=" + amount +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
-                ", balanceAfter=" + balanceAfter +
                 '}';
     }
 }
