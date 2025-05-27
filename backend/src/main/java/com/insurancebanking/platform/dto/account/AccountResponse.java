@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.dto.banking;
+package com.insurancebanking.platform.dto.account;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -6,44 +6,50 @@ import java.util.UUID;
 import com.insurancebanking.platform.model.Account;
 
 public class AccountResponse {
+
     // Constructors
+
     public AccountResponse() {}
 
-    // Fields
+    // Properties
+
     private UUID id;
-    private String accountNumber;
-    private String type;
-    private BigDecimal balance;
+    private String accountType;
     private String currency;
+    private String accountNumber;
+    private BigDecimal balance;
     private String status;
 
     // Response static builder
+
     public static AccountResponse from(Account account) {
         AccountResponse response = new AccountResponse();
 
         response.setId(account.getId());
+        response.setAccountType(account.getAccountType().getName());
+        response.setCurrency(account.getCurrency().getName());
         response.setAccountNumber(account.getAccountNumber());
-        response.setType(account.getType());
         response.setBalance(account.getBalance());
-        response.setCurrency(account.getCurrency());
         response.setStatus(account.getStatus());
 
         return response;
     }
 
     // Getters
+
     public UUID getId() { return id; }
-    public String getAccountNumber() { return accountNumber; }
-    public String getType() { return type; }
-    public BigDecimal getBalance() { return balance; }
+    public String getAccountType() { return accountType; }
     public String getCurrency() { return currency; }
+    public BigDecimal getBalance() { return balance; }
+    public String getAccountNumber() { return accountNumber; }
     public String getStatus() { return status; }
 
     // Setters
-    public void setId(UUID newId) { this.id = newId; }
-    public void setAccountNumber(String newAccountNumber) { this.accountNumber = newAccountNumber; }
-    public void setType(String type) { this.type = type; }
-    public void setBalance(BigDecimal balance) { this.balance = balance; }
-    public void setCurrency(String currency) { this.currency = currency; }
-    public void setStatus(String status) { this.status = status; }
+
+    public void setId(UUID value) { this.id = value; }
+    public void setAccountNumber(String value) { this.accountNumber = value; }
+    public void setAccountType(String value) { this.accountType = value; }
+    public void setBalance(BigDecimal value) { this.balance = value; }
+    public void setCurrency(String value) { this.currency = value; }
+    public void setStatus(String value) { this.status = value; }
 }

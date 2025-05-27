@@ -38,19 +38,22 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JoinColumn(name = "account_type_id", nullable = false)
+    private AccountType accountType;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JoinColumn(name = "currency_id", nullable = false)
+    private Currency currency;
+
     @Column(name = "account_number", unique = true, nullable = false)
     private String accountNumber;
-
-    @Column(name = "type", nullable = false)
-    private String type;
 
     @Column(name = "balance", precision = 19, scale = 4)
     @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
-
-    @Column(name = "currency")
-    @Builder.Default
-    private final String currency = "USD";
 
     @Column(name = "status")
     @Builder.Default
@@ -60,33 +63,33 @@ public class Account extends BaseEntity {
     @Fetch(FetchMode.SELECT)
     @JsonManagedReference
     @Builder.Default
-    private final Set<Transaction> transactions = new LinkedHashSet<>();
+    private final Set<Transfer> transfers = new LinkedHashSet<>();
 
-    public Set<Transaction> getTransactions() {
-        return transactions;
+    public Set<Transfer> getTransfers() {
+        return transfers;
     }
-
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SELECT)
-    @JsonManagedReference
-    @Builder.Default
-    private final Set<Policy> policies = new LinkedHashSet<>();
 
     public Set<Policy> getPolicies() {
         return policies;
     }
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SELECT)
+    @JsonManagedReference
+    @Builder.Default
+    private final Set<Policy> policies = new LinkedHashSet<>();
 
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
                 "user.email='" + user.getEmail() + "'" +
-                ", accountNumber='" + accountNumber + "'" +
-                ", type='" + type + "'" +
-                ", balance=" + balance +
+                ", accountType='" + accountType + "'" +
                 ", currency='" + currency + "'" +
+                ", accountNumber='" + accountNumber + "'" +
+                ", balance=" + balance +
                 ", status='" + status + "'" +
-                ", transactions.size='" + transactions.size() + "'" +
+                ", transfers.size='" + transfers.size() + "'" +
                 ", policies.size='" + policies.size() + "'" +
                 '}';
     }
