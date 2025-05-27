@@ -1,27 +1,29 @@
 package com.insurancebanking.platform.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insurancebanking.platform.dto.common.MessageResponse;
+import com.insurancebanking.platform.dto.policy.PolicyRequest;
 import com.insurancebanking.platform.dto.policy.PolicyResponse;
-import com.insurancebanking.platform.model.Account;
 import com.insurancebanking.platform.model.Policy;
-import com.insurancebanking.platform.model.User;
 import com.insurancebanking.platform.security.UserDetailsImpl;
 import com.insurancebanking.platform.service.AccountService;
 import com.insurancebanking.platform.service.PolicyService;
 
 @RestController
-@RequestMapping("/api/insurance")
+@RequestMapping("/api/policy")
 public class PolicyController {
 
     @Autowired
@@ -30,32 +32,48 @@ public class PolicyController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/policies")
-    public ResponseEntity<List<PolicyResponse>> getUserPolicies(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        User user = new User();
-        user.setId(userDetails.getId());
-        List<Policy> policies = policyService.getUserPolicies(user);
-        List<PolicyResponse> responses = policies.stream()
-            .map(PolicyResponse::from)
-            .toList();
-        return ResponseEntity.ok(responses);
+    @PostMapping("")
+    public ResponseEntity<?> createPolicy(
+        @RequestBody @NonNull PolicyRequest request,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            // Create policy
+            Policy policy = policyService.create(request, userDetails.getId());
+
+            // Create new policy URI
+            URI location = new URI("/api/policy/" + policy.getId());
+
+            return ResponseEntity.created(location)
+                .body(PolicyResponse.from(policy));
+
+        } catch (URISyntaxException e) {
+
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Invalid policy URI:" + e.getMessage()));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error creating policy: " + e.getMessage()));
+        }
     }
 
-    @PostMapping("/apply-policy")
-    public ResponseEntity<?> applyPolicy(
-            @RequestParam String type,
-            @RequestParam Double coverageAmount,
-            @RequestParam String accountId,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @GetMapping("/user-list")
+    public ResponseEntity<?> getUserList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            // Get policies responses
+            List<Policy> policies = policyService.getUserPolicies(userDetails.getId());
+            List<PolicyResponse> responses = policies.stream()
+                .map(PolicyResponse::from)
+                .toList();
 
-        User user = new User();
-        UUID userId = userDetails.getId();
-        user.setId(userId);
+            return ResponseEntity.ok(responses);
 
-        Account account = accountService.getAccountById(accountId, userId);
+        } catch (Exception e) {
 
-        Policy policy = policyService.applyForPolicy(user, type, coverageAmount, account);
-
-        return ResponseEntity.ok(policy);
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error getting policies: " + e.getMessage()));
+        }
     }
 }

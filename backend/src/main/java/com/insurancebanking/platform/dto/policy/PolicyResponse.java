@@ -6,10 +6,13 @@ import java.util.UUID;
 import com.insurancebanking.platform.model.Policy;
 
 public class PolicyResponse {
+
     // Constructors
+
     public PolicyResponse() {}
 
-    // Fields
+    // Properties
+
     private UUID id;
     private UUID userId;
     private String accountNumber;
@@ -21,7 +24,8 @@ public class PolicyResponse {
     private LocalDateTime endDate;
     private String status;
 
-        // Response static builder
+    // Response static builder
+
     public static PolicyResponse from(Policy policy) {
         PolicyResponse response = new PolicyResponse();
 
@@ -40,6 +44,7 @@ public class PolicyResponse {
     }
 
     // Getters
+
     public UUID getId() { return id; }
     public UUID getUserId() { return userId; }
     public String getAccountNumber() { return accountNumber; }
@@ -52,6 +57,7 @@ public class PolicyResponse {
     public String getStatus() { return status; }
 
     // Setters
+
     public void setId(UUID id) { this.id = id; }
     public void setUserId(UUID userId) { this.userId = userId; }
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
