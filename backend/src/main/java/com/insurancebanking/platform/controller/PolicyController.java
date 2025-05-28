@@ -32,7 +32,7 @@ public class PolicyController {
     @Autowired
     AccountService accountService;
 
-    @PostMapping("")
+    @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<?> createPolicy(
         @RequestBody @NonNull PolicyRequest request,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -58,7 +58,7 @@ public class PolicyController {
         }
     }
 
-    @GetMapping("/user-list")
+    @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<?> getUserList(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
@@ -74,6 +74,40 @@ public class PolicyController {
 
             return ResponseEntity.badRequest()
                 .body(new MessageResponse("Error getting policies: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping(value = "/{policyId}", produces = "application/json")
+    public ResponseEntity<?> getPolicy(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable@NonNull String policyId) {
+        try {
+
+            // Check if policy exists
+            Policy policy = policyService.getUserPolicyById(
+                policyId, userDetails.getId());
+            if (policy == null) {
+
+                return ResponseEntity.ok(
+                    policyService.getUserPolicyById(policyId, userDetails.getId()));
+            }
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error getting policy: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping(value = "/type", produces = "application/json")
+    public ResponseEntity<?> getPolicyTypes() {
+        try {
+            return ResponseEntity.ok(policyService.getPolicyTypes());
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error getting policy types: " + e.getMessage()));
         }
     }
 }
