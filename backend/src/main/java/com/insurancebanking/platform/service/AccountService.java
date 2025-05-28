@@ -1,6 +1,7 @@
 package com.insurancebanking.platform.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,17 @@ public class AccountService {
     @Autowired
     UserRepository userRepository;
 
+    public List<AccountType> getAccountTypes() {
+        return accountTypeRepository.findAll();
+    }
+
     public Account getUserAccountById(UUID accountId, UUID userId) {
         return accountRepository.findById(accountId)
             .filter(a -> a.getUser().getId().equals(userId))
             .orElse(null);
     }
 
-    public Account getUserAccountByAccountNumber(String accountNumber, UUID userId) {
+    public Account getUserAccountByAccountNumber(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber)
                                 .orElse(null);
     }
