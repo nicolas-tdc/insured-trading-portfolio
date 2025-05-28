@@ -1,3 +1,6 @@
+-- INITIAL DATA
+
+
 -- Roles
 INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER'), ('ROLE_ADMIN'), ('ROLE_ADVISOR');
 
@@ -6,6 +9,10 @@ INSERT INTO account_types (name) VALUES ('CHECKING'), ('SAVINGS');
 
 -- Currencies
 INSERT INTO currencies (name) VALUES ('USD'), ('EUR');
+
+
+-- TEST DATA
+
 
 -- Insert test users
 INSERT INTO users (first_name, last_name, email, password) VALUES
