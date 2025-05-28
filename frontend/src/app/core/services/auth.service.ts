@@ -1,26 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { LoginRequest, SignupRequest, JwtResponse } from '../models';
+import { LoginRequest, SignupRequest, JwtResponse, User } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+
+  // Properties
+
   private apiUrl = '/api/auth';
+  // Logged user state
+  private authUserSubject = new BehaviorSubject<User | null>(this.getUser());
+  private authUser$ = this.authUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  // Lifecycle
 
-  login(credentials: LoginRequest): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(`${this.apiUrl}/signin`, credentials);
-  }
+  constructor(
+    private http: HttpClient,
+  ) {}
 
-  register(signupRequest: SignupRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, signupRequest);
-  }
+  // Local
 
-  logout(): void {
+  public logout(): void {
     localStorage.removeItem('auth-token');
     localStorage.removeItem('user');
+    this.authUserSubject.next(null);
   }
 
   public saveToken(token: string): void {
@@ -33,6 +38,7 @@ export class AuthService {
 
   public saveUser(user: any): void {
     localStorage.setItem('user', JSON.stringify(user));
+    this.authUserSubject.next(user);
   }
 
   public getUser(): any {
@@ -46,4 +52,18 @@ export class AuthService {
   public isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  // API
+
+  public login(credentials: LoginRequest): Observable<JwtResponse> {
+    return this.http.post<JwtResponse>(`${this.apiUrl}/signin`, credentials);
+  }
+
+  public register(signupRequest: SignupRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signup`, signupRequest);
+  }
+
+  // Getters
+
+  get authUser(): Observable<User | null> { return this.authUser$; }
 }

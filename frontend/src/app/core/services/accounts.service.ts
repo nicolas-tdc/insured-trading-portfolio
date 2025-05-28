@@ -2,28 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Account, Transaction, TransferRequest } from '../models';
+import { Account, AccountRequest, AccountType } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AccountsService {
-  private apiUrl = '/api/banking';
+  private accountApiUrl = '/api/account';
 
   constructor(private http: HttpClient) {}
 
-  getAccounts(): Observable<Account[]> {
-    const accounts: Observable<Account[]> = this.http.get<Account[]>(`${this.apiUrl}/accounts`);
-    return accounts;
+  create(request: AccountRequest): Observable<Account> {
+    return this.http.post<Account>(`${this.accountApiUrl}`, request);
   }
 
-  openAccount(): Observable<Account> {
-    return this.http.post<Account>(`${this.apiUrl}/open-account`, {});
+  getItem(accountId: string): Observable<Account> {
+    return this.http.get<Account>(`${this.accountApiUrl}/${accountId}`);
   }
 
-  transfer(transferRequest: TransferRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/transfer`, transferRequest);
+  getList(): Observable<Account[]> {
+    return this.http.get<Account[]>(`${this.accountApiUrl}`);
   }
 
-  getTransactions(accountId: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.apiUrl}/transactions/${accountId}`);
+  getTypes(): Observable<AccountType[]> {
+    return this.http.get<AccountType[]>(`${this.accountApiUrl}/type`);
   }
 }

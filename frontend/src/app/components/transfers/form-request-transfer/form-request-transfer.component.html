@@ -1,0 +1,23 @@
+<form *ngIf="accountId" (ngSubmit)="createTransfer()" #transferForm="ngForm">
+
+  <h3>Transfer</h3>
+
+  <input
+    name="targetAccountNumber"
+    [(ngModel)]="targetAccountNumber"
+    placeholder="Target Account Number"
+    required
+  />
+
+  <input
+    name="amount"
+    [(ngModel)]="amount"
+    placeholder="Amount"
+    type="number"
+    required
+    min="0.01"
+  />
+
+  <button type="submit" [disabled]="!transferForm.valid">Transfer</button>
+
+</form>
