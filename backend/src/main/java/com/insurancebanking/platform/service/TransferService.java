@@ -100,10 +100,10 @@ public class TransferService {
     }
 
     private Account getSourceAccountFromRequest(TransferRequest request, UUID userId) {
-        return accountService.getUserAccountById(request.getSourceAccountFromRequestId(), userId);
+        return accountService.getUserAccountById(request.getSourceAccountId(), userId);
     }
 
     private Account getTargetAccountFromRequest(TransferRequest request) {
-        return accountService.getUserAccountByAccountNumber(request.getTargetAccountFromRequestNumber());
+        return accountService.getUserAccountByAccountNumber(request.getTargetAccountNumber());
     }
 }
