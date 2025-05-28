@@ -1,6 +1,7 @@
 package com.insurancebanking.platform.dto.transfer;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.insurancebanking.platform.model.Transfer;
@@ -14,6 +15,7 @@ public class TransferResponse {
     // Properties
 
     private UUID id;
+    private LocalDateTime createdAt;
     private BigDecimal amount;
     private String type;
     private String description;
@@ -28,6 +30,7 @@ public class TransferResponse {
         TransferResponse response = new TransferResponse();
 
         response.setId(transfer.getId());
+        response.setDate(transfer.getCreatedAt());
         response.setAmount(transfer.getAmount());
         response.setType(transfer.getType());
         response.setDescription(transfer.getDescription());
@@ -42,6 +45,7 @@ public class TransferResponse {
     // Getters
 
     public UUID getId() { return id; }
+    public LocalDateTime getDate() { return createdAt; }
     public BigDecimal getAmount() { return amount; }
     public String getType() { return type; }
     public String getDescription() { return description; }
@@ -53,6 +57,7 @@ public class TransferResponse {
     // Setters
 
     public void setId(UUID value) { this.id = value; }
+    public void setDate(LocalDateTime value) { this.createdAt = value; }
     public void setAmount(BigDecimal value) { this.amount = value; }
     public void setType(String value) { this.type = value; }
     public void setDescription(String value) { this.description = value; }
