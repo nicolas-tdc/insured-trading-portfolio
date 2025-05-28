@@ -14,7 +14,6 @@ public class PolicyResponse {
     // Properties
 
     private UUID id;
-    private UUID userId;
     private String accountNumber;
     private String policyNumber;
     private String type;
@@ -30,7 +29,6 @@ public class PolicyResponse {
         PolicyResponse response = new PolicyResponse();
 
         response.setId(policy.getId());
-        response.setUserId(policy.getUser().getId());
         response.setAccountNumber(policy.getAccount().getAccountNumber());
         response.setPolicyNumber(policy.getPolicyNumber());
         response.setType(policy.getType());
@@ -46,7 +44,6 @@ public class PolicyResponse {
     // Getters
 
     public UUID getId() { return id; }
-    public UUID getUserId() { return userId; }
     public String getAccountNumber() { return accountNumber; }
     public String getPolicyNumber() { return policyNumber; }
     public String getType() { return type; }
@@ -59,7 +56,6 @@ public class PolicyResponse {
     // Setters
 
     public void setId(UUID id) { this.id = id; }
-    public void setUserId(UUID userId) { this.userId = userId; }
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
     public void setPolicyNumber(String policyNumber) { this.policyNumber = policyNumber; }
     public void setType(String type) { this.type = type; }
