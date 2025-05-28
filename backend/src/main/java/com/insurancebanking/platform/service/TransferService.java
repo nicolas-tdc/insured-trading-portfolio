@@ -20,9 +20,6 @@ import com.insurancebanking.platform.repository.TransferRepository;
 public class TransferService {
 
     @Autowired
-    TransferService transferService;
-
-    @Autowired
     TransferRepository transferRepository;
 
     @Autowired
@@ -31,9 +28,13 @@ public class TransferService {
     @Autowired
     AccountRepository accountRepository;
 
+    public List<Transfer> getTransferTypes() {
+        return transferRepository.findAll();
+    }
+
     public String validate(TransferRequest request, UUID userId) {
-        Account sourceAccount = getSourceAccount(request, userId);
-        Account targetAccount = getTargetAccount(request, userId);
+        Account sourceAccount = getSourceAccountFromRequest(request, userId);
+        Account targetAccount = getTargetAccountFromRequest(request);
 
         if (sourceAccount == null) {
             return "Invalid source account";
@@ -57,8 +58,8 @@ public class TransferService {
     }
 
     public Transfer create(TransferRequest request, UUID userId) {
-        Account sourceAccount = getSourceAccount(request, userId);
-        Account targetAccount = getTargetAccount(request, userId);
+        Account sourceAccount = getSourceAccountFromRequest(request, userId);
+        Account targetAccount = getTargetAccountFromRequest(request);
         BigDecimal amount = request.getAmount();
 
         // Create and save transfer
@@ -98,11 +99,11 @@ public class TransferService {
         accountRepository.save(targetAccount);
     }
 
-    private Account getSourceAccount(TransferRequest request, UUID userId) {
-        return accountService.getUserAccountById(request.getSourceAccountId(), userId);
+    private Account getSourceAccountFromRequest(TransferRequest request, UUID userId) {
+        return accountService.getUserAccountById(request.getSourceAccountFromRequestId(), userId);
     }
 
-    private Account getTargetAccount(TransferRequest request, UUID userId) {
-        return accountService.getUserAccountByAccountNumber(request.getTargetAccountNumber(), userId);
+    private Account getTargetAccountFromRequest(TransferRequest request) {
+        return accountService.getUserAccountByAccountNumber(request.getTargetAccountFromRequestNumber());
     }
 }
