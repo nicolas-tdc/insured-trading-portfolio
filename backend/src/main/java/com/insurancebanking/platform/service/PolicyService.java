@@ -3,8 +3,10 @@ package com.insurancebanking.platform.service;
 import com.insurancebanking.platform.dto.policy.PolicyRequest;
 import com.insurancebanking.platform.model.Account;
 import com.insurancebanking.platform.model.Policy;
+import com.insurancebanking.platform.model.PolicyType;
 import com.insurancebanking.platform.model.User;
 import com.insurancebanking.platform.repository.PolicyRepository;
+import com.insurancebanking.platform.repository.PolicyTypeRepository;
 import com.insurancebanking.platform.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,24 @@ public class PolicyService {
     @Autowired
     PolicyRepository policyRepository;
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    PolicyTypeRepository policyTypeRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public List<Policy> getUserPolicies(UUID userId) {
         return policyRepository.findByUser_Id(userId);
+    }
+
+    public Policy getUserPolicyById(UUID policyId, UUID userId) {
+        return policyRepository.findById(policyId)
+            .filter(a -> a.getUser().getId().equals(userId))
+            .orElse(null);
+    }
+
+    public List<PolicyType> getPolicyTypes() {
+        return policyTypeRepository.findAll();
     }
 
     public Policy create(PolicyRequest request, UUID userId) {
