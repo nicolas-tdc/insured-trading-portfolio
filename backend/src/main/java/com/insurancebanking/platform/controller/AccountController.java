@@ -90,10 +90,9 @@ public class AccountController {
         @PathVariable @NonNull UUID accountId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            // Get account
-            Account account = accountService.getUserAccountById(accountId, userDetails.getId());
-
             // Check if account exists
+            Account account = accountService.getUserAccountById(
+                accountId, userDetails.getId());
             if (account == null) {
 
                 return ResponseEntity.badRequest()
@@ -106,6 +105,18 @@ public class AccountController {
 
             return ResponseEntity.badRequest()
                 .body(new MessageResponse("Error getting account: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping(value="/type", produces="application/json")
+    public ResponseEntity<?> getAccountTypes() {
+        try {
+            return ResponseEntity.ok(accountService.getAccountTypes());
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error getting account types: " + e.getMessage()));
         }
     }
 }
