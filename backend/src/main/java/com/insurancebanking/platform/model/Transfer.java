@@ -30,6 +30,11 @@ public class Transfer extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
+    @JoinColumn(name = "transfer_type_id", nullable = false)
+    private TransferType transferType;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @JsonBackReference
     @JoinColumn(name = "source_account_id", nullable = false)
     private Account sourceAccount;
