@@ -3,12 +3,14 @@ package com.insurancebanking.platform.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,7 +82,7 @@ public class PolicyController {
     @GetMapping(value = "/{policyId}", produces = "application/json")
     public ResponseEntity<?> getPolicy(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable@NonNull String policyId) {
+        @PathVariable @NonNull UUID policyId) {
         try {
 
             // Check if policy exists
@@ -88,9 +90,12 @@ public class PolicyController {
                 policyId, userDetails.getId());
             if (policy == null) {
 
-                return ResponseEntity.ok(
-                    policyService.getUserPolicyById(policyId, userDetails.getId()));
+                return ResponseEntity.badRequest()
+                    .body(List.of("Invalid account id"));
             }
+
+            return ResponseEntity.ok(
+                policyService.getUserPolicyById(policyId, userDetails.getId()));
 
         } catch (Exception e) {
 
