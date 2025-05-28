@@ -97,4 +97,16 @@ public class TransferController {
                 .body(new MessageResponse("Error getting account transfers: " + e.getMessage()));
         }
     }
+
+    @GetMapping("/types")
+    public ResponseEntity<?> getPolicyTypes() {
+        try {
+            return ResponseEntity.ok(transferService.getTransferTypes());
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error getting policy types: " + e.getMessage()));
+        }
+    }
 }
