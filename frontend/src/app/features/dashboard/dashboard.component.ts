@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { ListCardAccountsComponent } from '../../components/accounts/card-list-accounts/card-list-accounts.component';
-import { Account, AccountsService, PoliciesService, Policy } from '../../core';
-import { ListCardPoliciesComponent } from '../../components/policies/card-list-policies/card-list-policies.component';
+import { ListCardPoliciesComponent } from '../../policy/component/card-list-policies/card-list-policies.component';
+import { ListCardAccountsComponent } from '../../account/component/card-list-accounts/card-list-accounts.component';
+import { Account } from '../../account/model';
+import { Policy } from '../../policy/model';
+import { AccountService } from '../../account/account.service';
+import { PolicyService } from '../../policy/policy.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,8 +33,8 @@ export class DashboardComponent {
   // Lifecycle
 
   constructor(
-    private accountsService: AccountsService,
-    private policiesService: PoliciesService
+    private accountService: AccountService,
+    private policyService: PolicyService
   ) { }
 
   ngOnInit(): void {
@@ -42,13 +45,13 @@ export class DashboardComponent {
   // API
 
   loadAccounts(): void {
-      this.accountsService.getList().subscribe(data => {
+      this.accountService.getList().subscribe(data => {
         this.accounts = data;
       });
     }
 
   loadPolicies(): void {
-    this.policiesService.getList().subscribe(data => {
+    this.policyService.getList().subscribe(data => {
       this.policies = data;
     });
   }

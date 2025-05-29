@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { AuthGuard } from './core/guards/auth.guard';
+import { AuthGuard } from './core/guard/auth.guard';
 
-import { ShellComponent } from './layout/shell/shell.component';
+import { ShellComponent } from './features/layout/shell/shell.component';
 
 export const routes: Routes = [
   {

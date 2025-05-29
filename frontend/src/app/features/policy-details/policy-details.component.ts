@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PoliciesService, Policy } from '../../core';
 import { CommonModule } from '@angular/common';
-import { CardItemPolicyComponent } from '../../components/policies/card-item-policy/card-item-policy.component';
+import { CardItemPolicyComponent } from '../../policy/component/card-item-policy/card-item-policy.component';
+import { Policy } from '../../policy/model';
+import { PolicyService } from '../../policy/policy.service';
 
 @Component({
   selector: 'app-policy-details',
@@ -27,7 +28,7 @@ export class PolicyDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private policiesService: PoliciesService,
+    private policyService: PolicyService,
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +37,7 @@ export class PolicyDetailsComponent {
       return;
     }
 
-    this.policiesService.getItem(paramId).subscribe(data => {
+    this.policyService.getItem(paramId).subscribe(data => {
       this._policy = data;
     });
   }

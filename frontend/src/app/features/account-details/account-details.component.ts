@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Account, AccountsService } from '../../core';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { CardItemAccountComponent } from '../../components/accounts/card-item-account/card-item-account.component';
-
+import { CardItemAccountComponent } from '../../account/component/card-item-account/card-item-account.component';
+import { Account } from '../../account/model';
+import { AccountService } from '../../account/account.service';
 @Component({
   selector: 'app-account-details',
   imports: [
@@ -28,7 +27,7 @@ export class AccountDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private accountsService: AccountsService,
+    private accountService: AccountService,
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +36,7 @@ export class AccountDetailsComponent {
       return;
     }
 
-    this.accountsService.getItem(paramId).subscribe(data => {
+    this.accountService.getItem(paramId).subscribe(data => {
       this._account = data;
     });
   }
