@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     BtnLogoutAuthComponent,
   ],
   templateUrl: './user-header.component.html',
