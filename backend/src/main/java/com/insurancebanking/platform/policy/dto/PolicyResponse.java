@@ -1,9 +1,9 @@
 package com.insurancebanking.platform.policy.dto;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.insurancebanking.platform.policy.model.Policy;
+import com.insurancebanking.platform.policy.model.PolicyType;
 
 public class PolicyResponse {
 
@@ -16,11 +16,9 @@ public class PolicyResponse {
     private UUID id;
     private String accountNumber;
     private String policyNumber;
-    private String type;
+    private PolicyType policyType;
     private Double premium;
     private Double coverageAmount;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
     private String status;
 
     // Response static builder
@@ -31,13 +29,12 @@ public class PolicyResponse {
         response.setId(policy.getId());
         response.setAccountNumber(policy.getAccount().getAccountNumber());
         response.setPolicyNumber(policy.getPolicyNumber());
-        response.setType(policy.getType());
+        response.setPolicyType(policy.getPolicyType());
         response.setPremium(policy.getPremium());
         response.setCoverageAmount(policy.getCoverageAmount());
-        response.setStartDate(policy.getStartDate());
-        response.setEndDate(policy.getEndDate());
         response.setStatus(policy.getStatus());
 
+        System.err.println(response);
         return response;
     }
 
@@ -46,22 +43,18 @@ public class PolicyResponse {
     public UUID getId() { return id; }
     public String getAccountNumber() { return accountNumber; }
     public String getPolicyNumber() { return policyNumber; }
-    public String getType() { return type; }
+    public PolicyType getPolicyType() { return policyType; }
     public Double getPremium() { return premium; }
     public Double getCoverageAmount() { return coverageAmount; }
-    public LocalDateTime getStartDate() { return startDate; }
-    public LocalDateTime getEndDate() { return endDate; }
     public String getStatus() { return status; }
 
     // Setters
 
-    public void setId(UUID id) { this.id = id; }
-    public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
-    public void setPolicyNumber(String policyNumber) { this.policyNumber = policyNumber; }
-    public void setType(String type) { this.type = type; }
-    public void setPremium(Double premium) { this.premium = premium; }
-    public void setCoverageAmount(Double coverageAmount) { this.coverageAmount = coverageAmount; }
-    public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
-    public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
-    public void setStatus(String status) { this.status = status; }
+    public void setId(UUID value) { this.id = value; }
+    public void setAccountNumber(String value) { this.accountNumber = value; }
+    public void setPolicyNumber(String value) { this.policyNumber = value; }
+    public void setPolicyType(PolicyType value) { this.policyType = value; }
+    public void setPremium(Double value) { this.premium = value; }
+    public void setCoverageAmount(Double value) { this.coverageAmount = value; }
+    public void setStatus(String value) { this.status = value; }
 }

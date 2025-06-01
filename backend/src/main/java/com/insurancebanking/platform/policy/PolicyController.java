@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insurancebanking.platform.account.AccountService;
+import com.insurancebanking.platform.auth.AuthController;
 import com.insurancebanking.platform.auth.security.UserDetailsImpl;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 import com.insurancebanking.platform.policy.dto.PolicyRequest;
 import com.insurancebanking.platform.policy.dto.PolicyResponse;
 import com.insurancebanking.platform.policy.model.Policy;
+import com.insurancebanking.platform.policy.model.PolicyType;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/policy")
 public class PolicyController {
 
@@ -33,10 +37,14 @@ public class PolicyController {
     @Autowired
     AccountService accountService;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
+
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<?> createPolicy(
         @RequestBody @NonNull PolicyRequest request,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        String errorMessage = "Error creating policy";
         try {
             // Create policy
             Policy policy = policyService.create(request, userDetails.getId());
@@ -48,20 +56,24 @@ public class PolicyController {
                 .body(PolicyResponse.from(policy));
 
         } catch (URISyntaxException e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Invalid policy URI:" + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error creating policy: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<?> getUserList(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        String errorMessage = "Error getting policies";
         try {
             // Get policies responses
             List<Policy> policies = policyService.getUserPolicies(userDetails.getId());
@@ -72,9 +84,10 @@ public class PolicyController {
             return ResponseEntity.ok(responses);
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting policies: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
@@ -82,6 +95,8 @@ public class PolicyController {
     public ResponseEntity<?> getPolicy(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable @NonNull UUID policyId) {
+
+        String errorMessage = "Error getting policy";
         try {
 
             // Check if policy exists
@@ -90,28 +105,33 @@ public class PolicyController {
             if (policy == null) {
 
                 return ResponseEntity.badRequest()
-                    .body(List.of("Invalid account id"));
+                    .body(new MessageResponse(errorMessage + ": Policy not found"));
             }
 
-            return ResponseEntity.ok(
-                policyService.getUserPolicyById(policyId, userDetails.getId()));
+            return ResponseEntity.ok(PolicyResponse.from(policy));
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting policy: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
     @GetMapping(value = "/type", produces = "application/json")
     public ResponseEntity<?> getPolicyTypes() {
+
+        String errorMessage = "Error getting policy types";
         try {
-            return ResponseEntity.ok(policyService.getPolicyTypes());
+            List<PolicyType> policyTypes = policyService.getPolicyTypes();
+
+            return ResponseEntity.ok(policyTypes);
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting policy types: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 }

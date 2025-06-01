@@ -2,6 +2,8 @@ package com.insurancebanking.platform.policy.dto;
 
 import java.util.UUID;
 
+import com.insurancebanking.platform.policy.model.PolicyType;
+
 import jakarta.validation.constraints.NotNull;
 
 public class PolicyRequest {
@@ -12,7 +14,7 @@ public class PolicyRequest {
     private UUID accountId;
 
     @NotNull(message = "Type is required")
-    private String type;
+    private PolicyType policyType;
 
     @NotNull(message = "Coverage amount is required")
     private Double coverageAmount;
@@ -20,12 +22,12 @@ public class PolicyRequest {
     // Getters
 
     public UUID getAccountId() { return accountId; }
-    public String getType() { return type; }
+    public PolicyType getPolicyType() { return policyType; }
     public Double getCoverageAmount() { return coverageAmount; }
 
     // Setters
 
-    public void setAccountId(UUID accountId) { this.accountId = accountId; }
-    public void setType(String type) { this.type = type; }
-    public void setCoverageAmount(Double coverageAmount) { this.coverageAmount = coverageAmount; }
+    public void setAccountId(UUID value) { this.accountId = value; }
+    public void setPolicyType(PolicyType value) { this.policyType = value; }
+    public void setCoverageAmount(Double value) { this.coverageAmount = value; }
 }

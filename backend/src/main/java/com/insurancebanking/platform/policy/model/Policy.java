@@ -2,9 +2,6 @@ package com.insurancebanking.platform.policy.model;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.auth.model.User;
@@ -12,7 +9,8 @@ import com.insurancebanking.platform.core.model.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -41,16 +39,11 @@ public class Policy extends BaseEntity {
     @JsonBackReference
     private Account account;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name = "policy_type_id", nullable = false)
+    @Enumerated(EnumType.STRING)
     private PolicyType policyType;
 
     @Column(name = "policy_number", unique = true, nullable = false)
     private String policyNumber;
-
-    @Column(name = "type", nullable = false)
-    private String type;
 
     @Column(name = "coverage_amount")
     private Double coverageAmount;

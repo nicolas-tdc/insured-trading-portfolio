@@ -8,7 +8,6 @@ import com.insurancebanking.platform.policy.dto.PolicyRequest;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.policy.model.PolicyType;
 import com.insurancebanking.platform.policy.repository.PolicyRepository;
-import com.insurancebanking.platform.policy.repository.PolicyTypeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,9 +29,6 @@ public class PolicyService {
 
     @Autowired
     PolicyRepository policyRepository;
-
-    @Autowired
-    PolicyTypeRepository policyTypeRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -47,11 +44,11 @@ public class PolicyService {
     }
 
     public List<PolicyType> getPolicyTypes() {
-        return policyTypeRepository.findAll();
+        return Arrays.stream(PolicyType.values()).toList();
     }
 
     public Policy create(PolicyRequest request, UUID userId) {
-        String type = request.getType();
+        PolicyType policyType = request.getPolicyType();
         Double coverageAmount = request.getCoverageAmount();
 
         // Get user and account
@@ -64,9 +61,9 @@ public class PolicyService {
         Policy policy = Policy.builder()
             .user(user)
             .policyNumber(UUID.randomUUID().toString().substring(0, 9).toUpperCase())
-            .type(type)
+            .policyType(policyType)
             .coverageAmount(coverageAmount)
-            .premium(calculatePremium(type, coverageAmount))
+            .premium(calculatePremium(policyType, coverageAmount))
             .startDate(LocalDateTime.now())
             .endDate(LocalDateTime.now().plusYears(1))
             .status("pending")
@@ -76,11 +73,12 @@ public class PolicyService {
         return policyRepository.save(policy);
     }
 
-    private Double calculatePremium(String type, Double coverage) {
-        double baseRate = switch (type.toLowerCase()) {
-            case "life" -> 0.01;
-            case "auto" -> 0.02;
-            case "home" -> 0.015;
+    private Double calculatePremium(PolicyType policyType, Double coverage) {
+        double baseRate = switch (policyType) {
+            case LIFE   -> 0.01;
+            case HEALTH -> 0.02;
+            case HOME   -> 0.015;
+            case AUTO   -> 0.025;
             default -> 0.01;
         };
 
