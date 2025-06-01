@@ -1,58 +1,66 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TransferRequest } from '../../model';
-import { Account } from '../../../account/model';
+import { Component, Inject, OnInit } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TransferService } from '../../transfer.service';
+import { Account } from '../../../account/model';
+import { MatError, MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-form-request-transfer',
+  standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
+    MatInput,
+    MatFormField,
+    MatLabel,
+    MatHint,
+    MatButton,
   ],
   templateUrl: './form-request-transfer.component.html',
   styleUrl: './form-request-transfer.component.scss'
 })
-export class FormRequestTransferComponent {
+export class FormRequestTransferComponent implements OnInit {
 
-  // Properties, Accessors
-
-  // Transfer
-  private _transfer: TransferRequest = {
-    sourceAccountId: '',
-    targetAccountNumber: '',
-    amount: 0,
-    description: '',
-  }
-
-  get targetAccountNumber() { return this._transfer.targetAccountNumber; }
-  set targetAccountNumber(value: string) { this._transfer.targetAccountNumber = value; }
-
-  get amount() { return this._transfer.amount; }
-  set amount(value: number) { this._transfer.amount = value; }
-
-  get description() { return this._transfer.description; }
-  set description(value: string) { this._transfer.description = value; }
-
-  // Account
-  @Input() account: Account | null = null;
-
-  // Lifecycle
+  transferForm!: FormGroup;
 
   constructor(
-    private router: Router,
     private transferService: TransferService,
-  ) { }
+    public dialogRef: MatDialogRef<FormRequestTransferComponent>,
+    @Inject(MAT_DIALOG_DATA) public account: Account
+  ) {}
 
-  // API
+
+  ngOnInit(): void {
+    this.transferForm = new FormGroup({
+      targetAccountNumber: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(12),
+        Validators.minLength(12),
+      ]),
+      amount: new FormControl('', [
+        Validators.required,
+        Validators.min(0.01),
+        Validators.max(this.account.balance),
+        Validators.pattern(/^\d+(\.\d{2})$/),
+      ]),
+      description: new FormControl(''),
+    });
+  }
 
   createTransfer(): void {
-    this._transfer.sourceAccountId = this.account?.id || '';
+    if (this.transferForm.invalid) return;
 
-    this.transferService.create(this._transfer).subscribe(() => {
-      this.router.navigate(['/accounts/' + this.account?.id]);
+    const transferRequest = {
+      sourceAccountId: this.account.id,
+      ...this.transferForm.value
+    };
+
+    this.transferService.create(transferRequest).subscribe(() => {
+      this.dialogRef.close('completed');
     });
   }
 }

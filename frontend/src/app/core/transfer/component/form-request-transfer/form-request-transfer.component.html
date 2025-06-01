@@ -1,23 +1,35 @@
-<form *ngIf="account?.id" (ngSubmit)="createTransfer()" #transferForm="ngForm">
+<form [formGroup]="transferForm" (ngSubmit)="createTransfer()">
 
-  <h3>Transfer</h3>
+  <h2>Transfer</h2>
+  <mat-form-field>
+    <mat-label>Target Account Number</mat-label>
+    <!-- <input matInput formControlName="targetAccountNumber" /> -->
+    <input matInput
+      formControlName="targetAccountNumber"
+      maxlength="12"
+      placeholder="Ex: 4044b113-44a"
+    />
+    <mat-hint align="end">12 characters</mat-hint>
+  </mat-form-field>
 
-  <input
-    name="targetAccountNumber"
-    [(ngModel)]="targetAccountNumber"
-    placeholder="Target Account Number"
-    required
-  />
+  <mat-form-field>
+    <mat-label>Amount</mat-label>
+    <input matInput
+      formControlName="amount"
+      placeholder="Ex: 100.00"
+      type="number"
+      step="0.01"
+    />
+  </mat-form-field>
 
-  <input
-    name="amount"
-    [(ngModel)]="amount"
-    placeholder="Amount"
-    type="number"
-    required
-    min="0.01"
-  />
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput
+      formControlName="description"
+      placeholder="Optional"
+    />
+  </mat-form-field>
 
-  <button type="submit" [disabled]="!transferForm.valid">Transfer</button>
+  <button mat-flat-button type="submit">Transfer</button>
 
 </form>
