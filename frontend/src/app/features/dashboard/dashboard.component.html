@@ -1,3 +1,13 @@
 <h2>Dashboard</h2>
-<app-card-list-accounts [accounts]="accounts"></app-card-list-accounts>
-<app-card-list-policies [policies]="policies"></app-card-list-policies>
+
+<!-- Accounts -->
+<app-card-list-accounts [accounts]="accounts()"></app-card-list-accounts>
+
+<!-- Create new account -->
+<app-form-create-account [accounts]="accounts()"></app-form-create-account>
+
+<!-- Policies -->
+<app-card-list-policies [policies]="policies()"></app-card-list-policies>
+
+<!-- Create new policy -->
+<app-form-create-policy [policies]="policies()" [accounts]="accounts()"></app-form-create-policy>

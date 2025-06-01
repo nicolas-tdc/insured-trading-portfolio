@@ -1,0 +1,19 @@
+<form (ngSubmit)="createAccount()" #accountForm="ngForm">
+
+    <h3>Create New Account</h3>
+
+    <select [(ngModel)]="accountType" name="accountType" required>
+      <option *ngFor="let type of accountTypes" [value]="type">
+        {{ type }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="currencyId" name="currency" required>
+      <option *ngFor="let currency of currencies" [value]="currency.id">
+        {{ currency.name }}
+      </option>
+    </select>
+
+    <button type="submit" [disabled]="!accountForm.form.valid">Create Account</button>
+
+  </form>

@@ -1,0 +1,5 @@
+<a [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Back to Dashboard</a>
+
+<app-account-details *ngIf="account" [account]="account()"></app-account-details>
+
+<app-form-request-transfer *ngIf="account" [account]="account()"></app-form-request-transfer>

@@ -1,0 +1,18 @@
+<h3>Your Transfers</h3>
+
+<table ngIf="transfers.length > 0">
+
+  <thead>
+    <tr>
+      <th>Amount</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <app-item-table-transfer
+      *ngFor="let transfer of transfers"
+      [transfer]="transfer">
+    </app-item-table-transfer>
+  </tbody>
+
+</table>
