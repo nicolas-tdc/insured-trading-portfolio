@@ -4,9 +4,6 @@
 -- Roles
 INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER'), ('ROLE_ADMIN'), ('ROLE_ADVISOR');
 
--- Account types
-INSERT INTO account_types (name) VALUES ('CHECKING'), ('SAVINGS');
-
 -- Currencies
 INSERT INTO currencies (name) VALUES ('USD'), ('EUR');
 
@@ -30,13 +27,12 @@ WHERE (u.email = 'admin@platform.com' AND r.name = 'ROLE_ADMIN')
    OR (u.email = 'jane@customer.com' AND r.name = 'ROLE_CUSTOMER');
 
 -- Create accounts for each user
-INSERT INTO accounts (user_id, account_number, balance, account_type_id, currency_id)
+INSERT INTO accounts (user_id, account_number, balance, account_type, currency_id)
 SELECT 
   u.id, 
   substring(uuid_generate_v4()::text, 1, 12), 
   8000.00,
-  account_type.id, 
+  'CHECKING',
   currency.id
 FROM users u
-JOIN account_types account_type ON account_type.name = 'CHECKING'
 JOIN currencies currency ON currency.name = 'EUR'
