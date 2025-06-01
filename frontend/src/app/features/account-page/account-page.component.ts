@@ -30,6 +30,10 @@ export class AccountPageComponent {
   ) {}
 
   ngOnInit(): void {
+    this.loadAccount();
+  }
+
+  loadAccount(): void {
     const paramId = this.route.snapshot.paramMap.get('accountId');
     if (!paramId) return;
 
