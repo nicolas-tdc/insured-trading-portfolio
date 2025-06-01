@@ -1,41 +1,31 @@
 package com.insurancebanking.platform.auth.dto;
 
-import java.util.List;
-import java.util.UUID;
 
 public class JwtResponse {
 
     // Constructors
 
     public JwtResponse() {}
-    public JwtResponse(String token, UUID id, String email, List<String> roles) {
+    public JwtResponse(String token, UserResponse user) {
         this.token = token;
-        this.id = id;
-        this.email = email;
-        this.roles = roles;
+        this.user = user;
     }
 
     // Properties
 
     private String token;
     private String type = "Bearer";
-    private UUID id;
-    private String email;
-    private List<String> roles;
+    private UserResponse user;
 
     // Getters
 
     public String getToken() { return token; }
     public String getType() { return type; }
-    public UUID getId() { return id; }
-    public String getEmail() { return email; }
-    public List<String> getRoles() { return roles; }
+    public UserResponse getUser() { return user; }
 
     // Setters
 
     public void setToken(String token) { this.token = token; }
     public void setType(String type) { this.type = type; }
-    public void setId(UUID id) { this.id = id; }
-    public void setEmail(String email) { this.email = email; }
-    public void setRoles(List<String> roles) { this.roles = roles; }
+    public void setUser(UserResponse user) { this.user = user; }
 }
