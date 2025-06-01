@@ -17,7 +17,6 @@ public class TransferResponse {
     private UUID id;
     private LocalDateTime createdAt;
     private BigDecimal amount;
-    private String type;
     private String description;
     private String sourceAccountNumber;
     private String sourceUserEmail;
@@ -32,7 +31,6 @@ public class TransferResponse {
         response.setId(transfer.getId());
         response.setDate(transfer.getCreatedAt());
         response.setAmount(transfer.getAmount());
-        response.setType(transfer.getType());
         response.setDescription(transfer.getDescription());
         response.setSourceAccountNumber(transfer.getSourceAccount().getAccountNumber());
         response.setSourceUserEmail(transfer.getSourceAccount().getUser().getEmail());
@@ -47,7 +45,6 @@ public class TransferResponse {
     public UUID getId() { return id; }
     public LocalDateTime getDate() { return createdAt; }
     public BigDecimal getAmount() { return amount; }
-    public String getType() { return type; }
     public String getDescription() { return description; }
     public String getSourceAccountNumber() { return sourceAccountNumber; }
     public String getSourceUserEmail() { return sourceUserEmail; }
@@ -59,7 +56,6 @@ public class TransferResponse {
     public void setId(UUID value) { this.id = value; }
     public void setDate(LocalDateTime value) { this.createdAt = value; }
     public void setAmount(BigDecimal value) { this.amount = value; }
-    public void setType(String value) { this.type = value; }
     public void setDescription(String value) { this.description = value; }
     public void setSourceAccountNumber(String value) { this.sourceAccountNumber = value; }
     public void setSourceUserEmail(String value) { this.sourceUserEmail = value; }

@@ -29,10 +29,6 @@ public class TransferService {
     @Autowired
     AccountRepository accountRepository;
 
-    public List<Transfer> getTransferTypes() {
-        return transferRepository.findAll();
-    }
-
     public String validate(TransferRequest request, UUID userId) {
         Account sourceAccount = getSourceAccountFromRequest(request, userId);
         Account targetAccount = getTargetAccountFromRequest(request);
@@ -46,6 +42,9 @@ public class TransferService {
         // Ensure source and target accounts are different
         if (sourceAccount.getId().equals(targetAccount.getId())) {
             return "Source and target accounts must be different";
+        }
+        if (sourceAccount.getCurrency() != targetAccount.getCurrency()) {
+            return "Source and target accounts must be in the same currency";
         }
         // Ensure amount is positive
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
@@ -68,7 +67,6 @@ public class TransferService {
                 .sourceAccount(sourceAccount)
                 .targetAccount(targetAccount)
                 .amount(amount)
-                .type("TRANSFER")
                 .description(request.getDescription())
                 .build();
         transferRepository.save(transfer);

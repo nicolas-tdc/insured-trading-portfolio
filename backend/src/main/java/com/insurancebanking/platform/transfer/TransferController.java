@@ -37,36 +37,42 @@ public class TransferController {
     @Autowired
     TransferService transferService;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TransferController.class);
+
     @PostMapping(value="", produces="application/json")
-    public ResponseEntity<?> transfer(
+    public ResponseEntity<?> createTransfer(
         @RequestBody @NonNull TransferRequest request,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        String errorMessage = "Error creating transfer";
         try {
             // Validate transfer
             String transferError = transferService.validate(request, userDetails.getId());
             if (transferError != null) {
                 return ResponseEntity.badRequest()
-                    .body(new MessageResponse(transferError));
+                    .body(new MessageResponse(errorMessage + ": " + transferError));
             }
 
             // Create transfer
-            Transfer newTransfer = transferService.create(request, userDetails.getId());
+            Transfer transfer = transferService.create(request, userDetails.getId());
 
             // Create new transfer URI
-            URI location = new URI("/api/transfer/" + newTransfer.getId());
+            URI location = new URI("/api/transfer/" + transfer.getId());
 
             return ResponseEntity.created(location)
-                .body(TransferResponse.from(newTransfer));
+                .body(TransferResponse.from(transfer));
 
         } catch (URISyntaxException e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Invalid transfer URI:" + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error during transfer: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
@@ -74,12 +80,14 @@ public class TransferController {
     public ResponseEntity<?> getAccountTransfers(
         @PathVariable @NonNull UUID accountId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        String errorMessage = "Error getting account transfers";
         try {
             // Check if account exists
             Account account = accountService.getUserAccountById(accountId, userDetails.getId());
             if (account == null) {
                 return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Invalid account id"));
+                    .body(new MessageResponse(errorMessage + ": Account not found"));
             }
 
             // Get transfers responses
@@ -91,21 +99,10 @@ public class TransferController {
             return ResponseEntity.ok(responses);
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting account transfers: " + e.getMessage()));
-        }
-    }
-
-    @GetMapping("/types")
-    public ResponseEntity<?> getPolicyTypes() {
-        try {
-            return ResponseEntity.ok(transferService.getTransferTypes());
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting policy types: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 }
