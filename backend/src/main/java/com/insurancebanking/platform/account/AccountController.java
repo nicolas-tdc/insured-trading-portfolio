@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,7 @@ import com.insurancebanking.platform.account.dto.AccountRequest;
 import com.insurancebanking.platform.account.dto.AccountResponse;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.repository.AccountRepository;
+import com.insurancebanking.platform.auth.security.AuthEntryPointJwt;
 import com.insurancebanking.platform.auth.security.UserDetailsImpl;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 
@@ -36,36 +39,44 @@ public class AccountController {
     @Autowired
     AccountRepository accountRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+
     // Create account
     @PostMapping(value="", produces="application/json")
     public ResponseEntity<?> createAccount(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody @NonNull AccountRequest request) {
+
+        String errorMessage = "Error creating account";
         try {
             // Create account
-            Account newAccount = accountService.create(request, userDetails.getId());
+            Account account = accountService.create(request, userDetails.getId());
 
             // Create new account URI
-            URI location = new URI("/api/account/" + newAccount.getId());
+            URI location = new URI("/api/account/" + account.getId());
 
             return ResponseEntity.created(location)
-                .body(AccountResponse.from(newAccount));
+                .body(AccountResponse.from(account));
 
         } catch (URISyntaxException e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Invalid account URI:" + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error creating account:" + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
     @GetMapping(value="", produces="application/json")
     public ResponseEntity<?> getUserAccounts(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        String errorMessage = "Error getting user accounts";
         try {
             // Get user's accounts
             List<Account> accounts = accountRepository.findByUser_Id(userDetails.getId());
@@ -78,9 +89,10 @@ public class AccountController {
             return ResponseEntity.ok(responses);
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting user accounts: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
@@ -88,34 +100,41 @@ public class AccountController {
     public ResponseEntity<?> getAccount(
         @PathVariable @NonNull UUID accountId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        String errorMessage = "Error getting account";
         try {
             // Check if account exists
             Account account = accountService.getUserAccountById(
                 accountId, userDetails.getId());
             if (account == null) {
+                logger.error("{}", errorMessage);
 
                 return ResponseEntity.badRequest()
-                    .body(List.of("Invalid account id"));
+                    .body(new MessageResponse(errorMessage + ": Account not found"));
             }
 
             return ResponseEntity.ok(AccountResponse.from(account));
 
         } catch (Exception e) {
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting account: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 
     @GetMapping(value="/type", produces="application/json")
     public ResponseEntity<?> getAccountTypes() {
+
+        String errorMessage = "Error getting account types";
         try {
+
             return ResponseEntity.ok(accountService.getAccountTypes());
 
         } catch (Exception e) {
 
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error getting account types: " + e.getMessage()));
+                .body(new MessageResponse(errorMessage));
         }
     }
 }

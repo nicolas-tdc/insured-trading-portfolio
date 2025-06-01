@@ -17,6 +17,8 @@ import com.insurancebanking.platform.transfer.model.Transfer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -43,9 +45,7 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name = "account_type_id", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     @ManyToOne(fetch = FetchType.EAGER)

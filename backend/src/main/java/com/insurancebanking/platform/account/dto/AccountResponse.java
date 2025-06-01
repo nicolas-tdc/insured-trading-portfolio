@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.account.model.AccountType;
 
 public class AccountResponse {
 
@@ -14,7 +15,7 @@ public class AccountResponse {
     // Properties
 
     private UUID id;
-    private String accountType;
+    private AccountType accountType;
     private String currency;
     private String accountNumber;
     private BigDecimal balance;
@@ -26,7 +27,7 @@ public class AccountResponse {
         AccountResponse response = new AccountResponse();
 
         response.setId(account.getId());
-        response.setAccountType(account.getAccountType().getName());
+        response.setAccountType(account.getAccountType());
         response.setCurrency(account.getCurrency().getName());
         response.setAccountNumber(account.getAccountNumber());
         response.setBalance(account.getBalance());
@@ -38,7 +39,7 @@ public class AccountResponse {
     // Getters
 
     public UUID getId() { return id; }
-    public String getAccountType() { return accountType; }
+    public AccountType getAccountType() { return accountType; }
     public String getCurrency() { return currency; }
     public BigDecimal getBalance() { return balance; }
     public String getAccountNumber() { return accountNumber; }
@@ -48,7 +49,7 @@ public class AccountResponse {
 
     public void setId(UUID value) { this.id = value; }
     public void setAccountNumber(String value) { this.accountNumber = value; }
-    public void setAccountType(String value) { this.accountType = value; }
+    public void setAccountType(AccountType value) { this.accountType = value; }
     public void setBalance(BigDecimal value) { this.balance = value; }
     public void setCurrency(String value) { this.currency = value; }
     public void setStatus(String value) { this.status = value; }

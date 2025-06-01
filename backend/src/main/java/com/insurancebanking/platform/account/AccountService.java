@@ -1,6 +1,7 @@
 package com.insurancebanking.platform.account;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +14,6 @@ import com.insurancebanking.platform.account.dto.AccountRequest;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.model.AccountType;
 import com.insurancebanking.platform.account.repository.AccountRepository;
-import com.insurancebanking.platform.account.repository.AccountTypeRepository;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 import com.insurancebanking.platform.currency.model.Currency;
@@ -29,16 +29,13 @@ public class AccountService {
     AccountRepository accountRepository;
 
     @Autowired
-    AccountTypeRepository accountTypeRepository;
-
-    @Autowired
     CurrencyRepository currencyRepository;
 
     @Autowired
     UserRepository userRepository;
 
     public List<AccountType> getAccountTypes() {
-        return accountTypeRepository.findAll();
+        return Arrays.stream(AccountType.values()).toList();
     }
 
     public Account getUserAccountById(UUID accountId, UUID userId) {
@@ -56,9 +53,6 @@ public class AccountService {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        AccountType accountType = accountTypeRepository.findById(request.getAccountTypeId())
-            .orElseThrow(() -> new EntityNotFoundException("Account type not found"));
-
         Currency currency = currencyRepository.findById(request.getCurrencyId())
             .orElseThrow(() -> new EntityNotFoundException("Currency not found"));
 
@@ -68,7 +62,7 @@ public class AccountService {
                             .toString()
                             .substring(0, 12)
                             .toUpperCase())
-            .accountType(accountType)
+            .accountType(request.getAccountType())
             .currency(currency)
             .balance(BigDecimal.valueOf(0.0))
             .build();
