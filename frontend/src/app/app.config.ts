@@ -7,14 +7,20 @@ import {
 } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { JwtInterceptor } from './core/interceptor/jwt.interceptor';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { ErrorInterceptor } from './core/api/interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
     provideRouter(routes),
