@@ -1,56 +1,62 @@
-import { Component, signal } from '@angular/core';
-import { ListCardPoliciesComponent } from '../../core/policy/component/card-list-policies/card-list-policies.component';
-import { ListCardAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
-import { Account } from '../../core/account/model';
-import { Policy } from '../../core/policy/model';
-import { AccountService } from '../../core/account/account.service';
-import { PolicyService } from '../../core/policy/policy.service';
+import { Component } from '@angular/core';
+import { CardListPoliciesComponent } from '../../core/policy/component/card-list-policies/card-list-policies.component';
+import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
+import { AccountService } from '../../core/account/account.service';
+import { PolicyService } from '../../core/policy/policy.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    ListCardAccountsComponent,
-    ListCardPoliciesComponent,
-    FormCreateAccountComponent,
-    FormCreatePolicyComponent,
+    CardListAccountsComponent,
+    CardListPoliciesComponent,
+    MatButtonModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
 
-  // Properties, Accessors
+  // Properties
 
-  accounts = signal<Account[]>([]);
-
-  policies = signal<Policy[]>([]);
+  get accounts() { return this.accountService.userAccounts(); }
+  get policies() { return this.policyService.userPolicies(); }
 
   // Lifecycle
 
   constructor(
     private accountService: AccountService,
-    private policyService: PolicyService
+    private policyService: PolicyService,
+    private dialog: MatDialog,
   ) { }
 
-  ngOnInit(): void {
-    this.loadAccounts();
-    this.loadPolicies();
-  }
+  // Form dialogs
 
-  // API
+  openCreateAccountFormDialog(): void {
+    const dialogRef = this.dialog.open(FormCreateAccountComponent, {
+      width: '400px',
+    });
 
-  loadAccounts(): void {
-      this.accountService.getList().subscribe(data => {
-        this.accounts.set(data);
-      });
-    }
-
-  loadPolicies(): void {
-    this.policyService.getList().subscribe(data => {
-      this.policies.set(data);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'completed') {
+        this.accountService.reloadUserAccounts();
+      }
     });
   }
 
+  openCreatePolicyFormDialog(): void {
+    const dialogRef = this.dialog.open(FormCreatePolicyComponent, {
+      width: '400px',
+      data: this.accounts
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'completed') {
+        this.policyService.reloadUserPolicies();
+      }
+    });
+  }
 }
