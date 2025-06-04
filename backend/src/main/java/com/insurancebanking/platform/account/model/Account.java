@@ -49,6 +49,7 @@ public class Account extends BaseEntity {
     private AccountType accountType;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private AccountStatus accountStatus = AccountStatus.PENDING;
 
     @ManyToOne(fetch = FetchType.EAGER)
