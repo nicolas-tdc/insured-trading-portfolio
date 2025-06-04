@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@use './styles/variables' as *;
+@use './styles/typography' as *;
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: (
+      plain-family: $font-plain-family,
+      brand-family: $font-brand-family,
+      bold-weight: $bold-weight,
+      medium-weight: $medium-weight,
+      regular-weight: $regular-weight,
+    ),
+    density: $density,
+  ));
+}
