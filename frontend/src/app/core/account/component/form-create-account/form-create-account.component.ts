@@ -1,78 +1,80 @@
-import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Account, AccountRequest } from '../../model';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Currency } from '../../../currency/model';
 import { AccountService } from '../../account.service';
 import { CurrencyService } from '../../../currency/currency.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form-create-account',
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButton,
   ],
   templateUrl: './form-create-account.component.html',
   styleUrl: './form-create-account.component.scss'
 })
-export class FormCreateAccountComponent {
+export class FormCreateAccountComponent implements OnInit {
 
-  // Properties, Accessors
+  // Properties
 
-  @Input() accounts: Account[] = [];
-
-  // Account
-  private _account: AccountRequest = {
-    accountType: '',
-    currencyId: '',
-  };
-
-  get accountType() { return this._account.accountType; }
-  set accountType(value: string) { this._account.accountType = value; }
-
-  get currencyId() { return this._account.currencyId; }
-  set currencyId(value: string) { this._account.currencyId = value; }
-
-  // Account Types
-  private _accountTypes: string[] = [];
-  get accountTypes() { return this._accountTypes; }
-
-  // Currencies
-  private _currencies: Currency[] = [];
-  get currencies() { return this._currencies; }
+  accountForm!: FormGroup;
+  accountTypes: string[] = [];
+  currencies: Currency[] = [];
 
   // Lifecycle
 
   constructor(
-    private router: Router,
     private accountService: AccountService,
     private currencyService: CurrencyService,
+    public dialogRef: MatDialogRef<FormCreateAccountComponent>,
   ) { }
+
 
   ngOnInit(): void {
     this.loadAccountTypes();
     this.loadCurrencies();
+
+    this.accountForm = new FormGroup({
+      accountType: new FormControl('', [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      currencyId: new FormControl('', [
+        Validators.required,
+      ]),
+    });
   }
 
   // API
 
   createAccount(): void {
-    this.accountService.create(this._account).subscribe((data) => {
-      this.accounts.push(data);
-      this.router.navigate(['/dashboard']);
+    if (this.accountForm.invalid) return;
+
+    this.accountService.create(this.accountForm.value).subscribe(() => {
+      this.accountService.reloadUserAccounts();
+      this.dialogRef.close('completed');
     });
   }
 
   loadAccountTypes(): void {
     this.accountService.getTypes().subscribe(data => {
-      this._accountTypes = data;
+      this.accountTypes = data;
     });
   }
 
   loadCurrencies(): void {
     this.currencyService.getList().subscribe(data => {
-      this._currencies = data;
+      this.currencies = data;
     });
   }
 }
