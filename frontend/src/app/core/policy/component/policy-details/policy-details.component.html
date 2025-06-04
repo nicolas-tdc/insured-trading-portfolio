@@ -1,7 +1,18 @@
-<h4>Policy Details</h4>
+<mat-card *ngIf="policy()">
 
-<p>Type: {{ policy?.policyType }}</p>
-<p>Coverage: {{ policy?.coverageAmount }}</p>
-<p>Premium: {{ policy?.premium }} / month</p>
-<p>Status: {{ policy?.status }}</p>
-<p>Account: {{ policy?.accountNumber }}</p>
+    <mat-card-header *ngIf="policy()?.policyType">
+        <mat-card-title>{{ policy()?.policyType }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-chip-set>
+        <mat-chip *ngIf="policy()?.policyStatus">
+            {{ policy()?.policyStatus }}</mat-chip>
+    </mat-chip-set>
+
+    <mat-card-content>
+        <p>Coverage: {{ policy()?.coverageAmount }}</p>
+        <p>Premium: {{ policy()?.premium }}</p>
+        <p>Account: {{ policy()?.accountNumber }}</p>
+    </mat-card-content>
+
+</mat-card>
