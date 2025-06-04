@@ -4,5 +4,5 @@ export interface Account {
   accountType: string;
   balance: number;
   currency: string;
-  status: string;
+  accountStatus: string;
 }
