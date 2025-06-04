@@ -27,12 +27,13 @@ WHERE (u.email = 'admin@platform.com' AND r.name = 'ROLE_ADMIN')
    OR (u.email = 'jane@customer.com' AND r.name = 'ROLE_CUSTOMER');
 
 -- Create accounts for each user
-INSERT INTO accounts (user_id, account_number, balance, account_type, currency_id)
+INSERT INTO accounts (user_id, account_number, balance, account_type, account_status, currency_id)
 SELECT 
   u.id, 
-  substring(uuid_generate_v4()::text, 1, 12), 
+  upper(substring(uuid_generate_v4()::text, 1, 12)), 
   8000.00,
   'CHECKING',
+  'ACTIVE',
   currency.id
 FROM users u
 JOIN currencies currency ON currency.name = 'EUR'

@@ -48,11 +48,11 @@ DROP TABLE IF EXISTS accounts CASCADE;
 CREATE TABLE IF NOT EXISTS accounts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,
+    account_status VARCHAR(50) NOT NULL,
     account_type VARCHAR(50) NOT NULL,
     currency_id UUID NOT NULL,
     account_number VARCHAR(30) UNIQUE NOT NULL,
     balance NUMERIC(15, 2) DEFAULT 0.00,
-    status VARCHAR(20) DEFAULT 'active',
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(id),
@@ -68,6 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_accounts_account_number ON accounts(account_numbe
 DROP TABLE IF EXISTS transfers CASCADE;
 CREATE TABLE IF NOT EXISTS transfers (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    transfer_status VARCHAR(50) NOT NULL,
     source_account_id UUID NOT NULL,
     target_account_id UUID NOT NULL,
     amount NUMERIC(15, 2) NOT NULL,
@@ -88,13 +89,13 @@ DROP TABLE IF EXISTS policies CASCADE;
 CREATE TABLE IF NOT EXISTS policies (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,
+    policy_status VARCHAR(50) NOT NULL,
     policy_type VARCHAR(50) NOT NULL,
     policy_number VARCHAR(30) UNIQUE NOT NULL,
     coverage_amount NUMERIC(15, 2),
     premium NUMERIC(10, 2) NOT NULL,
     start_date DATE,
     end_date DATE,
-    status VARCHAR(20) DEFAULT 'active',
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(id)
