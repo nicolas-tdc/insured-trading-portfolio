@@ -15,6 +15,8 @@ import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
 import com.insurancebanking.platform.transfer.model.Transfer;
 import com.insurancebanking.platform.transfer.repository.TransferRepository;
+import com.insurancebanking.platform.account.model.AccountStatus;
+import com.insurancebanking.platform.transfer.model.TransferStatus;
 
 @Service
 @Transactional
@@ -39,12 +41,11 @@ public class TransferService {
         if (targetAccount == null) {
             return "Invalid target account";
         }
-        // Ensure source and target accounts are different
-        if (sourceAccount.getId().equals(targetAccount.getId())) {
-            return "Source and target accounts must be different";
+        if (sourceAccount.getAccountStatus() != AccountStatus.ACTIVE) {
+                return "Source account is not active";
         }
-        if (sourceAccount.getCurrency() != targetAccount.getCurrency()) {
-            return "Source and target accounts must be in the same currency";
+        if (targetAccount.getAccountStatus() != AccountStatus.ACTIVE) {
+            return "Target account is not active";
         }
         // Ensure amount is positive
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
@@ -52,6 +53,13 @@ public class TransferService {
         }
         if (sourceAccount.getBalance().compareTo(request.getAmount()) < 0) {
             return "Insufficient balance";
+        }
+        // Ensure source and target accounts are different
+        if (sourceAccount.getId().equals(targetAccount.getId())) {
+            return "Source and target accounts must be different";
+        }
+        if (sourceAccount.getCurrency() != targetAccount.getCurrency()) {
+            return "Source and target accounts must be in the same currency";
         }
         
         return null;
@@ -64,6 +72,7 @@ public class TransferService {
 
         // Create and save transfer
         Transfer transfer = Transfer.builder()
+                .transferStatus(TransferStatus.PENDING)
                 .sourceAccount(sourceAccount)
                 .targetAccount(targetAccount)
                 .amount(amount)
@@ -73,6 +82,9 @@ public class TransferService {
 
         updateAccounts(sourceAccount, targetAccount, amount);
 
+        transfer.setTransferStatus(TransferStatus.COMPLETED);
+        transferRepository.save(transfer);
+        
         return transfer;
     }
 

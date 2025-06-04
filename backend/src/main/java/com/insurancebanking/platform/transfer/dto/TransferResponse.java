@@ -29,7 +29,7 @@ public class TransferResponse {
         TransferResponse response = new TransferResponse();
 
         response.setId(transfer.getId());
-        response.setDate(transfer.getCreatedAt());
+        response.setcreatedAt(transfer.getCreatedAt());
         response.setAmount(transfer.getAmount());
         response.setDescription(transfer.getDescription());
         response.setSourceAccountNumber(transfer.getSourceAccount().getAccountNumber());
@@ -43,7 +43,7 @@ public class TransferResponse {
     // Getters
 
     public UUID getId() { return id; }
-    public LocalDateTime getDate() { return createdAt; }
+    public LocalDateTime getcreatedAt() { return createdAt; }
     public BigDecimal getAmount() { return amount; }
     public String getDescription() { return description; }
     public String getSourceAccountNumber() { return sourceAccountNumber; }
@@ -54,7 +54,7 @@ public class TransferResponse {
     // Setters
 
     public void setId(UUID value) { this.id = value; }
-    public void setDate(LocalDateTime value) { this.createdAt = value; }
+    public void setcreatedAt(LocalDateTime value) { this.createdAt = value; }
     public void setAmount(BigDecimal value) { this.amount = value; }
     public void setDescription(String value) { this.description = value; }
     public void setSourceAccountNumber(String value) { this.sourceAccountNumber = value; }

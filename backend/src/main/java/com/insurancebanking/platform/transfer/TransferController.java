@@ -90,6 +90,11 @@ public class TransferController {
                     .body(new MessageResponse(errorMessage + ": Account not found"));
             }
 
+            if (!account.getUser().getId().equals(userDetails.getId())) {
+                return ResponseEntity.badRequest()
+                    .body(new MessageResponse(errorMessage + ": User account ID does not match"));
+            }
+
             // Get transfers responses
             List<TransferResponse> responses = transferService.getAccountTransfers(account)
                 .stream()

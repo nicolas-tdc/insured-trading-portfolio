@@ -2,12 +2,10 @@ package com.insurancebanking.platform.transfer.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.insurancebanking.platform.account.model.Account;
-import com.insurancebanking.platform.core.model.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,11 +13,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.core.model.BaseEntity;
+import com.insurancebanking.platform.transfer.model.TransferStatus;
 
 @Entity
 @Table(name = "transfers")
@@ -42,6 +47,9 @@ public class Transfer extends BaseEntity {
     @JoinColumn(name = "target_account_id", nullable = false)
     private Account targetAccount;
 
+    @Enumerated(EnumType.STRING)
+    private TransferStatus transferStatus = TransferStatus.PENDING;
+
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;
 
@@ -52,8 +60,9 @@ public class Transfer extends BaseEntity {
     public String toString() {
         return "Transfer{" + 
                 "id=" + id +
-                "sourceAccount" + sourceAccount.getAccountNumber() +
-                "targetAccount" + targetAccount.getAccountNumber() +
+                ", transferStatus=" + transferStatus +
+                ", sourceAccount" + sourceAccount.getAccountNumber() +
+                ", targetAccount" + targetAccount.getAccountNumber() +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
                 '}';
