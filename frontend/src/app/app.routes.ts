@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
-
-import { AuthGuard } from './core/auth/auth.guard';
-
+import { AuthGuard } from './core/auth/guard/auth.guard';
+import { NoAuthGuard } from './core/auth/guard/no-auth.guard';
 import { ShellComponent } from './features/layout/shell/shell.component';
 
 export const routes: Routes = [
@@ -13,6 +12,7 @@ export const routes: Routes = [
         path: 'authentication',
         loadComponent: () => import('./features/authentication/authentication.component')
           .then(m => m.AuthenticationComponent),
+        canActivate: [NoAuthGuard],
       },
       {
         path: '',
@@ -26,16 +26,16 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'accounts/:accountId',
+        path: 'account/:accountId',
         loadComponent: () => import('./features/account-page/account-page.component')
           .then(m => m.AccountPageComponent),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
-        path: 'policies/:policyId',
+        path: 'policy/:policyId',
         loadComponent: () => import('./features/policy-page/policy-page.component')
           .then(m => m.PolicyPageComponent),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       }
     ]
   }
