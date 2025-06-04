@@ -1,22 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CardItemAccountComponent } from '../card-item-account/card-item-account.component';
 import { Account } from '../../model';
-import { AccountService } from '../../account.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-card-list-accounts',
   imports: [
     CommonModule,
+    MatCardModule,
+    MatGridListModule,
     CardItemAccountComponent,
   ],
   templateUrl: './card-list-accounts.component.html',
   styleUrl: './card-list-accounts.component.scss'
 })
-export class ListCardAccountsComponent {
+export class CardListAccountsComponent {
 
-  // Properties, Accessors
+  // Properties
 
-  // Accounts
-  @Input() accounts: Account[] = [];
+  accounts = input<Account[] | null>()
 }

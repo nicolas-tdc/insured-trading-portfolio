@@ -1,9 +1,13 @@
-<h3>Accounts</h3>
+<ng-container *ngIf="accounts()">
 
-<div *ngIf="accounts.length === 0">
-  You have no active accounts.
-</div>
+  <div *ngIf="accounts()?.length === 0">
+    You have no accounts.
+  </div>
 
-<div *ngFor="let account of accounts">
-  <app-card-item-account [account]="account"></app-card-item-account>
-</div>
+  <mat-grid-list cols="4" rowHeight="3:2" gutterSize="10px">
+    <mat-grid-tile *ngFor="let account of accounts()">
+      <app-card-item-account [account]="account"></app-card-item-account>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</ng-container>
