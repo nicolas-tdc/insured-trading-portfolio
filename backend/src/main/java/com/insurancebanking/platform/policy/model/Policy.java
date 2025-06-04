@@ -43,6 +43,7 @@ public class Policy extends BaseEntity {
     private PolicyType policyType;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private PolicyStatus policyStatus = PolicyStatus.PENDING;
 
     @Column(name = "policy_number", unique = true, nullable = false)

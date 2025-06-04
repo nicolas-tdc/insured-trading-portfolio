@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.core.model.BaseEntity;
-import com.insurancebanking.platform.transfer.model.TransferStatus;
 
 @Entity
 @Table(name = "transfers")
@@ -48,6 +47,7 @@ public class Transfer extends BaseEntity {
     private Account targetAccount;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private TransferStatus transferStatus = TransferStatus.PENDING;
 
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
