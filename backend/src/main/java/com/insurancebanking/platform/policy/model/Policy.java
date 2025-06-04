@@ -42,6 +42,9 @@ public class Policy extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PolicyType policyType;
 
+    @Enumerated(EnumType.STRING)
+    private PolicyStatus policyStatus = PolicyStatus.PENDING;
+
     @Column(name = "policy_number", unique = true, nullable = false)
     private String policyNumber;
 
@@ -57,7 +60,19 @@ public class Policy extends BaseEntity {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @Column(name = "status")
-    @Builder.Default
-    private String status = "active";
+    @Override
+    public String toString() {
+        return "Policy{" +
+                "id=" + id +
+                ", user=" + user +
+                ", account=" + account +
+                ", policyType=" + policyType +
+                ", policyStatus=" + policyStatus +
+                ", policyNumber='" + policyNumber + '\'' +
+                ", coverageAmount=" + coverageAmount +
+                ", premium=" + premium +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

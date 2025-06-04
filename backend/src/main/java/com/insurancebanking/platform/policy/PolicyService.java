@@ -1,13 +1,9 @@
 package com.insurancebanking.platform.policy;
 
-import com.insurancebanking.platform.account.AccountService;
-import com.insurancebanking.platform.account.model.Account;
-import com.insurancebanking.platform.auth.model.User;
-import com.insurancebanking.platform.auth.repository.UserRepository;
-import com.insurancebanking.platform.policy.dto.PolicyRequest;
-import com.insurancebanking.platform.policy.model.Policy;
-import com.insurancebanking.platform.policy.model.PolicyType;
-import com.insurancebanking.platform.policy.repository.PolicyRepository;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import com.insurancebanking.platform.account.AccountService;
+import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.auth.model.User;
+import com.insurancebanking.platform.auth.repository.UserRepository;
+import com.insurancebanking.platform.policy.dto.PolicyRequest;
+import com.insurancebanking.platform.policy.model.Policy;
+import com.insurancebanking.platform.policy.model.PolicyType;
+import com.insurancebanking.platform.policy.model.PolicyStatus;
+import com.insurancebanking.platform.policy.repository.PolicyRepository;
 
 @Service
 @Transactional
@@ -60,13 +61,13 @@ public class PolicyService {
         // Create policy
         Policy policy = Policy.builder()
             .user(user)
-            .policyNumber(UUID.randomUUID().toString().substring(0, 9).toUpperCase())
+            .policyStatus(PolicyStatus.PENDING)
+            .policyNumber(UUID.randomUUID().toString().substring(0, 8).toUpperCase())
             .policyType(policyType)
             .coverageAmount(coverageAmount)
             .premium(calculatePremium(policyType, coverageAmount))
             .startDate(LocalDateTime.now())
             .endDate(LocalDateTime.now().plusYears(1))
-            .status("pending")
             .account(account)
             .build();
 
