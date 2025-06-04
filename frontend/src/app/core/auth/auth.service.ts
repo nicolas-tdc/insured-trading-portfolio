@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, resource } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginRequest, SignupRequest, JwtResponse, User } from './model';
+import { LoginRequest, RegisterRequest, JwtResponse, User } from './model';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -9,10 +9,22 @@ export class AuthService {
   // Properties
 
   private apiUrl = '/api/auth';
-  // Signal for logged-in user
 
-  private _authUser = signal<User | null>(this.getUser());
-  public readonly authUser = this._authUser.asReadonly();
+  private authUserResource = this.createAuthUserResource();
+  public authUser = computed(() => this.authUserResource?.value() ?? null);
+
+  // Resources
+
+  createAuthUserResource() {
+    return resource({
+      request: () => ({ user: this.getUser() }),
+      loader: async ({ request }) => {
+        if (!request.user) return Promise.resolve(null);
+
+        return request.user;
+      },
+    });
+  }
 
   // Lifecycle
 
@@ -22,8 +34,8 @@ export class AuthService {
 
   // API
 
-  public register(signupRequest: SignupRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, signupRequest);
+  public register(registerRequest: RegisterRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signup`, registerRequest);
   }
 
   public login(credentials: LoginRequest): Observable<JwtResponse> {
@@ -40,8 +52,10 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem('auth-token');
     localStorage.removeItem('user');
-    this._authUser.set(null);
+
+    this.authUserResource.set(null);
   }
+
 
   public saveToken(token: string): void {
     localStorage.setItem('auth-token', token);
@@ -53,7 +67,8 @@ export class AuthService {
 
   public saveUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
-    this._authUser.set(user);
+
+    this.authUserResource.set(user);
   }
 
   private getUser(): User | null {

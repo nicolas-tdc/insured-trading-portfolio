@@ -1,17 +1,56 @@
-<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="login()"
+>
 
   <h3>Login</h3>
 
-  <div class="form-group">
-    <label>Email</label>
-    <input type="email" [(ngModel)]="email" name="email" required />
-  </div>
+  <p style="font-style: italic;">(*) Required fields</p>
 
-  <div class="form-group">
-    <label>Password</label>
-    <input type="password" [(ngModel)]="password" name="password" required />
-  </div>
+  <mat-form-field>
 
-  <button type="submit">Login</button>
+    <mat-label>Email</mat-label>
+
+    <input matInput type="email" formControlName="email">
+
+    <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+      Email is required
+    </mat-error>
+    <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+      Email is invalid
+    </mat-error>
+
+  </mat-form-field>
+
+  <mat-form-field>
+
+    <mat-label>Password</mat-label>
+
+    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+
+    <button mat-icon-button
+    matSuffix
+    (click)="hidePassword = !hidePassword"
+    [attr.aria-label]="'Hide password'"
+    type="button">
+      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+
+    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+      Password is required
+    </mat-error>
+    <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+      Password must be at least 8 characters
+    </mat-error>
+    <mat-error *ngIf="loginForm.get('password')?.hasError('maxlength')">
+      Password must be at most 32 characters
+    </mat-error>
+    <mat-hint align="end">4-32 characters</mat-hint>
+
+  </mat-form-field>
+
+  <button mat-flat-button [disabled]="!loginForm.valid" type="submit">
+    Login
+  </button>
 
 </form>

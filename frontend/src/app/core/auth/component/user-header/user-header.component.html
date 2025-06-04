@@ -1,9 +1,8 @@
-<div *ngIf="authUser">
+<div class="app-user-header">
+    <span class="user-email">{{ authUser()?.email }}</span>
 
-    <!-- Link to user details -->
-    <p>{{ authUser.email }}</p> 
-
-    <!-- Logout button -->
-    <app-btn-logout-auth></app-btn-logout-auth>
-
+    <button mat-flat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+    </button>
 </div>

@@ -1,0 +1,78 @@
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="register()"
+>
+
+  <h3>Register</h3>
+
+  <p style="font-style: italic;">(*) Required fields</p>
+
+  <mat-form-field>
+    <mat-label>First Name</mat-label>
+    <input matInput type="text" formControlName="firstName">
+    <mat-error *ngIf="registerForm.get('firstName')?.hasError('required')">
+      First Name is required
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('firstName')?.hasError('minlength')">
+      First Name must be at least 2 characters
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('firstName')?.hasError('maxlength')">
+      First Name must be at most 255 characters
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Last Name</mat-label>
+    <input matInput type="text" formControlName="lastName">
+    <mat-error *ngIf="registerForm.get('lastName')?.hasError('required')">
+      Last Name is required
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('lastName')?.hasError('minlength')">
+      Last Name must be at least 2 characters
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('lastName')?.hasError('maxlength')">
+      Last Name must be at most 255 characters
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="email">
+    <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+      Email is required
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+      Email is invalid
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+
+    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+
+    <button mat-icon-button
+    matSuffix
+    (click)="hidePassword = !hidePassword"
+    [attr.aria-label]="'Hide password'"
+    type="button">
+      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+
+    <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+      Password is required
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+      Password must be at least 8 characters
+    </mat-error>
+    <mat-error *ngIf="registerForm.get('password')?.hasError('maxlength')">
+      Password must be at most 32 characters
+    </mat-error>
+    <mat-hint align="end">4-32 characters</mat-hint>
+  </mat-form-field>
+
+  <button mat-flat-button [disabled]="!registerForm.valid" type="submit">
+    Register
+  </button>
+
+</form>

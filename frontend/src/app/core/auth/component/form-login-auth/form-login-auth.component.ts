@@ -1,34 +1,33 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { LoginRequest } from '../../model';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
+import { MatButton } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-form-login-auth',
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatButton,
+    MatInputModule,
+    MatIcon,
   ],
   templateUrl: './form-login-auth.component.html',
   styleUrls: ['./form-login-auth.component.scss'],
 })
-export class LoginComponent {
+export class FormLoginAuthComponent implements OnInit {
 
-  // Properties, Accessors
+  // Properties
 
-  // Form
-  private _form: LoginRequest = {
-    email: '',
-    password: '',
-  };
+  public loginForm!: FormGroup;
 
-  get email() { return this._form.email; }
-  set email(value: string) { this._form.email = value; }
-
-  get password() { return this._form.password; }
-  set password(value: string) { this._form.password = value; }
+  public hidePassword = true;
 
   // Lifecycle
 
@@ -37,10 +36,25 @@ export class LoginComponent {
     private authService: AuthService,
   ) { }
 
+  ngOnInit(): void {
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(255),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(32),
+      ]),
+    });
+  }
+
   // API
 
-  onSubmit(): void {
-    this.authService.login(this._form).subscribe({
+  login(): void {
+    this.authService.login(this.loginForm.value).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
