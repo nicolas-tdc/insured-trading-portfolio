@@ -1,2 +1,34 @@
-<app-account-details [account]="account"></app-account-details>
-<a routerLink="/accounts/{{ account.id }}">View Details</a>
+<mat-card *ngIf="account()" class="card-item-account">
+
+    <mat-card-header>
+        <button mat-raised-button
+            matTooltip="Copy Account Number to clipboard"
+            aria-label="Button to copy Account Number to clipboard"
+            (click)="copyAccountNumber()"
+            (mouseleave)="resetTooltip()">
+            <mat-icon>content_copy</mat-icon>
+        </button>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-card-title>{{ account()?.accountNumber }}</mat-card-title>
+
+        <mat-chip-set>
+            <mat-chip>{{ account()?.accountType }}</mat-chip>
+            <mat-chip>{{ account()?.accountStatus }}</mat-chip>
+        </mat-chip-set>
+        <p>Balance: {{ account()?.balance }} {{ account()?.currency }}</p>
+        
+    </mat-card-content>
+
+    <mat-card-footer>
+        <mat-card-actions>
+            <button mat-flat-button
+            [disabled]="account()?.accountStatus !== 'ACTIVE'"
+            routerLink="/account/{{ account()?.id }}">
+                View Details
+            </button>
+        </mat-card-actions>
+    </mat-card-footer>
+
+</mat-card>

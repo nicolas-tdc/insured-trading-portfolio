@@ -1,31 +1,51 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Account } from '../../model';
-import { AccountDetailsComponent } from '../account-details/account-details.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-card-item-account',
   imports: [
+    CommonModule,
     RouterLink,
-    AccountDetailsComponent,
+    MatCardModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './card-item-account.component.html',
   styleUrl: './card-item-account.component.scss'
 })
 export class CardItemAccountComponent {
 
-  // Properties, Accessors
+  // Properties
 
-  // Account
-  private _account: Account = {
-    id: '',
-    accountType: '',
-    currency: '',
-    accountNumber: '',
-    balance: 0,
-    status: '',
-  };
-  get account() { return this._account; }
-  @Input()
-  set account(value: Account) { this._account = value; }
+  account = input<Account | null>();
+
+  tooltipText = 'Copy to clipboard';
+
+  // Lifecycle
+
+  constructor(
+    private clipboard: Clipboard,
+  ) { }
+
+  copyAccountNumber() {
+    const accountNumber = this.account()?.accountNumber;
+    if (!accountNumber) return;
+
+    this.clipboard.copy(accountNumber);
+    this.tooltipText = 'Copied!';
+  }
+
+  resetTooltip() {
+    this.tooltipText = 'Copy to clipboard';
+  }
 }
