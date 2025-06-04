@@ -10,16 +10,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import com.insurancebanking.platform.account.dto.AccountRequest;
 import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.account.model.AccountStatus;
 import com.insurancebanking.platform.account.model.AccountType;
 import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 import com.insurancebanking.platform.currency.model.Currency;
 import com.insurancebanking.platform.currency.repository.CurrencyRepository;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @Transactional
@@ -58,6 +59,7 @@ public class AccountService {
 
         Account account = Account.builder()
             .user(user)
+            .accountStatus(AccountStatus.ACTIVE)
             .accountNumber(UUID.randomUUID()
                             .toString()
                             .substring(0, 12)

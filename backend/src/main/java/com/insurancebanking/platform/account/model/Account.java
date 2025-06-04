@@ -48,6 +48,9 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
+    @Enumerated(EnumType.STRING)
+    private AccountStatus accountStatus = AccountStatus.PENDING;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "currency_id", nullable = false)
@@ -59,10 +62,6 @@ public class Account extends BaseEntity {
     @Column(name = "balance", precision = 19, scale = 4)
     @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
-
-    @Column(name = "status")
-    @Builder.Default
-    private final String status = "active";
 
     @OneToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
@@ -93,7 +92,7 @@ public class Account extends BaseEntity {
                 ", currency='" + currency + "'" +
                 ", accountNumber='" + accountNumber + "'" +
                 ", balance=" + balance +
-                ", status='" + status + "'" +
+                ", accountStatus='" + accountStatus + "'" +
                 ", transfers.size='" + transfers.size() + "'" +
                 ", policies.size='" + policies.size() + "'" +
                 '}';
