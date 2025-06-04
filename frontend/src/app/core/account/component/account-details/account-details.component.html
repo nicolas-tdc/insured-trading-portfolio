@@ -1,5 +1,16 @@
-<h4>Account Details</h4>
+<mat-card>
 
-<p>Account Number: {{ account?.accountNumber }}</p>
-<p>Type: {{ account?.accountType }}</p>
-<p>Balance: {{ account?.balance }} {{ account?.currency }}</p>
+    <mat-card-header>
+        <mat-card-title>Account {{ account()?.accountNumber }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-chip-set>
+        <mat-chip>{{ account()?.accountType }}</mat-chip>
+        <mat-chip>{{ account()?.accountStatus }}</mat-chip>
+    </mat-chip-set>
+
+    <mat-card-content>
+        <p>Balance: {{ account()?.balance }} {{ account()?.currency }}</p>
+    </mat-card-content>
+
+</mat-card>
