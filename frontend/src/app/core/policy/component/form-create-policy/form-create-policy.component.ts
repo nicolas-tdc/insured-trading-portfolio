@@ -1,66 +1,72 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Policy, PolicyRequest } from '../../model';
-import { Account } from '../../../account/model';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PolicyService } from '../../policy.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { Account } from '../../../account/model';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormCreateAccountComponent } from '../../../account/component/form-create-account/form-create-account.component';
 
 @Component({
   selector: 'app-form-create-policy',
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButton,
+    MatInputModule,
+    MatGridListModule,
   ],
   templateUrl: './form-create-policy.component.html',
   styleUrl: './form-create-policy.component.scss'
 })
 export class FormCreatePolicyComponent {
 
-  // Properties, Accessors
+  // Properties
 
-  @Input() policies: Policy[] = [];
+  public policyTypes: string[] = [];
 
-  @Input() accounts: Account[] = [];
+  public policyForm!: FormGroup;
 
-  // Policy
-  private _policy: PolicyRequest = {
-    accountId: '',
-    policyType: '',
-    coverageAmount: 0
-  }
-
-  get policyAccountId() { return this._policy.accountId; }
-  set policyAccountId(value: string) { this._policy.accountId = value; }
-
-  get policyType() { return this._policy.policyType; }
-  set policyType(value: string) { this._policy.policyType = value; }
-
-  get policyCoverageAmount() { return this._policy.coverageAmount; }
-  set policyCoverageAmount(value: number) { this._policy.coverageAmount = value; }
-
-  // Policy Types
-  private _policyTypes: string[] = [];
-  get policyTypes() { return this._policyTypes; }
-  set policyTypes(value: string[]) { this._policyTypes = value; }
 
   // Lifecycle
 
   constructor(
-    private router: Router,
     private policyService: PolicyService,
-  ) {}
+    public dialogRef: MatDialogRef<FormCreateAccountComponent>,
+    @Inject(MAT_DIALOG_DATA) public accounts: Account[]
+  ) { }
 
   ngOnInit(): void {
     this.loadPolicyTypes();
+
+    this.policyForm = new FormGroup({
+      policyType: new FormControl('', [
+        Validators.required,
+      ]),
+      coverageAmount: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      accountId: new FormControl('', [
+        Validators.required,
+      ])
+    });
   }
 
   // API
 
   createPolicy(): void {
-    this.policyService.create(this._policy).subscribe((data) => {
-      this.policies.push(data);
-      this.router.navigate(['/dashboard']);
+    if (this.policyForm.invalid) return;
+
+    this.policyService.create(this.policyForm.value).subscribe(() => {
+      this.policyService.reloadUserPolicies();
+      this.dialogRef.close('completed');
     });
   }
 

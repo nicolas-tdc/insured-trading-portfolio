@@ -1,27 +1,61 @@
-<form (ngSubmit)="createPolicy()" #policyForm="ngForm">
+<form
+  [formGroup]="policyForm"
+  (ngSubmit)="createPolicy()"
+>
 
-  <h3>Apply for New Policy</h3>
+  <h3>Subscribe to a new policy</h3>
 
-  <select [(ngModel)]="policyType" name="policyType" required>
-    <option *ngFor="let type of policyTypes" [value]="type">
-      {{ type }}
-    </option>
-  </select>
+    <mat-form-field>
+      Policy Type
 
-  <input
-    type="number"
-    [(ngModel)]="policyCoverageAmount"
-    name="coverageAmount"
-    placeholder="Coverage Amount"
-    required
-  />
+      <mat-select formControlName="policyType">
+          <mat-option value="" disabled></mat-option>
+          <mat-option *ngFor="let type of policyTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+      </mat-select>
 
-  <select [(ngModel)]="policyAccountId" name="linkedAccount" required>
-    <option *ngFor="let account of accounts" [value]="account.id">
-      {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
-    </option>
-  </select>
+      <mat-error *ngIf="policyForm.get('policyType')?.hasError('required')">
+        Policy Type is required
+      </mat-error>
 
-  <button type="submit" [disabled]="!policyForm.form.valid">Apply Policy</button>
+    </mat-form-field>
+
+    <mat-form-field>
+      Coverage Amount
+
+      <input matInput
+        formControlName="coverageAmount"
+        placeholder="Ex: 100"
+      />
+
+      <mat-error *ngIf="policyForm.get('coverageAmount')?.hasError('required')">
+        Coverage Amount is required
+      </mat-error>
+
+      <mat-error *ngIf="policyForm.get('coverageAmount')?.hasError('pattern')">
+        Coverage Amount must be a positive number
+      </mat-error>
+
+    </mat-form-field>
+
+    <mat-form-field>
+      Linked Account
+
+      <mat-select formControlName="accountId">
+        <mat-option *ngFor="let account of accounts" [value]="account.id">
+          {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="policyForm.get('accountId')?.hasError('required')">
+        Linked Account is required
+      </mat-error>
+
+    </mat-form-field>
+
+    <button mat-flat-button type="submit" [disabled]="!policyForm.valid">
+      Subscribe
+    </button>
 
 </form>
