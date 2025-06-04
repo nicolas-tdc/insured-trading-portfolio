@@ -1,32 +1,49 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Policy } from '../../model';
 import { RouterLink } from '@angular/router';
-import { PolicyDetailsComponent } from '../policy-details/policy-details.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-card-item-policy',
   imports: [
     RouterLink,
-    PolicyDetailsComponent,
+    MatCardModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './card-item-policy.component.html',
   styleUrl: './card-item-policy.component.scss'
 })
 export class CardItemPolicyComponent {
 
-  // Properties, Accessors
+  // Properties
 
-  // Policy
-  private _policy: Policy = {
-    id: '',
-    accountNumber: '',
-    policyNumber: '',
-    policyType: '',
-    premium: 0,
-    coverageAmount: 0,
-    status: '',
-  };
-  get policy() { return this._policy; }
-  @Input({ required: true })
-  set policy(value: Policy) { this._policy = value; }
+  policy = input<Policy | null>();
+
+  tooltipText = 'Copy to clipboard';
+
+  // Lifecycle
+
+  constructor(
+    private clipboard: Clipboard,
+  ) { }
+
+  copyPolicyNumber() {
+    const policyNumber = this.policy()?.policyNumber;
+    if (!policyNumber) return;
+
+    this.clipboard.copy(policyNumber);
+    this.tooltipText = 'Copied!';
+  }
+
+  resetTooltip() {
+    this.tooltipText = 'Copy to clipboard';
+  }
 }
