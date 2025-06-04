@@ -1,3 +1,5 @@
-<a [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Back to Dashboard</a>
+<button mat-flat-button [routerLink]="['/dashboard']" routerLinkActive="router-link-active">
+  < Back to Dashboard
+</button>
 
-<app-policy-details *ngIf="policy" [policy]="policy()"></app-policy-details>
+<app-policy-details [policy]="policy"></app-policy-details>

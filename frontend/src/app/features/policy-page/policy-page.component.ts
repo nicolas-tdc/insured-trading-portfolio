@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Policy } from '../../core/policy/model';
 import { PolicyService } from '../../core/policy/policy.service';
 import { PolicyDetailsComponent } from '../../core/policy/component/policy-details/policy-details.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-policy-page',
@@ -11,6 +12,7 @@ import { PolicyDetailsComponent } from '../../core/policy/component/policy-detai
     CommonModule,
     RouterLink,
     PolicyDetailsComponent,
+    MatButtonModule,
   ],
   templateUrl: './policy-page.component.html',
   styleUrl: './policy-page.component.scss'
@@ -19,7 +21,7 @@ export class PolicyPageComponent {
 
   // Properties
 
-  policy = signal<Policy | null>(null);
+  public get policy() { return this.policyService.userPolicy(); }
 
   // Lifecycle
 
@@ -30,12 +32,12 @@ export class PolicyPageComponent {
 
   ngOnInit(): void {
     const policyId = this.route.snapshot.paramMap.get('policyId');
-    if (!policyId) {
-      return;
-    }
+    if (!policyId) return;
 
-    this.policyService.getItem(policyId).subscribe(data => {
-      this.policy.set(data);
-    });
+    this.policyService.selectPolicy(policyId);
+  }
+
+  ngOnDestroy(): void {
+    this.policyService.selectPolicy(null);
   }
 }
