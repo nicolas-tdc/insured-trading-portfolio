@@ -1,21 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { CardItemPolicyComponent } from '../card-item-policy/card-item-policy.component';
 import { Policy } from '../../model';
-import { PolicyService } from '../../policy.service';
 
 @Component({
   selector: 'app-card-list-policies',
   imports: [
     CommonModule,
     CardItemPolicyComponent,
+    MatGridListModule,
   ],
   templateUrl: './card-list-policies.component.html',
   styleUrl: './card-list-policies.component.scss'
 })
-export class ListCardPoliciesComponent {
+export class CardListPoliciesComponent {
 
-  // Properties, Accessors
+  // Properties
 
-  @Input() policies: Policy[] = []
+  policies = input<Policy[] | null>();
 }
