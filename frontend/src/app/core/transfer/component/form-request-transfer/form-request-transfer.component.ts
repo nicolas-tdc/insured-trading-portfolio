@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TransferService } from '../../transfer.service';
@@ -7,6 +7,7 @@ import { Account } from '../../../account/model';
 import { MatError, MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { AccountService } from '../../../account/account.service';
 
 @Component({
   selector: 'app-form-request-transfer',
@@ -19,22 +20,26 @@ import { MatButton } from '@angular/material/button';
     MatLabel,
     MatHint,
     MatButton,
+    MatError,
   ],
   templateUrl: './form-request-transfer.component.html',
   styleUrl: './form-request-transfer.component.scss'
 })
-export class FormRequestTransferComponent implements OnInit {
+export class FormRequestTransferComponent {
 
-  transferForm!: FormGroup;
+  // Properties
+
+  transferForm: FormGroup;
+
+  // Lifecycle
 
   constructor(
     private transferService: TransferService,
+    private accountService: AccountService,
     public dialogRef: MatDialogRef<FormRequestTransferComponent>,
     @Inject(MAT_DIALOG_DATA) public account: Account
-  ) {}
+  ) {
 
-
-  ngOnInit(): void {
     this.transferForm = new FormGroup({
       targetAccountNumber: new FormControl('', [
         Validators.required,
@@ -43,16 +48,18 @@ export class FormRequestTransferComponent implements OnInit {
       ]),
       amount: new FormControl('', [
         Validators.required,
-        Validators.min(0.01),
         Validators.max(this.account.balance),
-        Validators.pattern(/^\d+(\.\d{2})$/),
+        Validators.pattern('^[0-9]*$'),
       ]),
       description: new FormControl(''),
     });
   }
 
+  // API
+
   createTransfer(): void {
     if (this.transferForm.invalid) return;
+    if (!this.account || !this.account.id) return;
 
     const transferRequest = {
       sourceAccountId: this.account.id,
@@ -60,6 +67,9 @@ export class FormRequestTransferComponent implements OnInit {
     };
 
     this.transferService.create(transferRequest).subscribe(() => {
+      this.transferService.reloadAccountTransfers();
+      this.accountService.reloadUserAccount();
+      this.accountService.reloadUserAccounts();
       this.dialogRef.close('completed');
     });
   }
