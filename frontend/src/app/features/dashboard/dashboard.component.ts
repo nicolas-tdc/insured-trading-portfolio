@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CardListPoliciesComponent } from '../../core/policy/component/card-list-policies/card-list-policies.component';
 import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
   // Properties
 
@@ -32,6 +32,11 @@ export class DashboardComponent {
     private policyService: PolicyService,
     private dialog: MatDialog,
   ) { }
+
+  ngOnInit(): void {
+    this.accountService.reloadUserAccounts();
+    this.policyService.reloadUserPolicies();
+  }
 
   // Form dialogs
 
