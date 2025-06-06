@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, resource, signal } from '@angular/core';
+import { computed, Injectable, resource, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 
@@ -18,6 +18,10 @@ export class AccountService {
 
   public reloadUserAccounts(): void {
     this.userAccountsResource.reload();
+  }
+
+  public clearUserAccounts(): void {
+    this.userAccountsResource.set([]);
   }
 
   // Reactive account selected by ID
@@ -40,6 +44,11 @@ export class AccountService {
   public reloadUserAccount(): void {
     this.userAccountResource.reload();
   }
+
+  public clearSelectedAccount(): void {
+    this.userAccountResource.set(null);
+  }
+
   // Resources
 
   private createUserAccountsResource(): any {
