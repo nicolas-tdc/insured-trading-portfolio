@@ -48,7 +48,7 @@
         @else {
           <mat-option value="" disabled></mat-option>
           @for (account of accounts; track account.id) {
-            <mat-option>
+            <mat-option [value]="account.id">
               {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
             </mat-option>
           }
