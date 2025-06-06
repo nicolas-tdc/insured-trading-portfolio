@@ -19,6 +19,10 @@ export class PolicyService {
     this.userPoliciesResource.reload();
   }
 
+  public clearUserPolicies(): void {
+    this.userPoliciesResource.set([]);
+  }
+
   private createUserPoliciesResource(): any {
     return resource({
       request: () => ({ }),
@@ -33,6 +37,10 @@ export class PolicyService {
 
   public selectPolicy(id: string | null): void {
     this.selectedPolicyId.set(id);
+  }
+
+  public clearSelectedPolicy(): void {
+    this.selectedPolicyId.set(null);
   }
 
   private userPolicyResource = this.createPolicyResource();
