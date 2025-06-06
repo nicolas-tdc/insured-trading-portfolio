@@ -1,13 +1,15 @@
-<ng-container *ngIf="policies()">
+@if (policies()) {
 
-  <div *ngIf="policies()?.length === 0">
-    You have no active policies.
-  </div>
+  @if (policies()?.length === 0) {
+    <p>You have no active policies.</p>
+  }
 
-  <mat-grid-list cols="3" rowHeight="5:3">
-    <mat-grid-tile *ngFor="let policy of policies()">
-      <app-card-item-policy [policy]="policy"></app-card-item-policy>
-    </mat-grid-tile>
-  </mat-grid-list>
+  @else {
+    <mat-grid-list cols="3" rowHeight="5:3">
+      <mat-grid-tile *ngFor="let policy of policies()">
+        <app-card-item-policy [policy]="policy"></app-card-item-policy>
+      </mat-grid-tile>
+    </mat-grid-list>
+  }
 
-</ng-container>
+}

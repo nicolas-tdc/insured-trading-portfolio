@@ -15,9 +15,9 @@
           </mat-option>
       </mat-select>
 
-      <mat-error *ngIf="policyForm.get('policyType')?.hasError('required')">
-        Policy Type is required
-      </mat-error>
+      @if (policyForm.get('policyType')?.hasError('required')) {
+        <mat-error>Policy Type is required</mat-error>
+      }
 
     </mat-form-field>
 
@@ -29,13 +29,12 @@
         placeholder="Ex: 100"
       />
 
-      <mat-error *ngIf="policyForm.get('coverageAmount')?.hasError('required')">
-        Coverage Amount is required
-      </mat-error>
-
-      <mat-error *ngIf="policyForm.get('coverageAmount')?.hasError('pattern')">
-        Coverage Amount must be a positive number
-      </mat-error>
+      @if (policyForm.get('coverageAmount')?.hasError('required')) {
+        <mat-error>Coverage Amount is required</mat-error>
+      }
+      @if (policyForm.get('coverageAmount')?.hasError('pattern')) {
+        <mat-error>Coverage Amount must be a positive number</mat-error>
+      }
 
     </mat-form-field>
 
@@ -43,14 +42,22 @@
       Linked Account
 
       <mat-select formControlName="accountId">
-        <mat-option *ngFor="let account of accounts" [value]="account.id">
-          {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
-        </mat-option>
+        @if (accounts.length === 0) {
+          <mat-option value="" disabled>No accounts found</mat-option>
+        }
+        @else {
+          <mat-option value="" disabled></mat-option>
+          @for (account of accounts; track account.id) {
+            <mat-option>
+              {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
+            </mat-option>
+          }
+        }
       </mat-select>
 
-      <mat-error *ngIf="policyForm.get('accountId')?.hasError('required')">
-        Linked Account is required
-      </mat-error>
+      @if (policyForm.get('accountId')?.hasError('required')) {
+        <mat-error>Linked Account is required</mat-error>
+      }
 
     </mat-form-field>
 

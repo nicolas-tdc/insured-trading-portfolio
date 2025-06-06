@@ -1,11 +1,13 @@
 import { Component, input } from '@angular/core';
-import { Account } from '../../model';
 import { MatCardModule } from '@angular/material/card';
-import { MatChip, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
+import { CommonModule } from '@angular/common';
+import { Account } from '../../model';
 
 @Component({
   selector: 'app-account-details',
   imports: [
+    CommonModule,
     MatCardModule,
     MatChipsModule,
   ],

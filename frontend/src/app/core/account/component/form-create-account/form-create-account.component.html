@@ -10,29 +10,33 @@
 
       <mat-select formControlName="accountType">
           <mat-option value="" disabled></mat-option>
-          <mat-option *ngFor="let type of accountTypes" [value]="type">
-            {{ type }}
-          </mat-option>
+          @for (type of accountTypes; track type) {
+            <mat-option *ngFor="let type of accountTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          }
       </mat-select>
 
-      <mat-error *ngIf="accountForm.get('accountType')?.hasError('required')">
-        Account Type is required
-      </mat-error>
+      @if (accountForm.get('accountType')?.hasError('required')) {
+        <mat-error>Account Type is required</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field>
       Currency
 
       <mat-select formControlName="currencyId">
-          <mat-option value="" disabled></mat-option>
-        <mat-option *ngFor="let currency of currencies" [value]="currency.id">
-          {{ currency.name }}
-        </mat-option>
+        <mat-option value="" disabled></mat-option>
+        @for (currency of currencies; track currency.id) {
+          <mat-option [value]="currency.id">
+            {{ currency.name }}
+          </mat-option>
+        }
       </mat-select>
 
-      <mat-error *ngIf="accountForm.get('currencyId')?.hasError('required')">
-        Currency is required
-      </mat-error>
+      @if (accountForm.get('currencyId')?.hasError('required')) {
+        <mat-error>Currency is required</mat-error>
+      }
     </mat-form-field>
 
     <button mat-flat-button type="submit" [disabled]="!accountForm.valid">

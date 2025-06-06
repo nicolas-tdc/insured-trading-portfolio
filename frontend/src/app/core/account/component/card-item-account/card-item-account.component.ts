@@ -37,6 +37,8 @@ export class CardItemAccountComponent {
     private clipboard: Clipboard,
   ) { }
 
+  // Tooltip
+
   copyAccountNumber() {
     const accountNumber = this.account()?.accountNumber;
     if (!accountNumber) return;

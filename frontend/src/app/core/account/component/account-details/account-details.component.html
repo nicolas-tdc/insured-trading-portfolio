@@ -1,16 +1,18 @@
-<mat-card>
+@if (account()) {
+    <mat-card class="account-details">
 
-    <mat-card-header>
-        <mat-card-title>Account {{ account()?.accountNumber }}</mat-card-title>
-    </mat-card-header>
+        <mat-card-header>
+            <mat-card-title>Account {{ account()?.accountNumber }}</mat-card-title>
+        </mat-card-header>
 
-    <mat-chip-set>
-        <mat-chip>{{ account()?.accountType }}</mat-chip>
-        <mat-chip>{{ account()?.accountStatus }}</mat-chip>
-    </mat-chip-set>
+        <mat-chip-set>
+            <mat-chip>{{ account()?.accountType }}</mat-chip>
+            <mat-chip>{{ account()?.accountStatus }}</mat-chip>
+        </mat-chip-set>
 
-    <mat-card-content>
-        <p>Balance: {{ account()?.balance }} {{ account()?.currency }}</p>
-    </mat-card-content>
+        <mat-card-content>
+            <p>Balance: {{ account()?.balance }} {{ account()?.currency }}</p>
+        </mat-card-content>
 
-</mat-card>
+    </mat-card>
+}

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { CardItemAccountComponent } from '../card-item-account/card-item-account.component';
-import { Account } from '../../model';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { CardItemAccountComponent } from '../card-item-account/card-item-account.component';
+import { Account } from '../../model';
 
 @Component({
   selector: 'app-card-list-accounts',
@@ -20,5 +20,5 @@ export class CardListAccountsComponent {
 
   // Properties
 
-  accounts = input<Account[] | null>()
+  accounts = input<Account[] | []>();
 }

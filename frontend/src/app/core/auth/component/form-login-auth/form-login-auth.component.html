@@ -13,12 +13,12 @@
 
     <input matInput type="email" formControlName="email">
 
-    <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-      Email is required
-    </mat-error>
-    <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-      Email is invalid
-    </mat-error>
+    @if (loginForm.get('email')?.hasError('required')) {
+      <mat-error>Email is required</mat-error>
+    }
+    @if (loginForm.get('email')?.hasError('email')) {
+      <mat-error>Email is invalid</mat-error>
+    }
 
   </mat-form-field>
 
@@ -36,15 +36,15 @@
       <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
     </button>
 
-    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-      Password is required
-    </mat-error>
-    <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-      Password must be at least 8 characters
-    </mat-error>
-    <mat-error *ngIf="loginForm.get('password')?.hasError('maxlength')">
-      Password must be at most 32 characters
-    </mat-error>
+    @if (loginForm.get('password')?.hasError('required')) {
+      <mat-error>Password is required</mat-error>
+    }
+    @if (loginForm.get('password')?.hasError('minlength')) {
+      <mat-error>Password must be at least 8 characters</mat-error>
+    }
+    @if (loginForm.get('password')?.hasError('maxlength')) {
+      <mat-error>Password must be at most 32 characters</mat-error>
+    }
     <mat-hint align="end">4-32 characters</mat-hint>
 
   </mat-form-field>
