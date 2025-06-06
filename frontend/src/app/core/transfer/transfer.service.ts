@@ -28,6 +28,10 @@ export class TransferService {
     this.accountTransfersResource.reload();
   }
 
+  public clearAccountTransfers(): void {
+    this.accountTransfersResource.set([]);
+  }
+
   // Resources
 
   private createAccountTransfersResource(): any {
