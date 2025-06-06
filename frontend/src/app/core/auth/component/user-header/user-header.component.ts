@@ -5,6 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { EntityService } from '../../../entity/entity.service';
 
 @Component({
   selector: 'app-user-header',
@@ -31,11 +32,13 @@ export class UserHeaderComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private entityService: EntityService,
   ) { }
 
   // Authentication
 
   logout(): void {
+    this.entityService.clearEntities();
     this.authService.logout();
     this.router.navigate(['/authentication']);
   }
