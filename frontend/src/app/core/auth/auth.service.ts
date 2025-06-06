@@ -13,6 +13,10 @@ export class AuthService {
   private authUserResource = this.createAuthUserResource();
   public authUser = computed(() => this.authUserResource?.value() ?? null);
 
+  clearAuthUser(): void {
+    this.authUserResource.set(null);
+  }
+
   // Resources
 
   createAuthUserResource() {
@@ -52,8 +56,6 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem('auth-token');
     localStorage.removeItem('user');
-
-    this.authUserResource.set(null);
   }
 
 
