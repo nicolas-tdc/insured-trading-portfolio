@@ -8,6 +8,7 @@ import { MatError, MatFormField, MatHint, MatLabel } from '@angular/material/for
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { AccountService } from '../../../account/service/account.service';
+import { UserAccountsService } from '../../../account/service/user-accounts.service';
 
 @Component({
   selector: 'app-form-request-transfer',
@@ -36,6 +37,7 @@ export class FormRequestTransferComponent {
   constructor(
     private transferService: TransferService,
     private accountService: AccountService,
+    private userAccountsService: UserAccountsService,
     public dialogRef: MatDialogRef<FormRequestTransferComponent>,
     @Inject(MAT_DIALOG_DATA) public account: Account
   ) {
@@ -69,7 +71,7 @@ export class FormRequestTransferComponent {
     this.transferService.create(transferRequest).subscribe(() => {
       this.transferService.reloadAccountTransfers();
       this.accountService.reloadUserAccount();
-      this.accountService.reloadUserAccounts();
+      this.userAccountsService.reloadUserAccounts();
       this.dialogRef.close('completed');
     });
   }
