@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { AccountService } from '../../core/account/account.service';
+import { AccountService } from '../../core/account/service/account.service';
 import { AccountDetailsComponent } from '../../core/account/component/account-details/account-details.component';
 import { FormRequestTransferComponent } from '../../core/transfer/component/form-request-transfer/form-request-transfer.component';
 import { MatButton } from '@angular/material/button';

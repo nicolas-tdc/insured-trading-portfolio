@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Currency } from '../../../currency/model';
-import { AccountService } from '../../account.service';
+import { AccountService } from '../../service/account.service';
 import { CurrencyService } from '../../../currency/currency.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogRef } from '@angular/material/dialog';
+import { UserAccountsService } from '../../service/user-accounts.service';
 
 @Component({
   selector: 'app-form-create-account',
@@ -35,6 +34,7 @@ export class FormCreateAccountComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
+    private userAccountsService: UserAccountsService,
     private currencyService: CurrencyService,
     public dialogRef: MatDialogRef<FormCreateAccountComponent>,
   ) { }
@@ -61,7 +61,7 @@ export class FormCreateAccountComponent implements OnInit {
     if (this.accountForm.invalid) return;
 
     this.accountService.create(this.accountForm.value).subscribe(() => {
-      this.accountService.reloadUserAccounts();
+      this.userAccountsService.reloadUserAccounts();
       this.dialogRef.close('completed');
     });
   }

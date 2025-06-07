@@ -2,32 +2,18 @@ import { computed, Injectable, resource, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 
-import { Account, AccountRequest } from './model';
+import { Account, AccountRequest } from '../model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
 
-  // Properties
+  // // Properties
 
   private apiUrl = '/api/account';
 
-  // Reactive list of accounts
-
-  private userAccountsResource = this.createUserAccountsResource();
-  public userAccounts = computed(() => this.userAccountsResource.value());
-
-  public reloadUserAccounts(): void {
-    this.userAccountsResource.reload();
-  }
-
-  public clearUserAccounts(): void {
-    this.userAccountsResource.set([]);
-  }
+  private selectedAccountId = signal<string | null>(null);
 
   // Reactive account selected by ID
-
-  // Selected account
-  private selectedAccountId = signal<string | null>(null);
 
   public selectAccount(id: string | null): void {
     this.selectedAccountId.set(id);
@@ -49,16 +35,6 @@ export class AccountService {
     this.userAccountResource.set(null);
   }
 
-  // Resources
-
-  private createUserAccountsResource(): any {
-    return resource({
-      request: () => ({ }),
-      loader: async ({ }) => {
-        return await firstValueFrom(this.getUserList());
-      },
-    });
-  }
 
   createAccountResource(): any {
     return resource({
@@ -87,10 +63,6 @@ export class AccountService {
 
   getItem(accountId: string): Observable<Account> {
     return this.http.get<Account>(`${this.apiUrl}/${accountId}`);
-  }
-
-  getUserList(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.apiUrl}`);
   }
 
   getTypes(): Observable<string[]> {

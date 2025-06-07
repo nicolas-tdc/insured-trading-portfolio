@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { PolicyService } from '../policy/policy.service';
+import { PolicyService } from '../policy/service/policy.service';
 import { TransferService } from '../transfer/transfer.service';
 import { CurrencyService } from '../currency/currency.service';
-import { AccountService } from '../account/account.service';
+import { AccountService } from '../account/service/account.service';
 
 @Injectable({
   providedIn: 'root'

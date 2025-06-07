@@ -3,10 +3,12 @@ import { CardListPoliciesComponent } from '../../core/policy/component/card-list
 import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
-import { AccountService } from '../../core/account/account.service';
-import { PolicyService } from '../../core/policy/policy.service';
+import { AccountService } from '../../core/account/service/account.service';
+import { PolicyService } from '../../core/policy/service/policy.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { UserAccountsService } from '../../core/account/service/user-accounts.service';
+import { UserPoliciesService } from '../../core/policy/service/user-policies.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,20 +24,22 @@ export class DashboardComponent implements OnInit {
 
   // Properties
 
-  get accounts() { return this.accountService.userAccounts(); }
-  get policies() { return this.policyService.userPolicies(); }
+  get accounts() { return this.userAccountsService.userAccounts(); }
+  get policies() { return this.userPoliciesService.userPolicies(); }
 
   // Lifecycle
 
   constructor(
     private accountService: AccountService,
+    private userAccountsService: UserAccountsService,
     private policyService: PolicyService,
+    private userPoliciesService: UserPoliciesService,
     private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-    this.accountService.reloadUserAccounts();
-    this.policyService.reloadUserPolicies();
+    this.userAccountsService.reloadUserAccounts();
+    this.userPoliciesService.reloadUserPolicies();
   }
 
   // Form dialogs
@@ -47,7 +51,7 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'completed') {
-        this.accountService.reloadUserAccounts();
+        this.userAccountsService.reloadUserAccounts();
       }
     });
   }
@@ -60,7 +64,7 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'completed') {
-        this.policyService.reloadUserPolicies();
+        this.userPoliciesService.reloadUserPolicies();
       }
     });
   }

@@ -4,7 +4,7 @@ import { TransferService } from '../../transfer.service';
 import { MatTableModule } from '@angular/material/table';
 import { OtherAccountNumberPipe } from '../../pipe/other-account-number.pipe';
 import { DirectionalAmountPipe } from '../../pipe/directional-amount.pipe';
-import { AccountService } from '../../../account/account.service';
+import { AccountService } from '../../../account/service/account.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

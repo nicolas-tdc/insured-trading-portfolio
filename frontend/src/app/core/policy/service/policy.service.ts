@@ -2,7 +2,7 @@ import { computed, Injectable, resource, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 
-import { Policy, PolicyRequest } from './model';
+import { Policy, PolicyRequest } from '../model';
 
 @Injectable({ providedIn: 'root' })
 export class PolicyService {
@@ -10,27 +10,6 @@ export class PolicyService {
   // Properties
 
   private apiUrl = '/api/policy';
-
-  // Reactive list
-  private userPoliciesResource = this.createUserPoliciesResource();
-  public userPolicies = computed(() => this.userPoliciesResource.value());
-
-  public reloadUserPolicies(): void {
-    this.userPoliciesResource.reload();
-  }
-
-  public clearUserPolicies(): void {
-    this.userPoliciesResource.set([]);
-  }
-
-  private createUserPoliciesResource(): any {
-    return resource({
-      request: () => ({ }),
-      loader: async ({ }) => {
-        return await firstValueFrom(this.getUserList());
-      },
-    });
-  }
 
   // Reactive item selected by ID
   private selectedPolicyId = signal<string | null>(null);
@@ -73,10 +52,6 @@ export class PolicyService {
 
   getItem(policyId: string): Observable<Policy> {
     return this.http.get<Policy>(`${this.apiUrl}/${policyId}`);
-  }
-
-  getUserList(): Observable<Policy[]> {
-    return this.http.get<Policy[]>(`${this.apiUrl}`);
   }
 
   getTypes(): Observable<string[]> {
