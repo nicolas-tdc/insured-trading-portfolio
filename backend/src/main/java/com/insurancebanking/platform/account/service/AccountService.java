@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.account;
+package com.insurancebanking.platform.account.service;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -19,6 +19,7 @@ import com.insurancebanking.platform.account.model.AccountType;
 import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
+import com.insurancebanking.platform.core.service.BaseEntityService;
 import com.insurancebanking.platform.currency.model.Currency;
 import com.insurancebanking.platform.currency.repository.CurrencyRepository;
 
@@ -27,16 +28,23 @@ import com.insurancebanking.platform.currency.repository.CurrencyRepository;
 public class AccountService {
 
     @Autowired
-    AccountRepository accountRepository;
+    private BaseEntityService baseEntityService;
 
     @Autowired
-    CurrencyRepository currencyRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private CurrencyRepository currencyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<AccountType> getAccountTypes() {
         return Arrays.stream(AccountType.values()).toList();
+    }
+
+    public List<Account> getUserAccounts(UUID userId) {
+        return accountRepository.findByUser_Id(userId);
     }
 
     public Account getUserAccountById(UUID accountId, UUID userId) {
@@ -52,23 +60,37 @@ public class AccountService {
 
     public Account create(AccountRequest request, UUID userId) {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new UsernameNotFoundException(
+                "User not found during account creation"));
 
         Currency currency = currencyRepository.findById(request.getCurrencyId())
-            .orElseThrow(() -> new EntityNotFoundException("Currency not found"));
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Currency not found during account creation"));
 
         Account account = Account.builder()
             .user(user)
             .accountStatus(AccountStatus.ACTIVE)
-            .accountNumber(UUID.randomUUID()
-                            .toString()
-                            .substring(0, 12)
-                            .toUpperCase())
+            .accountNumber(generateAccountNumber())
             .accountType(request.getAccountType())
             .currency(currency)
             .balance(BigDecimal.valueOf(0.0))
             .build();
 
         return accountRepository.save(account);
+    }
+
+    private String generateAccountNumber() {
+        int maxTries = 10;
+
+        for (int i = 0; i < maxTries; i++) {
+            String accountNumber = baseEntityService.generateEntityPublicIdentifier("ACC");
+
+            if (!accountRepository.existsByAccountNumber(accountNumber)) {
+
+                return accountNumber;
+            }
+        }
+
+        throw new IllegalStateException("Unable to generate unique account number after " + maxTries + " attempts.");
     }
 }

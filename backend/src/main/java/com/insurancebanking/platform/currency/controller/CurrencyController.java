@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.currency;
+package com.insurancebanking.platform.currency.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.insurancebanking.platform.auth.AuthController;
 import com.insurancebanking.platform.core.dto.MessageResponse;
-import com.insurancebanking.platform.currency.repository.CurrencyRepository;
+import com.insurancebanking.platform.currency.service.CurrencyService;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -17,9 +16,9 @@ import com.insurancebanking.platform.currency.repository.CurrencyRepository;
 public class CurrencyController {
 
     @Autowired
-    private CurrencyRepository currencyRepository;
+    private CurrencyService currencyService;
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CurrencyController.class);
 
     @GetMapping(value="", produces="application/json")
     public ResponseEntity<?> getCurrencies() {
@@ -27,7 +26,7 @@ public class CurrencyController {
         String errorMessage = "Error getting currencies";
         try {
 
-            return ResponseEntity.ok(currencyRepository.findAll());
+            return ResponseEntity.ok(currencyService.getCurrencies());
 
         } catch (Exception e) {
             logger.error("{}: {}", errorMessage, e.getMessage());

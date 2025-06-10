@@ -6,10 +6,10 @@ public class LoginRequest {
 
     // Properties
 
-    @NotBlank
+    @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Password is required")
     private String password;
 
     // Getters

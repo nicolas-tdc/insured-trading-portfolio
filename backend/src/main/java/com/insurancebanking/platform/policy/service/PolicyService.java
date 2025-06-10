@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.policy;
+package com.insurancebanking.platform.policy.service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.insurancebanking.platform.account.AccountService;
 import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
+import com.insurancebanking.platform.core.service.BaseEntityService;
 import com.insurancebanking.platform.policy.dto.PolicyRequest;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.policy.model.PolicyType;
@@ -26,13 +27,16 @@ import com.insurancebanking.platform.policy.repository.PolicyRepository;
 public class PolicyService {
 
     @Autowired
-    AccountService accountService;
+    private BaseEntityService baseEntityService;
 
     @Autowired
-    PolicyRepository policyRepository;
+    private AccountService accountService;
 
     @Autowired
-    UserRepository userRepository;
+    private PolicyRepository policyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Policy> getUserPolicies(UUID userId) {
         return policyRepository.findByUser_Id(userId);
@@ -62,7 +66,7 @@ public class PolicyService {
         Policy policy = Policy.builder()
             .user(user)
             .policyStatus(PolicyStatus.PENDING)
-            .policyNumber(UUID.randomUUID().toString().substring(0, 8).toUpperCase())
+            .policyNumber(generatePolicyNumber())
             .policyType(policyType)
             .coverageAmount(coverageAmount)
             .premium(calculatePremium(policyType, coverageAmount))
@@ -72,6 +76,22 @@ public class PolicyService {
             .build();
 
         return policyRepository.save(policy);
+    }
+
+    private String generatePolicyNumber() {
+        int maxTries = 10;
+
+        for (int i = 0; i < maxTries; i++) {
+            String policyNumber = baseEntityService.generateEntityPublicIdentifier("POL");
+
+            boolean exists = policyRepository.existsByPolicyNumber(policyNumber);
+            if (!exists) {
+
+                return policyNumber;
+            }
+        }
+
+        throw new IllegalStateException("Unable to generate unique account number after " + maxTries + " attempts.");
     }
 
     private Double calculatePremium(PolicyType policyType, Double coverage) {

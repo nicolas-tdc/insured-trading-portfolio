@@ -69,6 +69,7 @@ DROP TABLE IF EXISTS transfers CASCADE;
 CREATE TABLE IF NOT EXISTS transfers (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     transfer_status VARCHAR(50) NOT NULL,
+    transfer_number VARCHAR(30) UNIQUE NOT NULL,
     source_account_id UUID NOT NULL,
     target_account_id UUID NOT NULL,
     amount NUMERIC(15, 2) NOT NULL,

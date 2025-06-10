@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.account;
+package com.insurancebanking.platform.account.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insurancebanking.platform.account.dto.AccountRequest;
 import com.insurancebanking.platform.account.dto.AccountResponse;
 import com.insurancebanking.platform.account.model.Account;
-import com.insurancebanking.platform.account.repository.AccountRepository;
+import com.insurancebanking.platform.account.service.AccountService;
+import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.auth.security.AuthEntryPointJwt;
-import com.insurancebanking.platform.auth.security.UserDetailsImpl;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 
 import io.micrometer.common.lang.NonNull;
@@ -34,10 +34,7 @@ import io.micrometer.common.lang.NonNull;
 public class AccountController {
 
     @Autowired
-    AccountService accountService;
-
-    @Autowired
-    AccountRepository accountRepository;
+    private AccountService accountService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
@@ -79,7 +76,7 @@ public class AccountController {
         String errorMessage = "Error getting user accounts";
         try {
             // Get user's accounts
-            List<Account> accounts = accountRepository.findByUser_Id(userDetails.getId());
+            List<Account> accounts = accountService.getUserAccounts(userDetails.getId());
 
             // Get accounts responses
             List<AccountResponse> responses = accounts.stream()

@@ -15,6 +15,7 @@ public class TransferResponse {
     // Properties
 
     private UUID id;
+    private String transferNumber;
     private LocalDateTime createdAt;
     private BigDecimal amount;
     private String description;
@@ -29,6 +30,7 @@ public class TransferResponse {
         TransferResponse response = new TransferResponse();
 
         response.setId(transfer.getId());
+        response.setTransferNumber(transfer.getTransferNumber());
         response.setcreatedAt(transfer.getCreatedAt());
         response.setAmount(transfer.getAmount());
         response.setDescription(transfer.getDescription());
@@ -43,6 +45,7 @@ public class TransferResponse {
     // Getters
 
     public UUID getId() { return id; }
+    public String getTransferNumber() { return transferNumber; }
     public LocalDateTime getcreatedAt() { return createdAt; }
     public BigDecimal getAmount() { return amount; }
     public String getDescription() { return description; }
@@ -54,6 +57,7 @@ public class TransferResponse {
     // Setters
 
     public void setId(UUID value) { this.id = value; }
+    public void setTransferNumber(String value) { this.transferNumber = value; }
     public void setcreatedAt(LocalDateTime value) { this.createdAt = value; }
     public void setAmount(BigDecimal value) { this.amount = value; }
     public void setDescription(String value) { this.description = value; }

@@ -31,6 +31,7 @@ export class ListTableTransfersComponent {
   }
 
   public displayedColumns: string[] = [
+    'transferNumber',
     'date',
     'amount',
     'otherAccountNumber',

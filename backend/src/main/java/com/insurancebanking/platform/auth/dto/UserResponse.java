@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.insurancebanking.platform.auth.security.UserDetailsImpl;
+import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 
 public class UserResponse {
     

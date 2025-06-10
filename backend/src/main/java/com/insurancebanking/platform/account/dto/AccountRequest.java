@@ -4,11 +4,16 @@ import java.util.UUID;
 
 import com.insurancebanking.platform.account.model.AccountType;
 
+import jakarta.validation.constraints.NotNull;
+
 public class AccountRequest {
 
     // Properties
 
+    @NotNull(message = "Account type is required")
     private AccountType accountType;
+
+    @NotNull(message = "Currency is required")
     private UUID currencyId;
 
     // Getters

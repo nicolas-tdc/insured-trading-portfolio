@@ -8,20 +8,20 @@ public class SignupRequest {
 
     // Properties
 
-    @NotBlank
+    @NotBlank(message = "First name is required")
     @Size(min = 3, max = 20)
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Last name is required")
     @Size(min = 3, max = 20)
     private String lastName;
 
-    @NotBlank
+    @NotBlank(message = "Email is required")
     @Size(max = 50)
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Password is required")
     @Size(min = 6, max = 40)
     private String password;
 

@@ -30,7 +30,7 @@ WHERE (u.email = 'admin@platform.com' AND r.name = 'ROLE_ADMIN')
 INSERT INTO accounts (user_id, account_number, balance, account_type, account_status, currency_id)
 SELECT 
   u.id, 
-  upper(substring(uuid_generate_v4()::text, 1, 12)), 
+  'ACC' || LPAD(TRUNC(RANDOM() * 1e9)::TEXT, 9, '0'),
   8000.00,
   'CHECKING',
   'ACTIVE',

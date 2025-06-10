@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.policy;
+package com.insurancebanking.platform.policy.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.insurancebanking.platform.account.AccountService;
-import com.insurancebanking.platform.auth.AuthController;
-import com.insurancebanking.platform.auth.security.UserDetailsImpl;
+import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 import com.insurancebanking.platform.policy.dto.PolicyRequest;
 import com.insurancebanking.platform.policy.dto.PolicyResponse;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.policy.model.PolicyType;
+import com.insurancebanking.platform.policy.service.PolicyService;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -32,12 +31,9 @@ import com.insurancebanking.platform.policy.model.PolicyType;
 public class PolicyController {
 
     @Autowired
-    PolicyService policyService;
+    private PolicyService policyService;
 
-    @Autowired
-    AccountService accountService;
-
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(PolicyController.class);
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<?> createPolicy(

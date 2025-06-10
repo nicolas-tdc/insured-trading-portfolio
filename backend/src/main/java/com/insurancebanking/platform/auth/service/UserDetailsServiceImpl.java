@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.auth.security;
+package com.insurancebanking.platform.auth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.insurancebanking.platform.auth.model.User;
+import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     @Transactional

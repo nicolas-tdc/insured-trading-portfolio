@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.transfer;
+package com.insurancebanking.platform.transfer.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.insurancebanking.platform.account.AccountService;
 import com.insurancebanking.platform.account.model.Account;
-import com.insurancebanking.platform.auth.security.UserDetailsImpl;
+import com.insurancebanking.platform.account.service.AccountService;
+import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
 import com.insurancebanking.platform.transfer.dto.TransferResponse;
 import com.insurancebanking.platform.transfer.model.Transfer;
+import com.insurancebanking.platform.transfer.service.TransferService;
 
 import io.micrometer.common.lang.NonNull;
 
@@ -32,10 +33,10 @@ import io.micrometer.common.lang.NonNull;
 public class TransferController {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    TransferService transferService;
+    private TransferService transferService;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TransferController.class);
 

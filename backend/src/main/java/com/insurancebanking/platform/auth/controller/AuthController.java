@@ -1,4 +1,4 @@
-package com.insurancebanking.platform.auth;
+package com.insurancebanking.platform.auth.controller;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,10 +21,10 @@ import com.insurancebanking.platform.auth.dto.SignupRequest;
 import com.insurancebanking.platform.auth.dto.UserResponse;
 import com.insurancebanking.platform.auth.model.Role;
 import com.insurancebanking.platform.auth.model.User;
-import com.insurancebanking.platform.auth.repository.RoleRepository;
-import com.insurancebanking.platform.auth.repository.UserRepository;
+import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.auth.security.JwtUtils;
-import com.insurancebanking.platform.auth.security.UserDetailsImpl;
+import com.insurancebanking.platform.auth.service.RoleService;
+import com.insurancebanking.platform.auth.service.UserService;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 
 @RestController
@@ -32,19 +32,19 @@ import com.insurancebanking.platform.core.dto.MessageResponse;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Autowired
-    JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
 
@@ -78,7 +78,7 @@ public class AuthController {
 
         String errorMessage = "Error signing up";
         try {
-            if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            if (userService.existsByEmail(signUpRequest.getEmail())) {
                 return ResponseEntity.badRequest().body(new MessageResponse(errorMessage + ": Email is already taken"));
             }
 
@@ -88,13 +88,19 @@ public class AuthController {
                     signUpRequest.getFirstName(),
                     signUpRequest.getLastName());
 
-            Set<Role> roles = new HashSet<>();
-            roleRepository.findByName("ROLE_CUSTOMER").ifPresent(roles::add);
+            Role customerRole = roleService.findByName("ROLE_CUSTOMER");
+            if (customerRole == null) {
+                throw new RuntimeException("Error: Customer role is not found during signup.");
+            }
 
+            Set<Role> roles = new HashSet<>();
+            roles.add(customerRole);
             user.setRoles(roles);
-            userRepository.save(user);
+
+            userService.saveUser(user);
 
             return ResponseEntity.ok(new MessageResponse("User registered successfully"));
+
         } catch (Exception e) {
             logger.error("{}: {}", errorMessage, e.getMessage());
 

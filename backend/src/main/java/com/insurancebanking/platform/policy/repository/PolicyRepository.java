@@ -9,4 +9,6 @@ import com.insurancebanking.platform.policy.model.Policy;
 
 public interface PolicyRepository extends JpaRepository<Policy, UUID> {
     List<Policy> findByUser_Id(UUID userId);
+
+    boolean existsByPolicyNumber(String policyNumber);
 }
