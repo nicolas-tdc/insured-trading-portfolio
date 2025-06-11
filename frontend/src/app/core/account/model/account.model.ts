@@ -3,6 +3,8 @@ export interface Account {
   accountNumber: string;
   accountType: string;
   balance: number;
-  currency: string;
+  currencyCode: string;
+  currencySymbol: string;
+  currencyFractionDigits: number;
   accountStatus: string;
 }

@@ -49,7 +49,7 @@ export class FormCreateAccountComponent implements OnInit {
         Validators.required,
         Validators.minLength(1),
       ]),
-      currencyId: new FormControl('', [
+      currencyCode: new FormControl('', [
         Validators.required,
       ]),
     });

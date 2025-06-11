@@ -1,12 +1,12 @@
 <form
   [formGroup]="accountForm"
-  (ngSubmit)="createAccount()"
->
+  (ngSubmit)="createAccount()">
 
-  <h3>Open a new account</h3>
+  <h2>Open new account</h2>
 
-    <mat-form-field>
-      Account Type
+  <div class="col-container">
+    <mat-form-field class="form-field-basic">
+      <mat-label>Account Type</mat-label>
 
       <mat-select formControlName="accountType">
           <mat-option value="" disabled></mat-option>
@@ -22,25 +22,31 @@
       }
     </mat-form-field>
 
-    <mat-form-field>
-      Currency
+    <mat-form-field class="form-field-basic">
+      <mat-label>Currency</mat-label>
 
-      <mat-select formControlName="currencyId">
+      <mat-select formControlName="currencyCode">
         <mat-option value="" disabled></mat-option>
-        @for (currency of currencies; track currency.id) {
-          <mat-option [value]="currency.id">
-            {{ currency.name }}
+        @for (currency of currencies; track currency.currencyCode) {
+          <mat-option [value]="currency.currencyCode">
+            {{ currency.currencyCode }} - {{ currency.currencySymbol }}
           </mat-option>
         }
       </mat-select>
 
-      @if (accountForm.get('currencyId')?.hasError('required')) {
+      @if (accountForm.get('currencyCode')?.hasError('required')) {
         <mat-error>Currency is required</mat-error>
       }
     </mat-form-field>
+  </div>
 
-    <button mat-flat-button type="submit" [disabled]="!accountForm.valid">
+  <div class="col-container">
+    <button mat-flat-button
+    class="btn-basic"
+    type="submit"
+    [disabled]="!accountForm.valid">
       Open
     </button>
+  </div>
 
 </form>

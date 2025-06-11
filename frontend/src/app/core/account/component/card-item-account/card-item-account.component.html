@@ -1,33 +1,48 @@
 @if (account()) {
-    <mat-card class="card-item-account">
+    <mat-card class="col-container">
 
         <mat-card-header>
+            <mat-chip-set>
+                <mat-chip>{{ account()?.accountType }}</mat-chip>
+                <mat-chip>{{ account()?.accountStatus }}</mat-chip>
+            </mat-chip-set>
+        </mat-card-header>
+
+        <mat-card-content>
+            <p>Account Number</p>
             <button mat-raised-button
+                class="btn-card"
                 matTooltip="Copy Account Number to clipboard"
                 aria-label="Button to copy Account Number to clipboard"
                 (click)="copyAccountNumber()"
                 (mouseleave)="resetTooltip()">
                 <mat-icon>content_copy</mat-icon>
+                {{ account()?.accountNumber }}
             </button>
-        </mat-card-header>
 
-        <mat-card-content>
-            <mat-card-title>{{ account()?.accountNumber }}</mat-card-title>
-
-            <mat-chip-set>
-                <mat-chip>{{ account()?.accountType }}</mat-chip>
-                <mat-chip>{{ account()?.accountStatus }}</mat-chip>
-            </mat-chip-set>
-            <p>Balance: {{ account()?.balance }} {{ account()?.currency }}</p>
-            
+            <mat-card-title>
+                <h3>{{ account()?.balance }} {{ account()?.currencySymbol }}</h3>
+            </mat-card-title>
         </mat-card-content>
 
-        <mat-card-footer>
+        <mat-card-footer class="row-container">
+            <!-- View Details Button -->
             <mat-card-actions>
-                <button mat-flat-button
-                [disabled]="account()?.accountStatus !== 'ACTIVE'"
-                routerLink="/account/{{ account()?.id }}">
+                <button mat-stroked-button
+                    class="btn-card"
+                    [disabled]="account()?.accountStatus !== 'ACTIVE'"
+                    routerLink="/account/{{ account()?.id }}">
                     View Details
+                </button>
+            </mat-card-actions>
+
+            <!-- Transfer Button -->
+            <mat-card-actions>
+                <button mat-stroked-button
+                    class="btn-card"
+                    [disabled]="account()?.accountStatus !== 'ACTIVE'"
+                    (click)="openTransferDialog()">
+                    Transfer
                 </button>
             </mat-card-actions>
         </mat-card-footer>
