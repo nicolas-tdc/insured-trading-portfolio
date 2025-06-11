@@ -50,8 +50,11 @@ public class TransferController {
             // Validate transfer
             String transferError = transferService.validate(request, userDetails.getId());
             if (transferError != null) {
+                String errorMessage = "Error creating transfer: " + transferError;
+                logger.error(errorMessage);
+
                 return ResponseEntity.badRequest()
-                    .body(new MessageResponse(errorMessage + ": " + transferError));
+                    .body(new MessageResponse(errorMessage));
             }
 
             // Create transfer
@@ -64,12 +67,14 @@ public class TransferController {
                 .body(TransferResponse.from(transfer));
 
         } catch (URISyntaxException e) {
+            String errorMessage = "Error creating transfer URI";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
                 .body(new MessageResponse(errorMessage));
 
         } catch (Exception e) {
+            String errorMessage = "Error creating transfer";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -81,17 +86,21 @@ public class TransferController {
     public ResponseEntity<?> getAccountTransfers(
         @PathVariable @NonNull UUID accountId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        String errorMessage = "Error getting account transfers";
         try {
             // Check if account exists
             Account account = accountService.getUserAccountById(accountId, userDetails.getId());
             if (account == null) {
+                String errorMessage = "Error getting account transfers: Account not found";
+                logger.error(errorMessage);
+
                 return ResponseEntity.badRequest()
                     .body(new MessageResponse(errorMessage + ": Account not found"));
             }
 
             if (!account.getUser().getId().equals(userDetails.getId())) {
+                String errorMessage = "Error getting account transfers: User account ID does not match";
+                logger.error(errorMessage);
+
                 return ResponseEntity.badRequest()
                     .body(new MessageResponse(errorMessage + ": User account ID does not match"));
             }
@@ -105,6 +114,7 @@ public class TransferController {
             return ResponseEntity.ok(responses);
 
         } catch (Exception e) {
+            String errorMessage = "Error getting account transfers";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
