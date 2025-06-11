@@ -3,13 +3,15 @@
   @if (policies()?.length === 0) {
     <p>You have no active policies.</p>
   }
-
   @else {
-    <mat-grid-list cols="3" rowHeight="5:3">
-      <mat-grid-tile *ngFor="let policy of policies()">
-        <app-card-item-policy [policy]="policy"></app-card-item-policy>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <div class="row-container">
+      @for (policy of policies(); track policy.id) {
+        <app-card-item-policy
+          [policy]="policy"
+          class="row-item-3">
+      </app-card-item-policy>
+      }
+    </div>
   }
 
 }

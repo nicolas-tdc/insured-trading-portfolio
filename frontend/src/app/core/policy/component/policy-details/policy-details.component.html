@@ -1,18 +1,19 @@
-<mat-card *ngIf="policy()">
+@if (policy()) {
+    <mat-card>
 
-    <mat-card-header *ngIf="policy()?.policyType">
-        <mat-card-title>{{ policy()?.policyType }}</mat-card-title>
-    </mat-card-header>
+        <mat-card-header>
+            <mat-card-title>{{ policy()?.policyType }}</mat-card-title>
+        </mat-card-header>
 
-    <mat-chip-set>
-        <mat-chip *ngIf="policy()?.policyStatus">
-            {{ policy()?.policyStatus }}</mat-chip>
-    </mat-chip-set>
+        <mat-chip-set>
+            <mat-chip>{{ policy()?.policyStatus }}</mat-chip>
+        </mat-chip-set>
 
-    <mat-card-content>
-        <p>Coverage: {{ policy()?.coverageAmount }}</p>
-        <p>Premium: {{ policy()?.premium }}</p>
-        <p>Account: {{ policy()?.accountNumber }}</p>
-    </mat-card-content>
+        <mat-card-content>
+            <p>Coverage: {{ policy()?.coverageAmount }}</p>
+            <p>Premium: {{ policy()?.premium }}</p>
+            <p>Account: {{ policy()?.accountNumber }}</p>
+        </mat-card-content>
 
-</mat-card>
+    </mat-card>
+}

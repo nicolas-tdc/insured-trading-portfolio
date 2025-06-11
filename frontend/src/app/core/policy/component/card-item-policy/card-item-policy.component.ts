@@ -43,6 +43,14 @@ export class CardItemPolicyComponent {
     this.tooltipText = 'Copied!';
   }
 
+  copyAccountNumber() {
+    const accountNumber = this.policy()?.accountNumber;
+    if (!accountNumber) return;
+
+    this.clipboard.copy(accountNumber);
+    this.tooltipText = 'Copied!';
+  }
+
   resetTooltip() {
     this.tooltipText = 'Copy to clipboard';
   }

@@ -1,34 +1,57 @@
-<mat-card>
+@if (policy()) {
+    <mat-card class="col-container">
 
-    <mat-card-header>
-        <mat-card-title>{{ policy()?.policyNumber }}</mat-card-title>
+        <mat-card-header>
+            <mat-chip-set>
+                <mat-chip>{{ policy()?.policyStatus }}</mat-chip>
+                <mat-chip>{{ policy()?.policyType }}</mat-chip>
+            </mat-chip-set> 
+        </mat-card-header>
 
-        <button mat-raised-button
-            matTooltip="Copy Policy Number to clipboard"
-            aria-label="Button to copy Policy Number to clipboard"
-            (click)="copyPolicyNumber()"
-            (mouseleave)="resetTooltip()">
-            <mat-icon>content_copy</mat-icon>
-        </button>
-    </mat-card-header>
+        <mat-card-content>
+            <div class="row-container">
+                <div>
+                    <p>Policy Number</p>
+                    <button mat-raised-button
+                        class="btn-card"
+                        matTooltip="Copy Policy Number to clipboard"
+                        aria-label="Button to copy Policy Number to clipboard"
+                        (click)="copyPolicyNumber()"
+                        (mouseleave)="resetTooltip()">
+                        <mat-icon>content_copy</mat-icon>
+                        {{ policy()?.policyNumber }}
+                    </button>
+                </div>
 
-    <mat-chip-set>
-        <mat-chip>{{ policy()?.policyStatus }}</mat-chip>
-        <mat-chip>{{ policy()?.policyType }}</mat-chip>
-    </mat-chip-set>
+                <div>
+                    <p>Account Number</p>
+                    <button mat-raised-button
+                        class="btn-card"
+                        matTooltip="Copy Account Number to clipboard"
+                        aria-label="Button to copy Account Number to clipboard"
+                        (click)="copyAccountNumber()"
+                        (mouseleave)="resetTooltip()">
+                        <mat-icon>content_copy</mat-icon>
+                        {{ policy()?.accountNumber }}
+                    </button>
+                </div>
+            </div>
 
-    <mat-card-content>
-        <p>Coverage: {{ policy()?.coverageAmount }}</p>
-        <p>Premium: {{ policy()?.premium }}</p>
-        <p>Account: {{ policy()?.accountNumber }}</p>
-    </mat-card-content>
+            <mat-card-title>
+                <h3>Premium: {{ policy()?.premium?.toFixed(2) }}</h3>
+            </mat-card-title>
+        </mat-card-content>
 
-    <mat-card-actions>
-        <button mat-flat-button
-        [disabled]="policy()?.policyStatus !== 'ACTIVE'"
-        routerLink="/policy/{{ policy()?.id }}">
-            View Details
-        </button>
-    </mat-card-actions>
+        <mat-card-footer>
+            <mat-card-actions>
+                <button mat-stroked-button
+                class="btn-card"
+                [disabled]="policy()?.policyStatus !== 'ACTIVE'"
+                routerLink="/policy/{{ policy()?.id }}">
+                    View Details
+                </button>
+            </mat-card-actions>
+        </mat-card-footer>
 
-</mat-card>
+    </mat-card>
+}

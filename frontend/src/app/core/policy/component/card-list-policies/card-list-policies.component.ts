@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { CardItemPolicyComponent } from '../card-item-policy/card-item-policy.component';
 import { Policy } from '../../model';
 
@@ -9,7 +8,6 @@ import { Policy } from '../../model';
   imports: [
     CommonModule,
     CardItemPolicyComponent,
-    MatGridListModule,
   ],
   templateUrl: './card-list-policies.component.html',
   styleUrl: './card-list-policies.component.scss'
