@@ -1,5 +1,8 @@
 package com.insurancebanking.platform.core.service;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class BaseEntityService {
 
     public String generateEntityPublicIdentifier(String prefix) {
