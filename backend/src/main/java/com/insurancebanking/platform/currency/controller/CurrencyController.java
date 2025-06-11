@@ -22,13 +22,11 @@ public class CurrencyController {
 
     @GetMapping(value="", produces="application/json")
     public ResponseEntity<?> getCurrencies() {
-
-        String errorMessage = "Error getting currencies";
         try {
-
-            return ResponseEntity.ok(currencyService.getCurrencies());
+            return ResponseEntity.ok(currencyService.getList());
 
         } catch (Exception e) {
+            String errorMessage = "Error getting currencies";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
