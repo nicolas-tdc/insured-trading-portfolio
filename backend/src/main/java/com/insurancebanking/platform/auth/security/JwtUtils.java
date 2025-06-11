@@ -79,6 +79,7 @@ public class JwtUtils {
             }
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e) {
             logger.error("Error extracting roles from token", e);
+
             return List.of();
         }
     }
@@ -86,7 +87,9 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
+
             return true;
+
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {

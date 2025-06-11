@@ -51,21 +51,21 @@ public class AuthController {
     @PostMapping(value="/signin", produces="application/json")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
-        String errorMessage = "Error signing in";
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(
+                    loginRequest.getEmail(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
             UserResponse userResponse = UserResponse.from(userDetails);
 
             return ResponseEntity.ok(new JwtResponse(jwt, userResponse));
 
         } catch (Exception e) {
+            String errorMessage = "Error signing in";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
@@ -75,11 +75,12 @@ public class AuthController {
 
     @PostMapping(value="/signup", produces="application/json")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
-
-        String errorMessage = "Error signing up";
         try {
             if (userService.existsByEmail(signUpRequest.getEmail())) {
-                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage + ": Email is already taken"));
+                String errorMessage = "Error signing up: Email is already taken";
+                logger.error(errorMessage);
+
+                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
             }
 
             // Create new user's account
@@ -89,8 +90,11 @@ public class AuthController {
                     signUpRequest.getLastName());
 
             Role customerRole = roleService.findByName("ROLE_CUSTOMER");
-            if (customerRole == null) {
-                throw new RuntimeException("Error: Customer role is not found during signup.");
+            if (customerRole == null) {        
+                String errorMessage = "Error: role customer not found";
+                logger.error(errorMessage);
+
+                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
             }
 
             Set<Role> roles = new HashSet<>();
@@ -102,6 +106,7 @@ public class AuthController {
             return ResponseEntity.ok(new MessageResponse("User registered successfully"));
 
         } catch (Exception e) {
+            String errorMessage = "Error signing up";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
