@@ -3,12 +3,11 @@
   (ngSubmit)="login()"
 >
 
-  <h3>Login</h3>
+  <h2>Login</h2>
 
   <p style="font-style: italic;">(*) Required fields</p>
 
-  <mat-form-field>
-
+  <mat-form-field class="form-field-basic">
     <mat-label>Email</mat-label>
 
     <input matInput type="email" formControlName="email">
@@ -19,11 +18,9 @@
     @if (loginForm.get('email')?.hasError('email')) {
       <mat-error>Email is invalid</mat-error>
     }
-
   </mat-form-field>
 
-  <mat-form-field>
-
+  <mat-form-field class="form-field-basic">
     <mat-label>Password</mat-label>
 
     <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
@@ -45,8 +42,8 @@
     @if (loginForm.get('password')?.hasError('maxlength')) {
       <mat-error>Password must be at most 32 characters</mat-error>
     }
-    <mat-hint align="end">4-32 characters</mat-hint>
 
+    <mat-hint align="end">4-32 characters</mat-hint>
   </mat-form-field>
 
   <button mat-flat-button [disabled]="!loginForm.valid" type="submit">

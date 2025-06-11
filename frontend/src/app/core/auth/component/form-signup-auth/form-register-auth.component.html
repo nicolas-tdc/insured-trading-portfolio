@@ -3,13 +3,15 @@
   (ngSubmit)="register()"
 >
 
-  <h3>Register</h3>
+  <h2>Register</h2>
 
   <p style="font-style: italic;">(*) Required fields</p>
 
-  <mat-form-field>
+  <mat-form-field class="form-field-basic">
     <mat-label>First Name</mat-label>
+
     <input matInput type="text" formControlName="firstName">
+
     @if (registerForm.get('firstName')?.hasError('required')) {
       <mat-error>First Name is required</mat-error>
     }
@@ -21,9 +23,11 @@
     }
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="form-field-basic">
     <mat-label>Last Name</mat-label>
+
     <input matInput type="text" formControlName="lastName">
+
     @if (registerForm.get('lastName')?.hasError('required')) {
       <mat-error>Last Name is required</mat-error>
     }
@@ -35,8 +39,9 @@
     }
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="form-field-basic">
     <mat-label>Email</mat-label>
+
     <input matInput type="email" formControlName="email">
     @if (registerForm.get('email')?.hasError('required')) {
       <mat-error>Email is required</mat-error>
@@ -46,7 +51,7 @@
     }
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="form-field-basic">
     <mat-label>Password</mat-label>
 
     <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
@@ -68,6 +73,7 @@
     @if (registerForm.get('password')?.hasError('maxlength')) {
       <mat-error>Password must be at most 32 characters</mat-error>
     }
+
     <mat-hint align="end">4-32 characters</mat-hint>
   </mat-form-field>
 
