@@ -62,7 +62,7 @@ public class TransferService {
         if (sourceAccount.getId().equals(targetAccount.getId())) {
             return "Source and target accounts must be different";
         }
-        if (sourceAccount.getCurrency() != targetAccount.getCurrency()) {
+        if (sourceAccount.getCurrencyCode() != targetAccount.getCurrencyCode()) {
             return "Source and target accounts must be in the same currency";
         }
         
