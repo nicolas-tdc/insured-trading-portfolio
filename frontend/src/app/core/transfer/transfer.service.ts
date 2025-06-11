@@ -2,6 +2,9 @@ import { computed, Injectable, resource, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Transfer, TransferRequest } from './model';
+import { FormRequestTransferComponent } from './component/form-request-transfer/form-request-transfer.component';
+import { AccountService } from '../account/service/account.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({ providedIn: 'root' })
 export class TransferService {
@@ -47,6 +50,8 @@ export class TransferService {
 
   constructor(
     private http: HttpClient,
+    private accountService: AccountService,
+    private dialog: MatDialog,
   ) { }
 
   // API
@@ -59,5 +64,21 @@ export class TransferService {
     if (!accountId) { return new Observable<Transfer[]>(observer => observer.next([])); }
 
     return this.http.get<Transfer[]>(`${this.apiUrl}/account/${accountId}`);
+  }
+
+  openCreateTransferFormDialog(account: any) {
+    if (!account) return;
+
+    const dialogRef = this.dialog.open(FormRequestTransferComponent, {
+      width: '600px',
+      height: '400px',
+      data: account
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === 'completed') {
+        this.accountService.reloadUserAccount();
+      }
+    });
   }
 }

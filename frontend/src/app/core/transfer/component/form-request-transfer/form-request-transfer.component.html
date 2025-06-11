@@ -1,67 +1,69 @@
-<form
-  *ngIf="account"
-  [formGroup]="transferForm"
-  (ngSubmit)="createTransfer()"
->
+@if (account) {
+  <form
+    [formGroup]="transferForm"
+    (ngSubmit)="createTransfer()">
 
-  <h2>Transfer</h2>
+    <h2>Transfer</h2>
 
-  <mat-form-field>
-    <mat-label>Target Account Number</mat-label>
+    <div class="col-container">
+      <mat-form-field class="form-field-basic">
+        <mat-label>Target Account Number</mat-label>
 
-    <input matInput
-      formControlName="targetAccountNumber"
-      maxlength="12"
-      placeholder="Ex: 4044b113-44a"
-    />
+        <input matInput
+          formControlName="targetAccountNumber"
+          maxlength="12"
+          placeholder="Ex: 4044b113-44a" />
 
-    <mat-error *ngIf="transferForm.get('targetAccountNumber')?.hasError('required')">
-      Target Account Number is required
-    </mat-error>
-    <mat-error *ngIf="
-      transferForm.get('targetAccountNumber')?.hasError('minlength')
-      || transferForm.get('targetAccountNumber')?.hasError('maxlength')">
-      Target Account Number must be 12 characters
-    </mat-error>
+        @if (transferForm.get('targetAccountNumber')?.hasError('required')) {
+          <mat-error>Target Account Number is required</mat-error>
+        }
+        @if (transferForm.get('targetAccountNumber')?.hasError('minlength')
+          || transferForm.get('targetAccountNumber')?.hasError('maxlength')) {
+          <mat-error>Target Account Number must be 12 characters</mat-error>
+        }
 
-    <mat-hint align="end">12 characters</mat-hint>
-  </mat-form-field>
+        <mat-hint align="end">12 characters</mat-hint>
+      </mat-form-field>
+    </div>
 
-  <mat-form-field>
-    <mat-label>Amount</mat-label>
+    <div class="col-container">
+      <mat-form-field class="form-field-basic">
+        <mat-label>Amount</mat-label>
 
-    <input matInput
-      formControlName="amount"
-      placeholder="Ex: 100"
-    />
+        <input matInput
+          formControlName="amount"
+          placeholder="Ex: 100" />
 
-    <mat-error *ngIf="transferForm.get('amount')?.hasError('required')">
-      Amount is required
-    </mat-error>
-    <mat-error *ngIf="transferForm.get('amount')?.hasError('pattern')">
-      Amount must be a positive number
-    </mat-error>
-    <mat-error *ngIf="transferForm.get('amount')?.hasError('max')">
-      Amount must be less than or equal to your balance
-    </mat-error>
+        @if (transferForm.get('amount')?.hasError('required')) {
+          <mat-error>Amount is required</mat-error>
+        }
+        @if (transferForm.get('amount')?.hasError('pattern')) {
+          <mat-error>Amount must be a positive number</mat-error>
+        }
+        @if (transferForm.get('amount')?.hasError('max')) {
+          <mat-error>Amount must be less than or equal to your balance</mat-error>
+        }
+      </mat-form-field>
+    </div>
 
-  </mat-form-field>
+    <div class="col-container">
+      <mat-form-field class="form-field-basic">
+        <mat-label>Description</mat-label>
 
-  <mat-form-field>
-    <mat-label>Description</mat-label>
+        <input matInput
+          formControlName="description"
+          placeholder="Optional" />
+      </mat-form-field>
+    </div>
 
-    <input matInput
-      formControlName="description"
-      placeholder="Optional"
-    />
+    <div class="col-container">
+      <button mat-flat-button
+        class="btn-basic"
+        [disabled]="!transferForm.valid || account.accountStatus !== 'ACTIVE'"
+        type="submit">
+        Transfer
+      </button>
+    </div>
 
-  </mat-form-field>
-
-  <button mat-flat-button
-    [disabled]="!transferForm.valid || account.accountStatus !== 'ACTIVE'"
-    type="submit"
-  >
-    Transfer
-  </button>
-
-</form>
+  </form>
+}
