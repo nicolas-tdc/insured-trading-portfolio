@@ -44,11 +44,9 @@ public class AccountController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody @NonNull AccountRequest request) {
 
-        String errorMessage = "Error creating account";
         try {
             // Create account
             Account account = accountService.create(request, userDetails.getId());
-
             // Create new account URI
             URI location = new URI("/api/account/" + account.getId());
 
@@ -56,12 +54,14 @@ public class AccountController {
                 .body(AccountResponse.from(account));
 
         } catch (URISyntaxException e) {
+            String errorMessage = "Error creating account URI";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
                 .body(new MessageResponse(errorMessage));
 
         } catch (Exception e) {
+            String errorMessage = "Error creating account";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -73,11 +73,9 @@ public class AccountController {
     public ResponseEntity<?> getUserAccounts(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        String errorMessage = "Error getting user accounts";
         try {
             // Get user's accounts
             List<Account> accounts = accountService.getUserAccounts(userDetails.getId());
-
             // Get accounts responses
             List<AccountResponse> responses = accounts.stream()
                 .map(AccountResponse::from)
@@ -86,6 +84,7 @@ public class AccountController {
             return ResponseEntity.ok(responses);
 
         } catch (Exception e) {
+            String errorMessage = "Error getting user accounts";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -98,21 +97,22 @@ public class AccountController {
         @PathVariable @NonNull UUID accountId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        String errorMessage = "Error getting account";
         try {
             // Check if account exists
             Account account = accountService.getUserAccountById(
                 accountId, userDetails.getId());
             if (account == null) {
-                logger.error("{}", errorMessage);
+                String errorMessage = "Error getting account: Account not found";
+                logger.error(errorMessage);
 
                 return ResponseEntity.badRequest()
-                    .body(new MessageResponse(errorMessage + ": Account not found"));
+                    .body(new MessageResponse(errorMessage));
             }
 
             return ResponseEntity.ok(AccountResponse.from(account));
 
         } catch (Exception e) {
+            String errorMessage = "Error getting account";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -123,12 +123,12 @@ public class AccountController {
     @GetMapping(value="/type", produces="application/json")
     public ResponseEntity<?> getAccountTypes() {
 
-        String errorMessage = "Error getting account types";
         try {
-
             return ResponseEntity.ok(accountService.getAccountTypes());
 
         } catch (Exception e) {
+            String errorMessage = "Error getting account types";
+            logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
                 .body(new MessageResponse(errorMessage));
