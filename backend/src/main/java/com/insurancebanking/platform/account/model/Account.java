@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.core.model.BaseEntity;
-import com.insurancebanking.platform.currency.model.Currency;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.transfer.model.Transfer;
 
@@ -52,10 +51,8 @@ public class Account extends BaseEntity {
     @Builder.Default
     private AccountStatus accountStatus = AccountStatus.PENDING;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name = "currency_id", nullable = false)
-    private Currency currency;
+    @Column(name = "currency_code", unique = true, nullable = false)
+    private String currencyCode;
 
     @Column(name = "account_number", unique = true, nullable = false)
     private String accountNumber;
@@ -90,7 +87,7 @@ public class Account extends BaseEntity {
                 "id=" + id +
                 "user.email='" + user.getEmail() + "'" +
                 ", accountType='" + accountType + "'" +
-                ", currency='" + currency + "'" +
+                ", currencyCode='" + currencyCode + "'" +
                 ", accountNumber='" + accountNumber + "'" +
                 ", balance=" + balance +
                 ", accountStatus='" + accountStatus + "'" +

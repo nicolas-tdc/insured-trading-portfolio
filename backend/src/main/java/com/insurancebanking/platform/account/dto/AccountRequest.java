@@ -1,7 +1,5 @@
 package com.insurancebanking.platform.account.dto;
 
-import java.util.UUID;
-
 import com.insurancebanking.platform.account.model.AccountType;
 
 import jakarta.validation.constraints.NotNull;
@@ -14,15 +12,15 @@ public class AccountRequest {
     private AccountType accountType;
 
     @NotNull(message = "Currency is required")
-    private UUID currencyId;
+    private String currencyCode;
 
     // Getters
 
     public AccountType getAccountType() { return accountType; }
-    public UUID getCurrencyId() { return currencyId; }
+    public String getCurrencyCode() { return currencyCode; }
 
     // Setters
 
     public void setAccountType(AccountType value) { this.accountType = value; }
-    public void setCurrencyId(UUID value) { this.currencyId = value; }
+    public void setCurrencyCode(String value) { this.currencyCode = value; }
 }

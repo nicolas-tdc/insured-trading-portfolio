@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import com.insurancebanking.platform.account.dto.AccountRequest;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.model.AccountStatus;
@@ -20,8 +18,6 @@ import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 import com.insurancebanking.platform.core.service.BaseEntityService;
-import com.insurancebanking.platform.currency.model.Currency;
-import com.insurancebanking.platform.currency.repository.CurrencyRepository;
 
 @Service
 @Transactional
@@ -32,9 +28,6 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private CurrencyRepository currencyRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,16 +56,12 @@ public class AccountService {
             .orElseThrow(() -> new UsernameNotFoundException(
                 "User not found during account creation"));
 
-        Currency currency = currencyRepository.findById(request.getCurrencyId())
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Currency not found during account creation"));
-
         Account account = Account.builder()
             .user(user)
             .accountStatus(AccountStatus.ACTIVE)
             .accountNumber(generateAccountNumber())
             .accountType(request.getAccountType())
-            .currency(currency)
+            .currencyCode(request.getCurrencyCode())
             .balance(BigDecimal.valueOf(0.0))
             .build();
 
