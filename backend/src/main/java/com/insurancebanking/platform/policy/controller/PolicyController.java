@@ -39,8 +39,6 @@ public class PolicyController {
     public ResponseEntity<?> createPolicy(
         @RequestBody @NonNull PolicyRequest request,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        String errorMessage = "Error creating policy";
         try {
             // Create policy
             Policy policy = policyService.create(request, userDetails.getId());
@@ -52,12 +50,14 @@ public class PolicyController {
                 .body(PolicyResponse.from(policy));
 
         } catch (URISyntaxException e) {
+            String errorMessage = "Error creating policy URI";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
                 .body(new MessageResponse(errorMessage));
 
         } catch (Exception e) {
+            String errorMessage = "Error creating policy";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -68,8 +68,6 @@ public class PolicyController {
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<?> getUserList(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        String errorMessage = "Error getting policies";
         try {
             // Get policies responses
             List<Policy> policies = policyService.getUserPolicies(userDetails.getId());
@@ -80,6 +78,7 @@ public class PolicyController {
             return ResponseEntity.ok(responses);
 
         } catch (Exception e) {
+            String errorMessage = "Error getting user policies";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -91,22 +90,23 @@ public class PolicyController {
     public ResponseEntity<?> getPolicy(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable @NonNull UUID policyId) {
-
-        String errorMessage = "Error getting policy";
         try {
 
             // Check if policy exists
             Policy policy = policyService.getUserPolicyById(
                 policyId, userDetails.getId());
             if (policy == null) {
+                String errorMessage = "Error getting policy: Policy not found";
+                logger.error(errorMessage);
 
                 return ResponseEntity.badRequest()
-                    .body(new MessageResponse(errorMessage + ": Policy not found"));
+                    .body(new MessageResponse(errorMessage));
             }
 
             return ResponseEntity.ok(PolicyResponse.from(policy));
 
         } catch (Exception e) {
+            String errorMessage = "Error getting policy";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
@@ -124,6 +124,7 @@ public class PolicyController {
             return ResponseEntity.ok(policyTypes);
 
         } catch (Exception e) {
+            String errorMessage = "Error getting policy types";
             logger.error("{}: {}", errorMessage, e.getMessage());
 
             return ResponseEntity.badRequest()
