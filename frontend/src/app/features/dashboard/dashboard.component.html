@@ -1,28 +1,30 @@
-<h2>Dashboard</h2>
-
 <!-- Accounts Section -->
-<h3>Accounts</h3>
+
+<h2>Accounts</h2>
 
 <!-- New Account Button -->
-<button mat-flat-button
-  (click)="openCreateAccountFormDialog()"
->
-  Open a new Account
-</button>
+<div class="col-container">
+  <button mat-flat-button
+    class="btn-basic"
+    (click)="openCreateAccountFormDialog()">
+    Open new Account
+  </button>
+</div>
 
 <!-- Accounts list -->
 <app-card-list-accounts [accounts]="accounts"></app-card-list-accounts>
 
 <!-- Policies Section -->
-<h3>Policies</h3>
+
+<h2>Policies</h2>
 
 <!-- New Policy Button -->
-<button mat-flat-button
-  (click)="openCreatePolicyFormDialog()"
-  
->
-  Subscribe to a new Policy
-</button>
+<div class="col-container">
+  <button mat-flat-button
+    class="btn-basic"
+    (click)="openCreatePolicyFormDialog()">
+    Subscribe new Policy
+  </button>
+</div>
 
-<!-- Policies list -->
-<app-card-list-policies [policies]="policies"></app-card-list-policies>
+<!-- Policies list --><app-card-list-policies [policies]="policies"></app-card-list-policies>

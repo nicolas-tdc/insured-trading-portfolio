@@ -46,7 +46,8 @@ export class DashboardComponent implements OnInit {
 
   openCreateAccountFormDialog(): void {
     const dialogRef = this.dialog.open(FormCreateAccountComponent, {
-      width: '400px',
+      width: '600px',
+      height: '400px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -58,7 +59,8 @@ export class DashboardComponent implements OnInit {
 
   openCreatePolicyFormDialog(): void {
     const dialogRef = this.dialog.open(FormCreatePolicyComponent, {
-      width: '400px',
+      width: '600px',
+      height: '400px',
       data: this.accounts
     });
 
