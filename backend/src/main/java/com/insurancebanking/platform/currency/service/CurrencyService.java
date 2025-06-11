@@ -2,17 +2,20 @@ package com.insurancebanking.platform.currency.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.insurancebanking.platform.currency.model.Currency;
-import com.insurancebanking.platform.currency.repository.CurrencyRepository;
+import com.insurancebanking.platform.currency.dto.CurrencyResponse;
 
+@Service
 public class CurrencyService {
 
-    @Autowired
-    private CurrencyRepository currencyRepository;
+    private final List<String> supportedCurrencies = List.of(
+        "EUR", "USD", "GBP"
+    );
 
-    public List<Currency> getCurrencies() {
-        return currencyRepository.findAll();
+    public List<CurrencyResponse> getList() {
+        return supportedCurrencies.stream()
+            .map(CurrencyResponse::from)
+            .toList();
     }
 }
