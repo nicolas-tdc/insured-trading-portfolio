@@ -36,13 +36,6 @@ CREATE TABLE IF NOT EXISTS user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
--- Currencies
-DROP TABLE IF EXISTS currencies CASCADE;
-CREATE TABLE IF NOT EXISTS currencies (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name VARCHAR(10) UNIQUE NOT NULL
-);
-
 -- Accounts
 DROP TABLE IF EXISTS accounts CASCADE;
 CREATE TABLE IF NOT EXISTS accounts (
@@ -50,13 +43,12 @@ CREATE TABLE IF NOT EXISTS accounts (
     user_id UUID NOT NULL,
     account_status VARCHAR(50) NOT NULL,
     account_type VARCHAR(50) NOT NULL,
-    currency_id UUID NOT NULL,
+    currency_code VARCHAR(3) NOT NULL,
     account_number VARCHAR(30) UNIQUE NOT NULL,
     balance NUMERIC(15, 2) DEFAULT 0.00,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (currency_id) REFERENCES currencies(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 DROP INDEX IF EXISTS idx_accounts_user_id;
