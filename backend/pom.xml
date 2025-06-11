@@ -15,10 +15,17 @@
 	<description>Full-stack platform for insurance &amp; banking services</description>
 	<url/>
 	<licenses>
-		<license/>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>nicolas-tdc</id>
+			<name>Nicolas Tachet</name>
+			<email>nicolas.tachetdescombes@gmail.com</email>
+		</developer>
 	</developers>
 	<scm>
 		<connection/>
