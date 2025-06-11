@@ -3,20 +3,20 @@
   < Back to Dashboard
 </button>
 
-<div *ngIf="account">
-
+@if (account) {
   <!-- Account -->
-  <app-account-details [account]="account"></app-account-details>
+  <app-account-details
+    [account]="account">
+  </app-account-details>
 
   <!-- Transfer Button -->
   <button mat-flat-button
     [disabled]="account?.accountStatus !== 'ACTIVE'"
-    (click)="openCreateTransferFormDialog()"
-  >
+    (click)="openTransferDialog()">
     Transfer
   </button>
 
   <!-- Transfers -->
-  <app-list-table-transfers></app-list-table-transfers>
-
-</div>
+  <app-list-table-transfers>
+  </app-list-table-transfers>
+}
