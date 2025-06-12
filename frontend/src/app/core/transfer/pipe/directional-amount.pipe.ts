@@ -10,11 +10,11 @@ export class DirectionalAmountPipe implements PipeTransform {
     if (!currentAccountNumber) return transfer.amount.toString();
 
     if (transfer.sourceAccountNumber === currentAccountNumber) {
-      return '-' + transfer.amount;
+      return '-' + transfer.amount + ' ' + transfer.currencySymbol;
     } else if (transfer.targetAccountNumber === currentAccountNumber) {
-      return '+' + transfer.amount;
+      return '+' + transfer.amount + ' ' + transfer.currencySymbol;
     } else {
-      return transfer.amount.toString();
+      return transfer.amount + ' ' + transfer.currencySymbol;
     }
   }
 

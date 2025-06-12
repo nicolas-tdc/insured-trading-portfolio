@@ -3,6 +3,9 @@ export interface Transfer {
   transferNumber: string;
   createdAt: Date;
   amount: number;
+  currencyCode: string;
+  currencySymbol: string;
+  currencyFractionDigits: number;
   description: string;
   sourceAccountNumber: string;
   sourceUserEmail: string;
