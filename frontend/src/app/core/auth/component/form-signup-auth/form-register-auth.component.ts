@@ -64,7 +64,8 @@ export class FormRegisterAuthComponent implements OnInit {
   register(): void {
     this.authService.register(this.registerForm.value).subscribe({
       next: res => {
-        this.router.navigate(['/login']);
+        this.registerForm.reset();
+        this.registerForm.disable();
       },
       error: err => {
         console.error(err);

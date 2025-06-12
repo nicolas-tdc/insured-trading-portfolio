@@ -1,84 +1,90 @@
 <form
   [formGroup]="registerForm"
-  (ngSubmit)="register()"
->
+  (ngSubmit)="register()">
 
   <h2>Register</h2>
 
   <p style="font-style: italic;">(*) Required fields</p>
 
-  <mat-form-field class="form-field-basic">
-    <mat-label>First Name</mat-label>
+  <div class="col-item">
 
-    <input matInput type="text" formControlName="firstName">
+    <mat-form-field class="form-field-basic">
+      <mat-label>First Name</mat-label>
 
-    @if (registerForm.get('firstName')?.hasError('required')) {
-      <mat-error>First Name is required</mat-error>
-    }
-    @if (registerForm.get('firstName')?.hasError('minlength')) {
-      <mat-error>First Name must be at least 2 characters</mat-error>
-    }
-    @if (registerForm.get('firstName')?.hasError('maxlength')) {
-      <mat-error>First Name must be at most 255 characters</mat-error>
-    }
-  </mat-form-field>
+      <input matInput type="text" formControlName="firstName">
 
-  <mat-form-field class="form-field-basic">
-    <mat-label>Last Name</mat-label>
+      @if (registerForm.get('firstName')?.hasError('required')) {
+        <mat-error>First Name is required</mat-error>
+      }
+      @if (registerForm.get('firstName')?.hasError('minlength')) {
+        <mat-error>First Name must be at least 2 characters</mat-error>
+      }
+      @if (registerForm.get('firstName')?.hasError('maxlength')) {
+        <mat-error>First Name must be at most 255 characters</mat-error>
+      }
+    </mat-form-field>
 
-    <input matInput type="text" formControlName="lastName">
+    <mat-form-field class="form-field-basic">
+      <mat-label>Last Name</mat-label>
 
-    @if (registerForm.get('lastName')?.hasError('required')) {
-      <mat-error>Last Name is required</mat-error>
-    }
-    @if (registerForm.get('lastName')?.hasError('minlength')) {
-      <mat-error>Last Name must be at least 2 characters</mat-error>
-    }
-    @if (registerForm.get('lastName')?.hasError('maxlength')) {
-      <mat-error>Last Name must be at most 255 characters</mat-error>
-    }
-  </mat-form-field>
+      <input matInput type="text" formControlName="lastName">
 
-  <mat-form-field class="form-field-basic">
-    <mat-label>Email</mat-label>
+      @if (registerForm.get('lastName')?.hasError('required')) {
+        <mat-error>Last Name is required</mat-error>
+      }
+      @if (registerForm.get('lastName')?.hasError('minlength')) {
+        <mat-error>Last Name must be at least 2 characters</mat-error>
+      }
+      @if (registerForm.get('lastName')?.hasError('maxlength')) {
+        <mat-error>Last Name must be at most 255 characters</mat-error>
+      }
+    </mat-form-field>
 
-    <input matInput type="email" formControlName="email">
-    @if (registerForm.get('email')?.hasError('required')) {
-      <mat-error>Email is required</mat-error>
-    }
-    @if (registerForm.get('email')?.hasError('email')) {
-      <mat-error>Email is invalid</mat-error>
-    }
-  </mat-form-field>
+    <mat-form-field class="form-field-basic">
+      <mat-label>Email</mat-label>
 
-  <mat-form-field class="form-field-basic">
-    <mat-label>Password</mat-label>
+      <input matInput type="email" formControlName="email">
+      @if (registerForm.get('email')?.hasError('required')) {
+        <mat-error>Email is required</mat-error>
+      }
+      @if (registerForm.get('email')?.hasError('email')) {
+        <mat-error>Email is invalid</mat-error>
+      }
+    </mat-form-field>
 
-    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+    <mat-form-field class="form-field-basic">
+      <mat-label>Password</mat-label>
 
-    <button mat-icon-button
-    matSuffix
-    (click)="hidePassword = !hidePassword"
-    [attr.aria-label]="'Hide password'"
-    type="button">
-      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+
+      <button mat-icon-button
+      matSuffix
+      (click)="hidePassword = !hidePassword"
+      [attr.aria-label]="'Hide password'"
+      type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+
+      @if (registerForm.get('password')?.hasError('required')) {
+        <mat-error>Password is required</mat-error>
+      }
+      @if (registerForm.get('password')?.hasError('minlength')) {
+        <mat-error>Password must be at least 8 characters</mat-error>
+      }
+      @if (registerForm.get('password')?.hasError('maxlength')) {
+        <mat-error>Password must be at most 32 characters</mat-error>
+      }
+
+      <mat-hint align="end">4-32 characters</mat-hint>
+    </mat-form-field>
+
+  </div>
+
+  <div class="col-item">
+
+    <button mat-flat-button [disabled]="!registerForm.valid" type="submit">
+      Register
     </button>
 
-    @if (registerForm.get('password')?.hasError('required')) {
-      <mat-error>Password is required</mat-error>
-    }
-    @if (registerForm.get('password')?.hasError('minlength')) {
-      <mat-error>Password must be at least 8 characters</mat-error>
-    }
-    @if (registerForm.get('password')?.hasError('maxlength')) {
-      <mat-error>Password must be at most 32 characters</mat-error>
-    }
-
-    <mat-hint align="end">4-32 characters</mat-hint>
-  </mat-form-field>
-
-  <button mat-flat-button [disabled]="!registerForm.valid" type="submit">
-    Register
-  </button>
-
+  </div>
 </form>
