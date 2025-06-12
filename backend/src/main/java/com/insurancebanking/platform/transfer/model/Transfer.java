@@ -53,6 +53,9 @@ public class Transfer extends BaseEntity {
     @Column(name = "transfer_number", unique = true, nullable = false)
     private String transferNumber;
 
+    @Column(name = "currency_code", nullable = false)
+    private String currencyCode;
+
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;
 
@@ -63,12 +66,13 @@ public class Transfer extends BaseEntity {
     public String toString() {
         return "Transfer{" + 
                 "id=" + id +
-                ", transferNumber='" + transferNumber + '\'' +
-                ", transferStatus=" + transferStatus +
-                ", sourceAccount" + sourceAccount.getAccountNumber() +
-                ", targetAccount" + targetAccount.getAccountNumber() +
-                ", amount=" + amount +
-                ", description='" + description + '\'' +
+                ", transferNumber='" + transferNumber + "'" +
+                ", transferStatus=" + transferStatus + "'" +
+                ", sourceAccount" + sourceAccount.getAccountNumber() + "'" +
+                ", targetAccount" + targetAccount.getAccountNumber() + "'" +
+                ", currencyCode='" + currencyCode + '\'' + "'" +
+                ", amount=" + amount + "'" +
+                ", description='" + description + "'" +
                 '}';
     }
 }

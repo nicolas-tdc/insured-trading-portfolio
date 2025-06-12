@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS transfers (
     transfer_number VARCHAR(30) UNIQUE NOT NULL,
     source_account_id UUID NOT NULL,
     target_account_id UUID NOT NULL,
+    currency_code VARCHAR(3) NOT NULL,
     amount NUMERIC(15, 2) NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW(),

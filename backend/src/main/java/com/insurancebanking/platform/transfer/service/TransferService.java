@@ -82,6 +82,7 @@ public class TransferService {
         Transfer transfer = Transfer.builder()
                 .transferStatus(TransferStatus.PENDING)
                 .transferNumber(generateTransferNumber())
+                .currencyCode(sourceAccount.getCurrencyCode())
                 .sourceAccount(sourceAccount)
                 .targetAccount(targetAccount)
                 .amount(amount)
