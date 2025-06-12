@@ -68,6 +68,7 @@ public class PolicyService {
             .policyStatus(PolicyStatus.PENDING)
             .policyNumber(generatePolicyNumber())
             .policyType(policyType)
+            .currencyCode(account.getCurrencyCode())
             .coverageAmount(coverageAmount)
             .premium(calculatePremium(policyType, coverageAmount))
             .startDate(LocalDateTime.now())

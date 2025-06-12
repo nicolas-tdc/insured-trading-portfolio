@@ -49,6 +49,9 @@ public class Policy extends BaseEntity {
     @Column(name = "policy_number", unique = true, nullable = false)
     private String policyNumber;
 
+    @Column(name = "currency_code", nullable = false)
+    private String currencyCode;
+
     @Column(name = "coverage_amount")
     private Double coverageAmount;
 
@@ -70,6 +73,7 @@ public class Policy extends BaseEntity {
                 ", policyType=" + policyType +
                 ", policyStatus=" + policyStatus +
                 ", policyNumber=" + policyNumber +
+                ", currencyCode=" + currencyCode +
                 ", coverageAmount=" + coverageAmount +
                 ", premium=" + premium +
                 ", startDate=" + startDate +

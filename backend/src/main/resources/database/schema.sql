@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS policies (
     policy_status VARCHAR(50) NOT NULL,
     policy_type VARCHAR(50) NOT NULL,
     policy_number VARCHAR(30) UNIQUE NOT NULL,
+    currency_code VARCHAR(3) NOT NULL,
     coverage_amount NUMERIC(15, 2),
     premium NUMERIC(10, 2) NOT NULL,
     start_date DATE,
