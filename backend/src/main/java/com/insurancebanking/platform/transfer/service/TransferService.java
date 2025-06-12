@@ -39,14 +39,16 @@ public class TransferService {
         Account sourceAccount = getSourceAccountFromRequest(request, userId);
         Account targetAccount = getTargetAccountFromRequest(request);
 
+        // Ensure accounts are valid
         if (sourceAccount == null) {
             return "Invalid source account";
         }
         if (targetAccount == null) {
             return "Invalid target account";
         }
+        // Ensure accounts are active
         if (sourceAccount.getAccountStatus() != AccountStatus.ACTIVE) {
-                return "Source account is not active";
+            return "Source account is not active";
         }
         if (targetAccount.getAccountStatus() != AccountStatus.ACTIVE) {
             return "Target account is not active";
@@ -55,6 +57,7 @@ public class TransferService {
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             return "Amount must be positive";
         }
+        // Ensure balance is sufficient
         if (sourceAccount.getBalance().compareTo(request.getAmount()) < 0) {
             return "Insufficient balance";
         }
@@ -62,8 +65,9 @@ public class TransferService {
         if (sourceAccount.getId().equals(targetAccount.getId())) {
             return "Source and target accounts must be different";
         }
-        if (sourceAccount.getCurrencyCode() != targetAccount.getCurrencyCode()) {
-            return "Source and target accounts must be in the same currency";
+        // Ensure accounts have the same currency
+        if (!sourceAccount.getCurrencyCode().equals(targetAccount.getCurrencyCode())) {
+            return "Source and target accounts must have the same currency";
         }
         
         return null;
