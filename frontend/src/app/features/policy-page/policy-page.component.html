@@ -1,5 +1,17 @@
-<button mat-flat-button [routerLink]="['/dashboard']" routerLinkActive="router-link-active">
+<!-- Back to Dashboard -->
+<button mat-stroked-button
+  [routerLink]="['/dashboard']"
+  routerLinkActive="router-link-active">
   < Back to Dashboard
 </button>
 
-<app-policy-details [policy]="policy"></app-policy-details>
+@if (policy) {
+  <!-- Policy Details -->
+  <app-policy-details
+    [policy]="policy"
+    class="col-item">
+  </app-policy-details>
+}
+@else {
+  <p>Policy not found.</p>
+}
