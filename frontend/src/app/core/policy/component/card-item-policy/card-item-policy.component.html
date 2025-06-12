@@ -1,5 +1,5 @@
 @if (policy()) {
-    <mat-card class="col-container">
+    <mat-card class="col-item">
 
         <mat-card-header>
             <mat-chip-set>
@@ -9,37 +9,28 @@
         </mat-card-header>
 
         <mat-card-content>
-            <div class="row-container">
-                <div>
-                    <p>Policy Number</p>
-                    <button mat-raised-button
-                        class="btn-card"
-                        matTooltip="Copy Policy Number to clipboard"
-                        aria-label="Button to copy Policy Number to clipboard"
-                        (click)="copyPolicyNumber()"
-                        (mouseleave)="resetTooltip()">
-                        <mat-icon>content_copy</mat-icon>
-                        {{ policy()?.policyNumber }}
-                    </button>
-                </div>
-
-                <div>
-                    <p>Account Number</p>
-                    <button mat-raised-button
-                        class="btn-card"
-                        matTooltip="Copy Account Number to clipboard"
-                        aria-label="Button to copy Account Number to clipboard"
-                        (click)="copyAccountNumber()"
-                        (mouseleave)="resetTooltip()">
-                        <mat-icon>content_copy</mat-icon>
-                        {{ policy()?.accountNumber }}
-                    </button>
-                </div>
+            <div class="col-item">
+                <p>Policy Number</p>
+            </div>
+            <div class="col-item">
+                <app-copy-to-clipboard [content]="policy()?.policyNumber">
+                </app-copy-to-clipboard>
+            </div>
+            <div class="col-item">
+                <p>Account Number</p>
+            </div>
+            <div class="col-item">
+                <app-copy-to-clipboard [content]="policy()?.accountNumber">
+                </app-copy-to-clipboard>
             </div>
 
             <mat-card-title>
                 <h3>Premium: {{ policy()?.premium?.toFixed(2) }}</h3>
             </mat-card-title>
+
+            <mat-card-subtitle>
+                <p>Coverage: {{ policy()?.coverageAmount }}</p>
+            </mat-card-subtitle>
         </mat-card-content>
 
         <mat-card-footer>

@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 
 @Component({
   selector: 'app-card-item-policy',
@@ -17,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatChipsModule,
     MatIconModule,
     MatTooltipModule,
+    CopyToClipboardComponent,
   ],
   templateUrl: './card-item-policy.component.html',
   styleUrl: './card-item-policy.component.scss'
