@@ -1,5 +1,5 @@
 @if (account()) {
-    <mat-card class="col-container">
+    <mat-card class="col-item">
 
         <mat-card-header>
             <mat-chip-set>
@@ -10,15 +10,8 @@
 
         <mat-card-content>
             <p>Account Number</p>
-            <button mat-raised-button
-                class="btn-card"
-                matTooltip="Copy Account Number to clipboard"
-                aria-label="Button to copy Account Number to clipboard"
-                (click)="copyAccountNumber()"
-                (mouseleave)="resetTooltip()">
-                <mat-icon>content_copy</mat-icon>
-                {{ account()?.accountNumber }}
-            </button>
+            <app-copy-to-clipboard [content]="account()?.accountNumber">
+            </app-copy-to-clipboard>
 
             <mat-card-title>
                 <h3>{{ account()?.balance }} {{ account()?.currencySymbol }}</h3>
@@ -38,7 +31,7 @@
 
             <!-- Transfer Button -->
             <mat-card-actions>
-                <button mat-stroked-button
+                <button mat-flat-button
                     class="btn-card"
                     [disabled]="account()?.accountStatus !== 'ACTIVE'"
                     (click)="openTransferDialog()">

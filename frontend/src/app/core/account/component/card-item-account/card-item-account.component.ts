@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TransferService } from '../../../transfer/transfer.service';
+import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 
 @Component({
   selector: 'app-card-item-account',
@@ -20,6 +21,7 @@ import { TransferService } from '../../../transfer/transfer.service';
     MatChipsModule,
     MatIconModule,
     MatTooltipModule,
+    CopyToClipboardComponent,
   ],
   templateUrl: './card-item-account.component.html',
   styleUrl: './card-item-account.component.scss'
@@ -53,7 +55,7 @@ export class CardItemAccountComponent {
     this.tooltipText = 'Copy to clipboard';
   }
 
-  openTransferDialog() {
+  openTransferDialog(): void {
     this.transferService.openCreateTransferFormDialog(this.account());
   }
 }
