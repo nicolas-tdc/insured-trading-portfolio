@@ -1,33 +1,29 @@
 @use '../../../themes/base-theme/styles/mixins' as *;
 
 .mid-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto 0;
+    @include center-flex();
+    text-align: center;
+    margin: auto 0;
 }
 
-.col-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto 0;
-  flex-wrap: wrap;
-  gap: 10px;
-  max-width: 100%;
+.col-item {
+    @include col-flex-wrap();
+    margin: auto 0;
+    max-width: 100%;
+    gap: 10px;
 }
 
 .row-container {
-    display: flex;
-    flex-wrap: wrap;
+    @include row-flex-wrap();
     margin: 0 auto;
 }
 
+.row-item-2 {
+    @include row-item(48%, 1%);
+}
+
 .row-item-3 {
-  flex: 1 1 calc(32% - 10px);
-  box-sizing: border-box;
-  margin: 10px;
-  max-width: calc(32% - 10px);
+    @include row-item(31%, 1%);
 }
 
 .btn-basic {
@@ -41,7 +37,8 @@
 }
 
 .form-field-basic {
-    width: 50%;
+    margin: 2% 0;
+    width: 60%;
 }
 
 h1, h2, h3, h4, h5, h6, p {
