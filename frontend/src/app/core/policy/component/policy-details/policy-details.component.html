@@ -1,18 +1,37 @@
 @if (policy()) {
-    <mat-card>
+    <mat-card class="col-item">
 
         <mat-card-header>
-            <mat-card-title>{{ policy()?.policyType }}</mat-card-title>
+            <mat-chip-set>
+                <mat-chip>{{ policy()?.policyStatus }}</mat-chip>
+                <mat-chip>{{ policy()?.policyType }}</mat-chip>
+            </mat-chip-set> 
         </mat-card-header>
 
-        <mat-chip-set>
-            <mat-chip>{{ policy()?.policyStatus }}</mat-chip>
-        </mat-chip-set>
-
         <mat-card-content>
-            <p>Coverage: {{ policy()?.coverageAmount }}</p>
-            <p>Premium: {{ policy()?.premium }}</p>
-            <p>Account: {{ policy()?.accountNumber }}</p>
+            <div class="col-item">
+                <p>Policy Number</p>
+            </div>
+            <div class="col-item">
+                <app-copy-to-clipboard [content]="policy()?.policyNumber">
+                </app-copy-to-clipboard>
+            </div>
+
+            <div class="col-item">
+                <p>Account Number</p>
+            </div>
+            <div class="col-item">
+                <app-copy-to-clipboard [content]="policy()?.accountNumber">
+                </app-copy-to-clipboard>
+            </div>
+
+            <mat-card-title>
+                <h3>Premium: {{ policy()?.premium?.toFixed(2) }}</h3>
+            </mat-card-title>
+
+            <mat-card-subtitle>
+                <p>Coverage: {{ policy()?.coverageAmount }}</p>
+            </mat-card-subtitle>
         </mat-card-content>
 
     </mat-card>
