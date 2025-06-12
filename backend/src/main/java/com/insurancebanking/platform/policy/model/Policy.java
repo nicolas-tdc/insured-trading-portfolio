@@ -69,11 +69,11 @@ public class Policy extends BaseEntity {
                 ", account=" + account +
                 ", policyType=" + policyType +
                 ", policyStatus=" + policyStatus +
-                ", policyNumber='" + policyNumber + '\'' +
+                ", policyNumber=" + policyNumber +
                 ", coverageAmount=" + coverageAmount +
                 ", premium=" + premium +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                '}';
+                "}";
     }
 }

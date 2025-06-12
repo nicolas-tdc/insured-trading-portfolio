@@ -85,14 +85,14 @@ public class Account extends BaseEntity {
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                "user.email='" + user.getEmail() + "'" +
-                ", accountType='" + accountType + "'" +
-                ", currencyCode='" + currencyCode + "'" +
-                ", accountNumber='" + accountNumber + "'" +
+                "user.email=" + user.getEmail() +
+                ", accountType=" + accountType +
+                ", currencyCode=" + currencyCode +
+                ", accountNumber=" + accountNumber +
                 ", balance=" + balance +
-                ", accountStatus='" + accountStatus + "'" +
-                ", transfers.size='" + transfers.size() + "'" +
-                ", policies.size='" + policies.size() + "'" +
-                '}';
+                ", accountStatus=" + accountStatus +
+                ", transfers.size=" + transfers.size() +
+                ", policies.size=" + policies.size() +
+                "}";
     }
 }

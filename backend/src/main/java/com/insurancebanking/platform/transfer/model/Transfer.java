@@ -66,13 +66,13 @@ public class Transfer extends BaseEntity {
     public String toString() {
         return "Transfer{" + 
                 "id=" + id +
-                ", transferNumber='" + transferNumber + "'" +
-                ", transferStatus=" + transferStatus + "'" +
-                ", sourceAccount" + sourceAccount.getAccountNumber() + "'" +
-                ", targetAccount" + targetAccount.getAccountNumber() + "'" +
-                ", currencyCode='" + currencyCode + '\'' + "'" +
-                ", amount=" + amount + "'" +
-                ", description='" + description + "'" +
-                '}';
+                ", transferNumber=" + transferNumber +
+                ", transferStatus=" + transferStatus +
+                ", sourceAccount" + sourceAccount.getAccountNumber() +
+                ", targetAccount" + targetAccount.getAccountNumber() +
+                ", currencyCode=" + currencyCode +
+                ", amount=" + amount +
+                ", description=" + description +
+                "}";
     }
 }

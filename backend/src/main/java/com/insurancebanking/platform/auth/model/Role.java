@@ -35,8 +35,8 @@ public class Role extends BaseEntity {
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+                ", name=" + name +
+                "}";
     }
 
     @Override
