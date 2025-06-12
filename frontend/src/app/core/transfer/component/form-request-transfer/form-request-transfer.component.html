@@ -5,7 +5,13 @@
 
     <h2>Transfer</h2>
 
-    <div class="col-container">
+    @if (transferError) {
+      <div class="mid-container">
+        <mat-error>{{ transferError }}</mat-error>
+      </div>
+    }
+
+    <div class="col-item">
       <mat-form-field class="form-field-basic">
         <mat-label>Target Account Number</mat-label>
 
@@ -26,7 +32,7 @@
       </mat-form-field>
     </div>
 
-    <div class="col-container">
+    <div class="col-item">
       <mat-form-field class="form-field-basic">
         <mat-label>Amount</mat-label>
 
@@ -46,7 +52,7 @@
       </mat-form-field>
     </div>
 
-    <div class="col-container">
+    <div class="col-item">
       <mat-form-field class="form-field-basic">
         <mat-label>Description</mat-label>
 
@@ -56,7 +62,7 @@
       </mat-form-field>
     </div>
 
-    <div class="col-container">
+    <div class="col-item">
       <button mat-flat-button
         class="btn-basic"
         [disabled]="!transferForm.valid || account.accountStatus !== 'ACTIVE'"

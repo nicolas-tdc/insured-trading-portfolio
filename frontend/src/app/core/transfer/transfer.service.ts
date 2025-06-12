@@ -71,7 +71,7 @@ export class TransferService {
 
     const dialogRef = this.dialog.open(FormRequestTransferComponent, {
       width: '600px',
-      height: '400px',
+      height: '500px',
       data: account
     });
 

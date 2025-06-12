@@ -32,6 +32,8 @@ export class FormRequestTransferComponent {
 
   transferForm: FormGroup;
 
+  transferError: string = '';
+
   // Lifecycle
 
   constructor(
@@ -57,7 +59,7 @@ export class FormRequestTransferComponent {
     });
   }
 
-  // API
+  // Transfer
 
   createTransfer(): void {
     if (this.transferForm.invalid) return;
@@ -68,11 +70,16 @@ export class FormRequestTransferComponent {
       ...this.transferForm.value
     };
 
-    this.transferService.create(transferRequest).subscribe(() => {
-      this.transferService.reloadAccountTransfers();
-      this.accountService.reloadUserAccount();
-      this.userAccountsService.reloadUserAccounts();
-      this.dialogRef.close('completed');
+    this.transferService.create(transferRequest).subscribe({
+      next: () => {
+        this.transferService.reloadAccountTransfers();
+        this.accountService.reloadUserAccount();
+        this.userAccountsService.reloadUserAccounts();
+        this.dialogRef.close('completed');
+      },
+      error: err => {
+        this.transferError = err.error.message;
+      }
     });
   }
 }
