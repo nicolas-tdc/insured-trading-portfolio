@@ -32,20 +32,18 @@ import io.micrometer.common.lang.NonNull;
 @RequestMapping("/api/transfer")
 public class TransferController {
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TransferController.class);
+
     @Autowired
     private AccountService accountService;
 
     @Autowired
     private TransferService transferService;
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TransferController.class);
-
     @PostMapping(value="", produces="application/json")
     public ResponseEntity<?> createTransfer(
         @RequestBody @NonNull TransferRequest request,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        String errorMessage = "Error creating transfer";
         try {
             // Validate transfer
             String transferError = transferService.validate(request, userDetails.getId());

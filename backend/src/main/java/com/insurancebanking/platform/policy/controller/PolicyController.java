@@ -116,8 +116,6 @@ public class PolicyController {
 
     @GetMapping(value = "/type", produces = "application/json")
     public ResponseEntity<?> getPolicyTypes() {
-
-        String errorMessage = "Error getting policy types";
         try {
             List<PolicyType> policyTypes = policyService.getPolicyTypes();
 
