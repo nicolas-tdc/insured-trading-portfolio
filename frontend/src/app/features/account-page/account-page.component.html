@@ -1,22 +1,19 @@
 <!-- Back to Dashboard -->
-<button mat-flat-button [routerLink]="['/dashboard']" routerLinkActive="router-link-active">
+<button mat-stroked-button [routerLink]="['/dashboard']" routerLinkActive="router-link-active">
   < Back to Dashboard
 </button>
 
 @if (account) {
   <!-- Account -->
   <app-account-details
-    [account]="account">
+    [account]="account"
+    class="col-item">
   </app-account-details>
-
-  <!-- Transfer Button -->
-  <button mat-flat-button
-    [disabled]="account?.accountStatus !== 'ACTIVE'"
-    (click)="openTransferDialog()">
-    Transfer
-  </button>
 
   <!-- Transfers -->
   <app-list-table-transfers>
   </app-list-table-transfers>
+}
+@else {
+  <p>Account not found.</p>
 }
