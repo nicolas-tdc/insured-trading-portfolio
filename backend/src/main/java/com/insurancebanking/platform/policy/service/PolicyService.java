@@ -1,7 +1,6 @@
 package com.insurancebanking.platform.policy.service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +48,7 @@ public class PolicyService {
     }
 
     public List<PolicyType> getPolicyTypes() {
-        return Arrays.stream(PolicyType.values()).toList();
+        return List.of(PolicyType.values());
     }
 
     public Policy create(PolicyRequest request, UUID userId) {
