@@ -1,11 +1,11 @@
 package com.insurancebanking.platform.account.service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,22 +18,35 @@ import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 import com.insurancebanking.platform.core.service.BaseEntityService;
+import com.insurancebanking.platform.currency.service.CurrencyService;
 
 @Service
 @Transactional
 public class AccountService {
 
-    @Autowired
-    private BaseEntityService baseEntityService;
+    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
+    private static final String ACCOUNT_PREFIX = "ACC";
+    private static final int MAX_TRIES = 10;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final BaseEntityService baseEntityService;
+    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
+    private final CurrencyService currencyService;
 
-    @Autowired
-    private UserRepository userRepository;
+    public AccountService(
+        BaseEntityService baseEntityService,
+        AccountRepository accountRepository,
+        UserRepository userRepository,
+        CurrencyService currencyService
+    ) {
+        this.baseEntityService = baseEntityService;
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+        this.currencyService = currencyService;
+    }
 
     public List<AccountType> getAccountTypes() {
-        return Arrays.stream(AccountType.values()).toList();
+        return List.of(AccountType.values());
     }
 
     public List<Account> getUserAccounts(UUID userId) {
@@ -47,39 +60,41 @@ public class AccountService {
     }
 
     public Account getUserAccountByAccountNumber(String accountNumber) {
-        return accountRepository.findByAccountNumber(accountNumber)
-                                .orElse(null);
+        return accountRepository.findByAccountNumber(accountNumber).orElse(null);
     }
 
     public Account create(AccountRequest request, UUID userId) {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException(
-                "User not found during account creation"));
+            .orElseThrow(() -> new UsernameNotFoundException("User not found during account creation"));
+
+        String currency = request.getCurrencyCode();
+        if (!currencyService.isCurrencySupported(currency)) {
+            log.warn("Unsupported currency code: {}", currency);
+            throw new IllegalArgumentException("Currency not supported during account creation");
+        }
+
+        String accountNumber = generateAccountNumber();
 
         Account account = Account.builder()
             .user(user)
             .accountStatus(AccountStatus.ACTIVE)
-            .accountNumber(generateAccountNumber())
+            .accountNumber(accountNumber)
             .accountType(request.getAccountType())
-            .currencyCode(request.getCurrencyCode())
-            .balance(BigDecimal.valueOf(0.0))
+            .currencyCode(currency)
+            .balance(BigDecimal.ZERO)
             .build();
 
         return accountRepository.save(account);
     }
 
     private String generateAccountNumber() {
-        int maxTries = 10;
-
-        for (int i = 0; i < maxTries; i++) {
-            String accountNumber = baseEntityService.generateEntityPublicIdentifier("ACC");
-
-            if (!accountRepository.existsByAccountNumber(accountNumber)) {
-
-                return accountNumber;
+        for (int i = 0; i < MAX_TRIES; i++) {
+            String candidate = baseEntityService.generateEntityPublicIdentifier(ACCOUNT_PREFIX);
+            if (!accountRepository.existsByAccountNumber(candidate)) {
+                return candidate;
             }
         }
 
-        throw new IllegalStateException("Unable to generate unique account number after " + maxTries + " attempts.");
+        throw new IllegalStateException("Unable to generate unique account number after " + MAX_TRIES + " attempts.");
     }
 }
