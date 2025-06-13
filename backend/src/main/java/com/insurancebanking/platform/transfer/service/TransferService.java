@@ -1,8 +1,6 @@
 package com.insurancebanking.platform.transfer.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
