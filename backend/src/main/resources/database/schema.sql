@@ -68,11 +68,12 @@ CREATE TABLE IF NOT EXISTS transfers (
     amount NUMERIC(15, 2) NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (source_account_id) REFERENCES accounts(id),
     FOREIGN KEY (target_account_id) REFERENCES accounts(id)
 );
 
-DROP INDEX IF EXISTS idx_transfers_account_id;
+DROP INDEX IF EXISTS idx_transfers_source_account_id;
 CREATE INDEX idx_transfers_source_account_id ON transfers(source_account_id);
 
 DROP INDEX IF EXISTS idx_transfers_target_account_id;
