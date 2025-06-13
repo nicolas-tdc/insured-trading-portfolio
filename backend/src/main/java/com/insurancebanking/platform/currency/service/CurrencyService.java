@@ -13,6 +13,10 @@ public class CurrencyService {
         "EUR", "USD", "GBP"
     );
 
+    public boolean isCurrencySupported(String currencyCode) {
+        return supportedCurrencies.contains(currencyCode);
+    }
+
     public List<CurrencyResponse> getList() {
         return supportedCurrencies.stream()
             .map(CurrencyResponse::from)
