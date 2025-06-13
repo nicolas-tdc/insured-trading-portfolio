@@ -104,7 +104,7 @@ public class TransferController {
             }
 
             // Get transfers responses
-            List<TransferResponse> responses = transferService.getAccountTransfers(account)
+            List<TransferResponse> responses = account.getAllTransfers()
                 .stream()
                 .map(TransferResponse::from)
                 .toList();

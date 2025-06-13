@@ -98,17 +98,6 @@ public class TransferService {
         return transfer;
     }
 
-    public List<Transfer> getAccountTransfers(Account account) {
-        UUID accountId = account.getId();
-        List<Transfer> transfers = new ArrayList<>();
-
-        // Merge incoming and outgoing account transfers
-        transfers.addAll(transferRepository.findByTargetAccount_Id(accountId));
-        transfers.addAll(transferRepository.findBySourceAccount_Id(accountId));
-
-        return transfers;
-    }
-
     private void updateAccounts(
         Account sourceAccount, Account targetAccount, BigDecimal amount) {
         // Update account balances

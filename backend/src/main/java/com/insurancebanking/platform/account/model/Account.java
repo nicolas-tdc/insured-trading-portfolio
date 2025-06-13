@@ -4,16 +4,17 @@ import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.core.model.BaseEntity;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.transfer.model.Transfer;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,6 +24,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,68 +33,68 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "accounts")
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class Account extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccountType accountType;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     @Builder.Default
     private AccountStatus accountStatus = AccountStatus.PENDING;
 
-    @Column(name = "currency_code", unique = true, nullable = false)
+    @Column(name = "currency_code", nullable = false)
     private String currencyCode;
 
-    @Column(name = "account_number", unique = true, nullable = false)
+    @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
-    @Column(name = "balance", precision = 19, scale = 4)
+    @Column(precision = 19, scale = 4, nullable = false)
     @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sourceAccount", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     @JsonManagedReference
     @Builder.Default
-    private final Set<Transfer> transfers = new LinkedHashSet<>();
+    private final Set<Transfer> outgoingTransfers = new LinkedHashSet<>();
 
-    public Set<Transfer> getTransfers() {
-        return transfers;
-    }
-
-    public Set<Policy> getPolicies() {
-        return policies;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetAccount", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     @JsonManagedReference
     @Builder.Default
-    private final Set<Policy> policies = new LinkedHashSet<>();
+    private final Set<Transfer> incomingTransfers = new LinkedHashSet<>();
+
+    public Set<Transfer> getAllTransfers() {
+        Set<Transfer> all = new LinkedHashSet<>(outgoingTransfers);
+        all.addAll(incomingTransfers);
+        return all;
+    }
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Policy> policies = new LinkedHashSet<>();
 
     @Override
     public String toString() {
-        return "Account{" +
-                "id=" + id +
-                "user.email=" + user.getEmail() +
-                ", accountType=" + accountType +
-                ", currencyCode=" + currencyCode +
-                ", accountNumber=" + accountNumber +
-                ", balance=" + balance +
-                ", accountStatus=" + accountStatus +
-                ", transfers.size=" + transfers.size() +
-                ", policies.size=" + policies.size() +
-                "}";
+        return String.format("Account{id=%s, user.email=%s, type=%s, number=%s, currency=%s, balance=%s, status=%s}",
+            getId(),
+            user != null ? user.getEmail() : "null",
+            accountType,
+            accountNumber,
+            currencyCode,
+            balance,
+            accountStatus
+        );
     }
 }

@@ -4,13 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.insurancebanking.platform.account.dto.AccountRequest;
+import com.insurancebanking.platform.account.exception.AccountNotFoundException;
+import com.insurancebanking.platform.account.exception.AccountNumberGenerationException;
+import com.insurancebanking.platform.account.exception.AccountNumberNotFoundException;
+import com.insurancebanking.platform.account.exception.UnsupportedCurrencyException;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.model.AccountStatus;
 import com.insurancebanking.platform.account.model.AccountType;
@@ -24,7 +26,6 @@ import com.insurancebanking.platform.currency.service.CurrencyService;
 @Transactional
 public class AccountService {
 
-    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     private static final String ACCOUNT_PREFIX = "ACC";
     private static final int MAX_TRIES = 10;
 
@@ -56,21 +57,21 @@ public class AccountService {
     public Account getUserAccountById(UUID accountId, UUID userId) {
         return accountRepository.findById(accountId)
             .filter(a -> a.getUser().getId().equals(userId))
-            .orElse(null);
+            .orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
     public Account getUserAccountByAccountNumber(String accountNumber) {
-        return accountRepository.findByAccountNumber(accountNumber).orElse(null);
+        return accountRepository.findByAccountNumber(accountNumber)
+            .orElseThrow(() -> new AccountNumberNotFoundException(accountNumber));
     }
 
     public Account create(AccountRequest request, UUID userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new UsernameNotFoundException("User not found during account creation"));
 
-        String currency = request.getCurrencyCode();
+        String currency = request.currencyCode();
         if (!currencyService.isCurrencySupported(currency)) {
-            log.warn("Unsupported currency code: {}", currency);
-            throw new IllegalArgumentException("Currency not supported during account creation");
+            throw new UnsupportedCurrencyException(currency);
         }
 
         String accountNumber = generateAccountNumber();
@@ -79,7 +80,7 @@ public class AccountService {
             .user(user)
             .accountStatus(AccountStatus.ACTIVE)
             .accountNumber(accountNumber)
-            .accountType(request.getAccountType())
+            .accountType(request.accountType())
             .currencyCode(currency)
             .balance(BigDecimal.ZERO)
             .build();
@@ -94,7 +95,6 @@ public class AccountService {
                 return candidate;
             }
         }
-
-        throw new IllegalStateException("Unable to generate unique account number after " + MAX_TRIES + " attempts.");
+        throw new AccountNumberGenerationException(MAX_TRIES);
     }
 }

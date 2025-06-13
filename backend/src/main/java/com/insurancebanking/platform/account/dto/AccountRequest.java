@@ -1,26 +1,13 @@
 package com.insurancebanking.platform.account.dto;
 
 import com.insurancebanking.platform.account.model.AccountType;
-
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class AccountRequest {
-
-    // Properties
-
+public record AccountRequest(
     @NotNull(message = "Account type is required")
-    private AccountType accountType;
+    AccountType accountType,
 
-    @NotNull(message = "Currency is required")
-    private String currencyCode;
-
-    // Getters
-
-    public AccountType getAccountType() { return accountType; }
-    public String getCurrencyCode() { return currencyCode; }
-
-    // Setters
-
-    public void setAccountType(AccountType value) { this.accountType = value; }
-    public void setCurrencyCode(String value) { this.currencyCode = value; }
-}
+    @NotBlank(message = "Currency code is required")
+    String currencyCode
+) {}
