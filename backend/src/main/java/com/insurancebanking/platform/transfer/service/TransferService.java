@@ -12,6 +12,8 @@ import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.core.service.BaseEntityService;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
+import com.insurancebanking.platform.transfer.exception.TransferCreationException;
+import com.insurancebanking.platform.transfer.exception.TransferValidationException;
 import com.insurancebanking.platform.transfer.model.Transfer;
 import com.insurancebanking.platform.transfer.repository.TransferRepository;
 import com.insurancebanking.platform.account.model.AccountStatus;
@@ -21,112 +23,92 @@ import com.insurancebanking.platform.transfer.model.TransferStatus;
 @Transactional
 public class TransferService {
 
-    @Autowired
-    private BaseEntityService baseEntityService;
+    @Autowired private BaseEntityService baseEntityService;
+    @Autowired private TransferRepository transferRepository;
+    @Autowired private AccountService accountService;
+    @Autowired private AccountRepository accountRepository;
 
-    @Autowired
-    private TransferRepository transferRepository;
+    public Transfer createTransfer(TransferRequest request, UUID userId) {
+        Account source = getSourceAccount(request, userId);
+        Account target = getTargetAccount(request);
 
-    @Autowired
-    private AccountService accountService;
+        validateTransferRules(request, source, target);
 
-    @Autowired
-    private AccountRepository accountRepository;
+        String transferNumber = generateTransferNumber();
 
-    public String validate(TransferRequest request, UUID userId) {
-        Account sourceAccount = getSourceAccountFromRequest(request, userId);
-        Account targetAccount = getTargetAccountFromRequest(request);
-
-        // Ensure accounts are valid
-        if (sourceAccount == null) {
-            return "Invalid source account";
-        }
-        if (targetAccount == null) {
-            return "Invalid target account";
-        }
-        // Ensure accounts are active
-        if (sourceAccount.getAccountStatus() != AccountStatus.ACTIVE) {
-            return "Source account is not active";
-        }
-        if (targetAccount.getAccountStatus() != AccountStatus.ACTIVE) {
-            return "Target account is not active";
-        }
-        // Ensure amount is positive
-        if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            return "Amount must be positive";
-        }
-        // Ensure balance is sufficient
-        if (sourceAccount.getBalance().compareTo(request.getAmount()) < 0) {
-            return "Insufficient balance";
-        }
-        // Ensure source and target accounts are different
-        if (sourceAccount.getId().equals(targetAccount.getId())) {
-            return "Source and target accounts must be different";
-        }
-        // Ensure accounts have the same currency
-        if (!sourceAccount.getCurrencyCode().equals(targetAccount.getCurrencyCode())) {
-            return "Source and target accounts must have the same currency";
-        }
-        
-        return null;
-    }
-
-    public Transfer create(TransferRequest request, UUID userId) {
-        Account sourceAccount = getSourceAccountFromRequest(request, userId);
-        Account targetAccount = getTargetAccountFromRequest(request);
-        BigDecimal amount = request.getAmount();
-
-        // Create and save transfer
         Transfer transfer = Transfer.builder()
-                .transferStatus(TransferStatus.PENDING)
-                .transferNumber(generateTransferNumber())
-                .currencyCode(sourceAccount.getCurrencyCode())
-                .sourceAccount(sourceAccount)
-                .targetAccount(targetAccount)
-                .amount(amount)
-                .description(request.getDescription())
-                .build();
+            .transferStatus(TransferStatus.PENDING)
+            .transferNumber(transferNumber)
+            .currencyCode(source.getCurrencyCode())
+            .sourceAccount(source)
+            .targetAccount(target)
+            .amount(request.getAmount())
+            .description(request.getDescription())
+            .build();
+
         transferRepository.save(transfer);
 
-        updateAccounts(sourceAccount, targetAccount, amount);
+        updateAccounts(source, target, request.getAmount());
 
         transfer.setTransferStatus(TransferStatus.COMPLETED);
-        transferRepository.save(transfer);
-        
-        return transfer;
+        return transferRepository.save(transfer);
     }
 
-    private void updateAccounts(
-        Account sourceAccount, Account targetAccount, BigDecimal amount) {
-        // Update account balances
-        sourceAccount.setBalance(sourceAccount.getBalance().subtract(amount));
-        targetAccount.setBalance(targetAccount.getBalance().add(amount));
+    private void validateTransferRules(TransferRequest request, Account source, Account target) {
+        if (source == null) {
+            throw new TransferValidationException("Invalid source account");
+        }
+        if (target == null) {
+            throw new TransferValidationException("Invalid target account");
+        }
 
-        // Save updated accounts
-        accountRepository.save(sourceAccount);
-        accountRepository.save(targetAccount);
+        if (!AccountStatus.ACTIVE.equals(source.getAccountStatus())) {
+            throw new TransferValidationException("Source account is not active");
+        }
+
+        if (!AccountStatus.ACTIVE.equals(target.getAccountStatus())) {
+            throw new TransferValidationException("Target account is not active");
+        }
+
+        if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new TransferValidationException("Transfer amount must be positive");
+        }
+
+        if (source.getBalance().compareTo(request.getAmount()) < 0) {
+            throw new TransferValidationException("Insufficient balance");
+        }
+
+        if (source.getId().equals(target.getId())) {
+            throw new TransferValidationException("Source and target accounts must be different");
+        }
+
+        if (!source.getCurrencyCode().equals(target.getCurrencyCode())) {
+            throw new TransferValidationException("Currency mismatch between source and target accounts");
+        }
     }
 
-    private Account getSourceAccountFromRequest(TransferRequest request, UUID userId) {
+    private Account getSourceAccount(TransferRequest request, UUID userId) {
         return accountService.getUserAccountById(request.getSourceAccountId(), userId);
     }
 
-    private Account getTargetAccountFromRequest(TransferRequest request) {
+    private Account getTargetAccount(TransferRequest request) {
         return accountService.getUserAccountByAccountNumber(request.getTargetAccountNumber());
+    }
+
+    private void updateAccounts(Account source, Account target, BigDecimal amount) {
+        source.setBalance(source.getBalance().subtract(amount));
+        target.setBalance(target.getBalance().add(amount));
+
+        accountRepository.save(source);
+        accountRepository.save(target);
     }
 
     private String generateTransferNumber() {
         int maxTries = 10;
-
         for (int i = 0; i < maxTries; i++) {
             String transferNumber = baseEntityService.generateEntityPublicIdentifier("TRF");
-
-            if (!transferRepository.existsByTransferNumber(transferNumber)) {
-
-                return transferNumber;
-            }
+            if (!transferRepository.existsByTransferNumber(transferNumber)) return transferNumber;
         }
-
-        throw new IllegalStateException("Unable to generate unique transfer number after " + maxTries + " attempts.");
+        throw new TransferCreationException("Failed to generate unique transfer number after retries");
     }
 }

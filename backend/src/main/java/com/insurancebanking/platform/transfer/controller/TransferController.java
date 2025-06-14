@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
-import com.insurancebanking.platform.core.dto.MessageResponse;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
 import com.insurancebanking.platform.transfer.dto.TransferResponse;
 import com.insurancebanking.platform.transfer.model.Transfer;
@@ -32,91 +31,34 @@ import io.micrometer.common.lang.NonNull;
 @RequestMapping("/api/transfer")
 public class TransferController {
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TransferController.class);
-
     @Autowired
     private AccountService accountService;
 
     @Autowired
     private TransferService transferService;
 
-    @PostMapping(value="", produces="application/json")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<?> createTransfer(
-        @RequestBody @NonNull TransferRequest request,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try {
-            // Validate transfer
-            String transferError = transferService.validate(request, userDetails.getId());
-            if (transferError != null) {
-                String errorMessage = "Error creating transfer: " + transferError;
-                logger.error(errorMessage);
+            @RequestBody @NonNull TransferRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) throws URISyntaxException {
 
-                return ResponseEntity.badRequest()
-                    .body(new MessageResponse(errorMessage));
-            }
+        Transfer transfer = transferService.createTransfer(request, userDetails.getId());
 
-            // Create transfer
-            Transfer transfer = transferService.create(request, userDetails.getId());
-
-            // Create new transfer URI
-            URI location = new URI("/api/transfer/" + transfer.getId());
-
-            return ResponseEntity.created(location)
-                .body(TransferResponse.from(transfer));
-
-        } catch (URISyntaxException e) {
-            String errorMessage = "Error creating transfer URI";
-            logger.error("{}: {}", errorMessage, e.getMessage());
-
-            return ResponseEntity.badRequest()
-                .body(new MessageResponse(errorMessage));
-
-        } catch (Exception e) {
-            String errorMessage = "Error creating transfer";
-            logger.error("{}: {}", errorMessage, e.getMessage());
-
-            return ResponseEntity.badRequest()
-                .body(new MessageResponse(errorMessage));
-        }
+        URI location = new URI("/api/transfer/" + transfer.getId());
+        return ResponseEntity.created(location).body(TransferResponse.from(transfer));
     }
 
-    @GetMapping(value="/account/{accountId}", produces="application/json")
+    @GetMapping(value = "/account/{accountId}", produces = "application/json")
     public ResponseEntity<?> getAccountTransfers(
-        @PathVariable @NonNull UUID accountId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try {
-            // Check if account exists
-            Account account = accountService.getUserAccountById(accountId, userDetails.getId());
-            if (account == null) {
-                String errorMessage = "Error getting account transfers: Account not found";
-                logger.error(errorMessage);
+            @PathVariable @NonNull UUID accountId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-                return ResponseEntity.badRequest()
-                    .body(new MessageResponse(errorMessage + ": Account not found"));
-            }
+        Account account = accountService.getUserAccountById(accountId, userDetails.getId());
 
-            if (!account.getUser().getId().equals(userDetails.getId())) {
-                String errorMessage = "Error getting account transfers: User account ID does not match";
-                logger.error(errorMessage);
+        List<TransferResponse> responses = account.getAllTransfers().stream()
+            .map(TransferResponse::from)
+            .toList();
 
-                return ResponseEntity.badRequest()
-                    .body(new MessageResponse(errorMessage + ": User account ID does not match"));
-            }
-
-            // Get transfers responses
-            List<TransferResponse> responses = account.getAllTransfers()
-                .stream()
-                .map(TransferResponse::from)
-                .toList();
-
-            return ResponseEntity.ok(responses);
-
-        } catch (Exception e) {
-            String errorMessage = "Error getting account transfers";
-            logger.error("{}: {}", errorMessage, e.getMessage());
-
-            return ResponseEntity.badRequest()
-                .body(new MessageResponse(errorMessage));
-        }
+        return ResponseEntity.ok(responses);
     }
 }
