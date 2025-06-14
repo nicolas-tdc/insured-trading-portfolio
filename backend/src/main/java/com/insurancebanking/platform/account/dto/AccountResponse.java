@@ -19,7 +19,8 @@ public record AccountResponse(
     int currencyFractionDigits
 ) {
     public static AccountResponse from(Account account) {
-        Currency currency = Currency.getInstance(account.getCurrencyCode());
+        String currencyCode = account.getCurrencyCode();
+        Currency currency = Currency.getInstance(currencyCode);
 
         return new AccountResponse(
             account.getId(),
@@ -27,7 +28,7 @@ public record AccountResponse(
             account.getAccountType(),
             account.getAccountNumber(),
             account.getBalance(),
-            account.getCurrencyCode(),
+            currencyCode,
             currency.getSymbol(),
             currency.getDefaultFractionDigits()
         );

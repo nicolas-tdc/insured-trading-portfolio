@@ -14,7 +14,6 @@ import com.insurancebanking.platform.account.dto.AccountResponse;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
-import com.insurancebanking.platform.core.dto.MessageResponse;
 
 import jakarta.validation.Valid;
 
@@ -55,20 +54,17 @@ public class AccountController {
 
     @GetMapping(value = "/{accountId}", produces = "application/json")
     public ResponseEntity<?> getAccount(
-            @PathVariable UUID accountId,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        @PathVariable UUID accountId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        try {
-            Account account = accountService.getUserAccountById(accountId, userDetails.getId());
-            return ResponseEntity.ok(AccountResponse.from(account));
-        } catch (Exception e) {
-            return ResponseEntity.status(404)
-                                 .body(new MessageResponse("Account not found"));
-        }
+        return ResponseEntity.ok(AccountResponse.from(
+            accountService.getUserAccountById(accountId, userDetails.getId())
+        ));
     }
 
     @GetMapping(value = "/type", produces = "application/json")
     public ResponseEntity<List<?>> getAccountTypes() {
+
         return ResponseEntity.ok(accountService.getAccountTypes());
     }
 }
