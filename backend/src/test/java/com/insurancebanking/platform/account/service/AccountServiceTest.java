@@ -61,14 +61,15 @@ class AccountServiceTest {
     void shouldCreateAccountSuccessfully() {
         UUID userId = UUID.randomUUID();
         AccountRequest request = new AccountRequest(AccountType.SAVINGS, "EUR");
+        String accountNumber = "ACC123456789";
 
         User user = new User();
         user.setId(userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(currencyService.isCurrencySupported("EUR")).thenReturn(true);
-        when(baseEntityService.generateEntityPublicIdentifier("ACC")).thenReturn("ACC123456789");
-        when(accountRepository.existsByAccountNumber("ACC123456789")).thenReturn(false);
+        when(baseEntityService.generateEntityPublicIdentifier("ACC")).thenReturn(accountNumber);
+        when(accountRepository.existsByAccountNumber(accountNumber)).thenReturn(false);
         when(accountRepository.save(any(Account.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Account result = accountService.create(request, userId);
@@ -79,7 +80,7 @@ class AccountServiceTest {
         assertThat(result.getAccountStatus()).isEqualTo(AccountStatus.ACTIVE);
         assertThat(result.getAccountType()).isEqualTo(AccountType.SAVINGS);
         assertThat(result.getBalance()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(result.getAccountNumber()).hasSize(12);
+        assertThat(result.getAccountNumber()).isEqualTo(accountNumber);
     }
 
     @Test
