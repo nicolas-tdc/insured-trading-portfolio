@@ -6,41 +6,27 @@ import java.util.stream.Collectors;
 
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 
-public class UserResponse {
-    
-    // Constructors
+/**
+ * Response DTO that holds user identity and role information.
+ *
+ * @param id the user's UUID
+ * @param email the user's email
+ * @param roles list of assigned roles
+ */
+public record UserResponse(UUID id, String email, List<String> roles) {
 
-    public UserResponse() {}
-
-    // Static methods
-
+    /**
+     * Factory method to convert {@link UserDetailsImpl} to {@link UserResponse}.
+     *
+     * @param userDetails the user details
+     * @return a UserResponse
+     */
     public static UserResponse from(UserDetailsImpl userDetails) {
-        UserResponse response = new UserResponse();
+        List<String> roles = userDetails.getAuthorities()
+                                        .stream()
+                                        .map(authority -> authority.getAuthority())
+                                        .collect(Collectors.toList());
 
-        response.id = userDetails.getId();
-        response.email = userDetails.getEmail();
-        response.roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return response;
+        return new UserResponse(userDetails.getId(), userDetails.getEmail(), roles);
     }
-
-    // Properties
-
-    private UUID id;
-    private String email;
-    private List<String> roles;
-
-    // Getters
-
-    public UUID getId() { return id; }
-    public String getEmail() { return email; }
-    public List<String> getRoles() { return roles; }
-
-    // Setters
-
-    public void setId(UUID id) { this.id = id; }
-    public void setEmail(String email) { this.email = email; }
-    public void setRoles(List<String> roles) { this.roles = roles; }
 }

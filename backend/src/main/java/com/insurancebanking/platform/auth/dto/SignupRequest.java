@@ -4,38 +4,29 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class SignupRequest {
-
-    // Properties
-
+/**
+ * DTO for user signup containing personal and account information.
+ *
+ * @param firstName the user's first name
+ * @param lastName the user's last name
+ * @param email the user's email address
+ * @param password the user's password
+ */
+public record SignupRequest(
     @NotBlank(message = "First name is required")
     @Size(min = 3, max = 20)
-    private String firstName;
+    String firstName,
 
     @NotBlank(message = "Last name is required")
     @Size(min = 3, max = 20)
-    private String lastName;
+    String lastName,
 
     @NotBlank(message = "Email is required")
     @Size(max = 50)
     @Email
-    private String email;
+    String email,
 
     @NotBlank(message = "Password is required")
     @Size(min = 6, max = 40)
-    private String password;
-
-    // Getters
-
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
-
-    // Setters
-
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
-}
+    String password
+) {}

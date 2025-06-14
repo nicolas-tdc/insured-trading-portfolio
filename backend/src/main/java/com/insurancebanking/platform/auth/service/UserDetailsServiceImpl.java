@@ -11,12 +11,22 @@ import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 
+/**
+ * Spring Security UserDetailsService implementation.
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Loads a user by their email (used as username).
+     *
+     * @param email the user's email
+     * @return user details for authentication
+     * @throws UsernameNotFoundException if no user found
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

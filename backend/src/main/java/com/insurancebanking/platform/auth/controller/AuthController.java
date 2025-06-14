@@ -1,24 +1,20 @@
 package com.insurancebanking.platform.auth.controller;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.insurancebanking.platform.auth.dto.JwtResponse;
 import com.insurancebanking.platform.auth.dto.LoginRequest;
 import com.insurancebanking.platform.auth.dto.SignupRequest;
 import com.insurancebanking.platform.auth.dto.UserResponse;
+import com.insurancebanking.platform.auth.exception.EmailAlreadyInUseException;
 import com.insurancebanking.platform.auth.model.Role;
 import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
@@ -27,89 +23,78 @@ import com.insurancebanking.platform.auth.service.RoleService;
 import com.insurancebanking.platform.auth.service.UserService;
 import com.insurancebanking.platform.core.dto.MessageResponse;
 
+/**
+ * Controller responsible for authentication and registration endpoints.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
-
-    @PostMapping(value="/signin", produces="application/json")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    loginRequest.getEmail(), loginRequest.getPassword()));
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
-
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            UserResponse userResponse = UserResponse.from(userDetails);
-
-            return ResponseEntity.ok(new JwtResponse(jwt, userResponse));
-
-        } catch (Exception e) {
-            String errorMessage = "Error signing in";
-            logger.error("{}: {}", errorMessage, e.getMessage());
-
-            return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
-        }
-
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            UserService userService,
+            RoleService roleService,
+            PasswordEncoder passwordEncoder,
+            JwtUtils jwtUtils
+    ) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping(value="/signup", produces="application/json")
-    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
-        try {
-            if (userService.existsByEmail(signUpRequest.getEmail())) {
-                String errorMessage = "Error signing up: Email is already taken";
-                logger.error(errorMessage);
+    /**
+     * Authenticates a user and returns a JWT token.
+     *
+     * @param loginRequest the login credentials
+     * @return the JWT response with token and user details
+     */
+    @PostMapping(value = "/signin", produces = "application/json")
+    public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
 
-                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
-            }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-            // Create new user's account
-            User user = new User(signUpRequest.getEmail(),
-                    encoder.encode(signUpRequest.getPassword()),
-                    signUpRequest.getFirstName(),
-                    signUpRequest.getLastName());
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserResponse userResponse = UserResponse.from(userDetails);
 
-            Role customerRole = roleService.findByName("ROLE_CUSTOMER");
-            if (customerRole == null) {        
-                String errorMessage = "Error: role customer not found";
-                logger.error(errorMessage);
+        return ResponseEntity.ok(new JwtResponse(jwt, userResponse));
+    }
 
-                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
-            }
-
-            Set<Role> roles = new HashSet<>();
-            roles.add(customerRole);
-            user.setRoles(roles);
-
-            userService.saveUser(user);
-
-            return ResponseEntity.ok(new MessageResponse("User registered successfully"));
-
-        } catch (Exception e) {
-            String errorMessage = "Error signing up";
-            logger.error("{}: {}", errorMessage, e.getMessage());
-
-            return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
+    /**
+     * Registers a new user.
+     *
+     * @param signupRequest the registration information
+     * @return a confirmation message
+     */
+    @PostMapping(value = "/signup", produces = "application/json")
+    public ResponseEntity<MessageResponse> registerUser(@RequestBody SignupRequest signupRequest) {
+        if (userService.existsByEmail(signupRequest.email())) {
+            throw new EmailAlreadyInUseException(signupRequest.email());
         }
+
+        // Create and save new user
+        User user = new User(
+                signupRequest.email(),
+                passwordEncoder.encode(signupRequest.password()),
+                signupRequest.firstName(),
+                signupRequest.lastName()
+        );
+
+        Role customerRole = roleService.findByName("ROLE_CUSTOMER");
+        user.setRoles(Collections.singleton(customerRole));
+
+        userService.saveUser(user);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
 }
