@@ -42,13 +42,13 @@ public class TransferService {
             .currencyCode(source.getCurrencyCode())
             .sourceAccount(source)
             .targetAccount(target)
-            .amount(request.getAmount())
-            .description(request.getDescription())
+            .amount(request.amount())
+            .description(request.description())
             .build();
 
         transferRepository.save(transfer);
 
-        updateAccounts(source, target, request.getAmount());
+        updateAccounts(source, target, request.amount());
 
         transfer.setTransferStatus(TransferStatus.COMPLETED);
         return transferRepository.save(transfer);
@@ -70,11 +70,11 @@ public class TransferService {
             throw new TransferValidationException("Target account is not active");
         }
 
-        if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+        if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new TransferValidationException("Transfer amount must be positive");
         }
 
-        if (source.getBalance().compareTo(request.getAmount()) < 0) {
+        if (source.getBalance().compareTo(request.amount()) < 0) {
             throw new TransferValidationException("Insufficient balance");
         }
 
@@ -88,11 +88,11 @@ public class TransferService {
     }
 
     private Account getSourceAccount(TransferRequest request, UUID userId) {
-        return accountService.getUserAccountById(request.getSourceAccountId(), userId);
+        return accountService.getUserAccountById(request.sourceAccountId(), userId);
     }
 
     private Account getTargetAccount(TransferRequest request) {
-        return accountService.getUserAccountByAccountNumber(request.getTargetAccountNumber());
+        return accountService.getUserAccountByAccountNumber(request.targetAccountNumber());
     }
 
     private void updateAccounts(Account source, Account target, BigDecimal amount) {
