@@ -14,12 +14,12 @@ class AccountResponseTest {
     @Test
     void from_shouldMapAllFieldsCorrectly() {
         Account account = Account.builder()
-                .accountStatus(AccountStatus.ACTIVE)
-                .accountType(AccountType.CHECKING)
-                .accountNumber("ACC999")
-                .balance(BigDecimal.valueOf(123.45))
-                .currencyCode("EUR")
-                .build();
+            .accountStatus(AccountStatus.ACTIVE)
+            .accountType(AccountType.CHECKING)
+            .accountNumber("ACC999")
+            .balance(BigDecimal.valueOf(123.45))
+            .currencyCode("EUR")
+            .build();
 
         AccountResponse response = AccountResponse.from(account);
 
