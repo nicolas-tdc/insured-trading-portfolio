@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+
+$dark-theme: (
+  color: (
+    theme-type: dark,
+    primary: mat.$azure-palette,
+    tertiary: mat.$chartreuse-palette,
+    warn: mat.$red-palette,
+    neutral: mat.$cyan-palette,
+    background: (
+      background: #121212,
+      surface: #1e1e1e
+    ),
+    foreground: (
+      base: white,
+      divider: rgba(255, 255, 255, 0.12),
+      text: rgba(255, 255, 255, 0.87)
+    )
+  )
+);

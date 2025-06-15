@@ -4,13 +4,14 @@
     <p>You have no accounts.</p>
   }
   @else {
-    <div class="row-container">
+    <div class="grid-3-responsive">
+
       @for (account of accounts(); track account.id) {
         <app-card-item-account
-          [account]="account"
-          class="row-item-3">
+          [account]="account">
         </app-card-item-account>
       }
+
     </div>
   }
 

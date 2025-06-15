@@ -1,0 +1,17 @@
+@use '../mixins' as *;
+@use '../variables' as *;
+
+.row-container {
+  @include row-flex-wrap;
+  @include responsive-spacing(margin, $spacing-md);
+}
+
+.col-item {
+  @include col-flex-wrap;
+  @include responsive-spacing(margin, $spacing-md);
+}
+
+.center-container {
+  @include center-flex();
+  @include responsive-spacing(margin, $spacing-md);
+}

@@ -1,0 +1,27 @@
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'xs' {
+    @media (max-width: 480px) { @content; }
+  } @else if $breakpoint == 'sm' {
+    @media (max-width: 600px) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (max-width: 960px) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (max-width: 1280px) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (max-width: 1600px) { @content; }
+  } @else if $breakpoint == 'xxl' {
+    @media (min-width: 1601px) { @content; }
+  }
+}
+
+@mixin responsive-spacing($property, $base-size) {
+  #{$property}: $base-size;
+
+  @include respond-to('sm') {
+    #{$property}: $base-size * 0.75;
+  }
+
+  @include respond-to('xs') {
+    #{$property}: $base-size * 0.5;
+  }
+}

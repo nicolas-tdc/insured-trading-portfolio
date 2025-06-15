@@ -1,0 +1,7 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.form-field-basic {
+  @include responsive-spacing(margin, $spacing-md);
+  width: 60%;
+}

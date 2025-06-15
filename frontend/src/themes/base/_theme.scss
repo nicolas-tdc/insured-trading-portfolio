@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@use './styles/colors' as colors;
+@use './styles/variables' as *;
+@use './styles/elements/' as *;
+@use './styles/layout/' as *;
+
+html {
+  color-scheme: light dark;
+
+  @include mat.theme((
+    color: (
+      light: map.get(colors.$light-theme, color),
+      dark: map.get(colors.$dark-theme, color),
+    ),
+    typography: $app-typography,
+    density: $density
+  ));
+}
+
+body {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}

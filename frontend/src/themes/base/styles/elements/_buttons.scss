@@ -1,0 +1,12 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.btn-basic {
+  @include responsive-spacing(margin, $spacing-md);
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.btn-card {
+  @include responsive-spacing(margin, $spacing-sm);
+}

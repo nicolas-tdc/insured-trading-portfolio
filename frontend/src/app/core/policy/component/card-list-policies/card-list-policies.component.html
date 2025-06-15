@@ -4,13 +4,14 @@
     <p>You have no active policies.</p>
   }
   @else {
-    <div class="row-container">
+    <div class="grid-3-responsive">
+
       @for (policy of policies(); track policy.id) {
         <app-card-item-policy
-          [policy]="policy"
-          class="row-item-3">
+          [policy]="policy">
       </app-card-item-policy>
       }
+
     </div>
   }
 

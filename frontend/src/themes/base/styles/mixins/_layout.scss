@@ -6,19 +6,18 @@
 
 @mixin col-flex-wrap {
   @include center-flex();
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
 @mixin row-flex-wrap {
   display: flex;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
 }
 
 @mixin row-item($percent, $margin) {
   $width-calc: calc(#{$percent} - #{$margin});
-
   flex: 1 1 $width-calc;
-  box-sizing: border-box;
   margin: #{$margin};
   max-width: $width-calc;
 }
