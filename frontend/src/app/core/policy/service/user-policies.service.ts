@@ -27,7 +27,7 @@ export class UserPoliciesService {
 
   private createUserPoliciesResource(): any {
     return resource({
-      request: () => ({ }),
+      params: () => ({ }),
       loader: async ({ }) => {
         return await firstValueFrom(this.getUserList());
       },

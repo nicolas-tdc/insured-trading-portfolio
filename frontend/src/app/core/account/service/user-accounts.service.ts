@@ -29,7 +29,7 @@ export class UserAccountsService {
 
   private createUserAccountsResource(): any {
     return resource({
-      request: () => ({ }),
+      params: () => ({ }),
       loader: async ({ }) => {
         return await firstValueFrom(this.getUserList());
       },

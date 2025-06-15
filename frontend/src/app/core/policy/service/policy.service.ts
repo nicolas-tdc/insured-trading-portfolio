@@ -27,12 +27,12 @@ export class PolicyService {
 
   createPolicyResource(): any {
     return resource({
-      request: () => ({ accountId: this.selectedPolicyId() }),
-      loader: async ({ request }) => {
-        if (!request.accountId) return Promise.resolve(null);
+      params: () => ({ accountId: this.selectedPolicyId() }),
+      loader: async ({ params: { accountId } }) => {
+        if (!accountId) return Promise.resolve(null);
 
         return await firstValueFrom(
-          this.getItem(request.accountId)
+          this.getItem(accountId)
         );
       }
     })

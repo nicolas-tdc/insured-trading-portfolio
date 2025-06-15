@@ -39,9 +39,9 @@ export class TransferService {
 
   private createAccountTransfersResource(): any {
     return resource({
-      request: () => ({ accountId: this.selectedAccountId() }),
-      loader: async ({ request }) => {
-        return await firstValueFrom(this.getAccountTransfers(request.accountId));
+      params: () => ({ accountId: this.selectedAccountId() }),
+      loader: async ({ params: { accountId } }) => {
+        return await firstValueFrom(this.getAccountTransfers(accountId));
       },
     });
   }

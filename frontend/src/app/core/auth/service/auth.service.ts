@@ -21,11 +21,11 @@ export class AuthService {
 
   createAuthUserResource() {
     return resource({
-      request: () => ({ user: this.getUser() }),
-      loader: async ({ request }) => {
-        if (!request.user) return Promise.resolve(null);
+      params: () => ({ user: this.getUser() }),
+      loader: async ({ params: { user } }) => {
+        if (!user) return Promise.resolve(null);
 
-        return request.user;
+        return user;
       },
     });
   }

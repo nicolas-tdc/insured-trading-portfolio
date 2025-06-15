@@ -38,12 +38,12 @@ export class AccountService {
 
   createAccountResource(): any {
     return resource({
-      request: () => ({ accountId: this.selectedAccountId() }),
-      loader: async ({ request }) => {
-        if (!request.accountId) return Promise.resolve(null);
+      params: () => ({ accountId: this.selectedAccountId() }),
+      loader: async ({ params: { accountId } }) => {
+        if (!accountId) return Promise.resolve(null);
 
         return await firstValueFrom(
-          this.getItem(request.accountId)
+          this.getItem(accountId)
         );
       }
     })
