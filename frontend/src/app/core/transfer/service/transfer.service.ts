@@ -1,9 +1,9 @@
 import { computed, Injectable, resource, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
-import { Transfer, TransferRequest } from './model';
-import { FormRequestTransferComponent } from './component/form-request-transfer/form-request-transfer.component';
-import { AccountService } from '../account/service/account.service';
+import { Transfer, TransferRequest } from '../model';
+import { FormRequestTransferComponent } from '../component/form-request-transfer/form-request-transfer.component';
+import { AccountService } from '../../account/service';
 import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({ providedIn: 'root' })

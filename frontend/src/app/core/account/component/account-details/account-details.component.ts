@@ -4,7 +4,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { Account } from '../../model';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
-import { TransferService } from '../../../transfer/transfer.service';
+import { TransferService } from '../../../transfer/service';
 import { MatButton } from '@angular/material/button';
 
 @Component({

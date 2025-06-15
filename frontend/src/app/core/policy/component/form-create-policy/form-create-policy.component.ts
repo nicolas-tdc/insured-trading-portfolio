@@ -1,7 +1,7 @@
 import { Component, Inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PolicyService } from '../../service/policy.service';
+import { PolicyService } from '../../service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { Account } from '../../../account/model';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormCreateAccountComponent } from '../../../account/component/form-create-account/form-create-account.component';
-import { UserPoliciesService } from '../../service/user-policies.service';
+import { UserPoliciesService } from '../../service';
 
 @Component({
   selector: 'app-form-create-policy',

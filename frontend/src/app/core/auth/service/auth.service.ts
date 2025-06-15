@@ -1,6 +1,6 @@
 import { computed, Injectable, resource } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginRequest, RegisterRequest, JwtResponse, User } from './model';
+import { LoginRequest, RegisterRequest, JwtResponse, User } from '../model';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

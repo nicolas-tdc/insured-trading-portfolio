@@ -3,12 +3,12 @@ import { CardListPoliciesComponent } from '../../core/policy/component/card-list
 import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
-import { AccountService } from '../../core/account/service/account.service';
-import { PolicyService } from '../../core/policy/service/policy.service';
+import { AccountService } from '../../core/account/service';
+import { PolicyService } from '../../core/policy/service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { UserAccountsService } from '../../core/account/service/user-accounts.service';
-import { UserPoliciesService } from '../../core/policy/service/user-policies.service';
+import { UserAccountsService } from '../../core/account/service';
+import { UserPoliciesService } from '../../core/policy/service';
 
 @Component({
   selector: 'app-dashboard',

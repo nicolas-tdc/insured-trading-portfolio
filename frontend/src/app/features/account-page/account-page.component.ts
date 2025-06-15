@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { AccountService } from '../../core/account/service/account.service';
+import { AccountService } from '../../core/account/service';
 import { AccountDetailsComponent } from '../../core/account/component/account-details/account-details.component';
 import { MatButton } from '@angular/material/button';
 import { ListTableTransfersComponent } from '../../core/transfer/component/list-table-transfers/list-table-transfers.component';
-import { TransferService } from '../../core/transfer/transfer.service';
+import { TransferService } from '../../core/transfer/service';
 
 @Component({
   selector: 'app-account-page',

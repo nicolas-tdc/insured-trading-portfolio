@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../service';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { EntityService } from '../../../entity/entity.service';
+import { EntityService } from '../../../entity/service';
 
 @Component({
   selector: 'app-user-header',

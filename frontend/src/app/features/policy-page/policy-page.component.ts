@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Policy } from '../../core/policy/model';
-import { PolicyService } from '../../core/policy/service/policy.service';
+import { PolicyService } from '../../core/policy/service';
 import { PolicyDetailsComponent } from '../../core/policy/component/policy-details/policy-details.component';
 import { MatButtonModule } from '@angular/material/button';
 

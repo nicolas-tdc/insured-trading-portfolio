@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { PolicyService } from '../policy/service/policy.service';
-import { TransferService } from '../transfer/transfer.service';
-import { AccountService } from '../account/service/account.service';
-import { UserAccountsService } from '../account/service/user-accounts.service';
-import { UserPoliciesService } from '../policy/service/user-policies.service';
+import { AuthService } from '../../auth/service';
+import { PolicyService } from '../../policy/service';
+import { TransferService } from '../../transfer/service';
+import { AccountService } from '../../account/service';
+import { UserAccountsService } from '../../account/service';
+import { UserPoliciesService } from '../../policy/service';
 
 @Injectable({
   providedIn: 'root'
