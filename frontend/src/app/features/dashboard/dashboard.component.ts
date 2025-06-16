@@ -3,8 +3,6 @@ import { CardListPoliciesComponent } from '../../core/policy/component/card-list
 import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
-import { AccountService } from '../../core/account/service';
-import { PolicyService } from '../../core/policy/service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { UserAccountsService } from '../../core/account/service';
@@ -30,9 +28,7 @@ export class DashboardComponent implements OnInit {
   // Lifecycle
 
   constructor(
-    private accountService: AccountService,
     private userAccountsService: UserAccountsService,
-    private policyService: PolicyService,
     private userPoliciesService: UserPoliciesService,
     private dialog: MatDialog,
   ) { }
