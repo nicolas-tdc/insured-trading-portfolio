@@ -11,9 +11,11 @@
 
       <mat-select formControlName="policyType">
           <mat-option value="" disabled></mat-option>
-          <mat-option *ngFor="let type of policyTypes" [value]="type">
-            {{ type }}
-          </mat-option>
+          @for (type of policyTypes; track type) {
+            <mat-option [value]="type">
+              {{ type }}
+            </mat-option>
+          }
       </mat-select>
 
       @if (policyForm.get('policyType')?.hasError('required')) {
