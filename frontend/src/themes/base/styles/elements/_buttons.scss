@@ -2,9 +2,9 @@
 @use '../mixins' as *;
 
 .btn-basic {
-  @include responsive-spacing(margin, $spacing-md);
   display: inline-flex;
   flex-direction: column;
+  @include responsive-spacing(margin, $spacing-md);
 }
 
 .btn-card {
