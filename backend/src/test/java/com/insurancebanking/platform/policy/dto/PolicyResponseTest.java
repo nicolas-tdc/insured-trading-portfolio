@@ -25,7 +25,7 @@ public class PolicyResponseTest {
             .build();
 
         Policy policy = Policy.builder()
-            .policyType(PolicyType.AUTO)
+            .policyType(PolicyType.LOSS_PROTECTION)
             .coverageAmount(Double.valueOf(1000))
             .currencyCode("EUR")
             .premium(Double.valueOf(100))
@@ -38,7 +38,7 @@ public class PolicyResponseTest {
         assertEquals("EUR", response.currencyCode());
         assertEquals("€", response.currencySymbol());
         assertEquals(2, response.currencyFractionDigits());
-        assertEquals(PolicyType.AUTO, response.policyType());
+        assertEquals(PolicyType.LOSS_PROTECTION, response.policyType());
         assertEquals(Double.valueOf(1000), response.coverageAmount());
     }
 }

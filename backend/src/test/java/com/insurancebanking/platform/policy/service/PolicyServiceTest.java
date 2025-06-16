@@ -117,7 +117,7 @@ public class PolicyServiceTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        PolicyRequest request = new PolicyRequest(accountId, PolicyType.AUTO, 5000.0);
+        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LOSS_PROTECTION, 5000.0);
 
         User user = new User();
         user.setId(userId);
@@ -138,7 +138,7 @@ public class PolicyServiceTest {
             .account(account)
             .policyStatus(PolicyStatus.PENDING)
             .policyNumber(generatedPolicyNumber)
-            .policyType(PolicyType.AUTO)
+            .policyType(PolicyType.LOSS_PROTECTION)
             .coverageAmount(5000.0)
             .premium(125.0) // 5000 * 0.025
             .currencyCode("USD")
@@ -161,7 +161,7 @@ public class PolicyServiceTest {
     @Test
     void create_shouldThrowIfUserNotFound() {
         UUID userId = UUID.randomUUID();
-        PolicyRequest request = new PolicyRequest(UUID.randomUUID(), PolicyType.HOME, 10000.0);
+        PolicyRequest request = new PolicyRequest(UUID.randomUUID(), PolicyType.LOSS_PROTECTION, 10000.0);
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -175,7 +175,7 @@ public class PolicyServiceTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LIFE, 1000.0);
+        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LOSS_PROTECTION, 1000.0);
         User user = new User();
         user.setId(userId);
 
@@ -214,7 +214,7 @@ public class PolicyServiceTest {
 
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
-        PolicyRequest request = new PolicyRequest(accountId, PolicyType.HEALTH, 5000.0);
+        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LOSS_PROTECTION, 5000.0);
 
         User user = new User();
         user.setId(userId);

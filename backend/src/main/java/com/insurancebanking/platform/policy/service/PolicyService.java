@@ -83,10 +83,12 @@ public class PolicyService {
 
     private double calculatePremium(PolicyType type, double coverage) {
         double baseRate = switch (type) {
-            case LIFE   -> 0.01;
-            case HEALTH -> 0.02;
-            case HOME   -> 0.015;
-            case AUTO   -> 0.025;
+            case LOSS_PROTECTION -> 0.01;
+            case PERFORMANCE_SHARE -> 0.02;
+            case SUBSCRIPTION_BASED -> 0.03;
+            case CAPITAL_GUARANTEE -> 0.04;
+            case VOLATILITY_INSURANCE -> 0.05;
+            case EVENT_INSURANCE -> 0.06;
         };
 
         return coverage * baseRate;
