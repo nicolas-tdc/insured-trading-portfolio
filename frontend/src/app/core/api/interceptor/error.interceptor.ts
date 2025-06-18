@@ -11,19 +11,23 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.error('API Error:', error.message || 'Unknown error');
+        const message = error?.error?.message || error.message || 'Unknown error';
+
+        console.error('API Error:', message);
         console.error('Status Code:', error.status);
         console.error('URL:', error.url || 'Unknown');
-        if (error.error) {
-          console.error('Backend error:', error.error);
-        }
 
-        return throwError(() => error);
+        const formattedError = {
+          ...error,
+          message,
+        };
+
+        return throwError(() => formattedError);
       })
     );
   }
 }
+

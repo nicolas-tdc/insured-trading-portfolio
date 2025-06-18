@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   // Properties
 
   get accounts() { return this.userAccountsService.userAccounts(); }
+
   get policies() { return this.userPoliciesService.userPolicies(); }
 
   // Lifecycle

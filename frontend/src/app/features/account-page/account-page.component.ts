@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { AccountService } from '../../core/account/service';
+import { AccountService, UserAccountsService } from '../../core/account/service';
 import { AccountDetailsComponent } from '../../core/account/component/account-details/account-details.component';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { ListTableTransfersComponent } from '../../core/transfer/component/list-table-transfers/list-table-transfers.component';
-import { TransferService } from '../../core/transfer/service';
+import { AccountTransfersService } from '../../core/transfer/service/account-transfers.service';
 
 @Component({
   selector: 'app-account-page',
@@ -14,7 +13,7 @@ import { TransferService } from '../../core/transfer/service';
   imports: [
     CommonModule,
     RouterLink,
-    MatButton,
+    MatButtonModule,
     AccountDetailsComponent,
     ListTableTransfersComponent,
   ],
@@ -26,14 +25,15 @@ export class AccountPageComponent implements OnInit {
   // Properties
 
   public get account() { return this.accountService.userAccount(); }
+  public get accounts() { return this.userAccountsService.userAccounts(); }
 
   // Lifecycle
 
   constructor(
     private accountService: AccountService,
-    private transferService: TransferService,
+    private accountTransfersService: AccountTransfersService,
     private route: ActivatedRoute,
-    private dialog: MatDialog,
+    private userAccountsService: UserAccountsService
   ) { }
 
   ngOnInit(): void {
@@ -41,17 +41,11 @@ export class AccountPageComponent implements OnInit {
     if (!accountId) return;
 
     this.accountService.selectAccount(accountId);
-    this.transferService.selectAccount(accountId);
+    this.accountTransfersService.selectAccount(accountId);
   }
 
   ngOnDestroy(): void {
     this.accountService.selectAccount(null);
-    this.transferService.selectAccount(null);
-  }
-
-  // Dialog
-
-  openTransferDialog(): void {
-    this.transferService.openCreateTransferFormDialog(this.account);
+    this.accountTransfersService.selectAccount(null);
   }
 }

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../auth/service';
 import { PolicyService } from '../../policy/service';
-import { TransferService } from '../../transfer/service';
 import { AccountService } from '../../account/service';
 import { UserAccountsService } from '../../account/service';
 import { UserPoliciesService } from '../../policy/service';
+import { AccountTransfersService } from '../../transfer/service/account-transfers.service';
+import { TransferAccountsService } from '../../transfer/service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,13 @@ import { UserPoliciesService } from '../../policy/service';
 export class EntityService {
 
   constructor(
-    private accountService: AccountService,
-    private userAccountsService: UserAccountsService,
-    private transferService: TransferService,
-    private policyService: PolicyService,
-    private userPoliciesService: UserPoliciesService,
     private authService: AuthService,
+    private userAccountsService: UserAccountsService,
+    private accountService: AccountService,
+    private userPoliciesService: UserPoliciesService,
+    private policyService: PolicyService,
+    private accountTransfersService: AccountTransfersService,
+    private transferAccountsService: TransferAccountsService,
   ) { }
 
   public clearEntities() {
@@ -33,6 +35,7 @@ export class EntityService {
     this.policyService.clearSelectedPolicy();
 
     // Transfers
-    this.transferService.clearAccountTransfers();
+    this.transferAccountsService.clearTransferAccounts();
+    this.accountTransfersService.clearAccountTransfers();
   }
 }

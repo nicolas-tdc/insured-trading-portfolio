@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormLoginAuthComponent } from '../../core/auth/component/form-login-auth/form-login-auth.component';
-import { FormRegisterAuthComponent } from '../../core/auth/component/form-signup-auth/form-register-auth.component';
+import { FormRegisterAuthComponent } from '../../core/auth/component/form-register-auth/form-register-auth.component';
 
 @Component({
   selector: 'app-authentication',
