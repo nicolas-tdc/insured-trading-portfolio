@@ -11,43 +11,36 @@ export class AccountService {
 
   private apiUrl = '/api/account';
 
-  private selectedAccountId = signal<string | null>(null);
+  // Selected account
+  public selectedAccountId = signal<string | null>(null);
+  public selectAccount(id: string | null): void { this.selectedAccountId.set(id); }
+  public getSelectedAccountId(): string | null { return this.selectedAccountId(); }
 
-  // Reactive account selected by ID
+  // Reactive params
+  private params = computed(() => {
+    const id = this.selectedAccountId();
+    return id ? { accountId: id } : null;
+  });
 
-  public selectAccount(id: string | null): void {
-    this.selectedAccountId.set(id);
-  }
-
-  public getSelectedAccountId(): string | null {
-    return this.selectedAccountId();
-  }
-
-  // Reactive selected account
-  private userAccountResource = this.createAccountResource();
-  public userAccount = computed(() => this.userAccountResource.value());
-
-  public reloadUserAccount(): void {
-    this.userAccountResource.reload();
-  }
-
-  public clearSelectedAccount(): void {
-    this.userAccountResource.set(null);
-  }
-
-
-  createAccountResource(): any {
-    return resource({
-      params: () => ({ accountId: this.selectedAccountId() }),
-      loader: async ({ params: { accountId } }) => {
-        if (!accountId) return Promise.resolve(null);
-
-        return await firstValueFrom(
-          this.getItem(accountId)
-        );
+  // Reactive resource
+  private userAccountResource = resource<Account | null, { accountId: string }>({
+    params: () => {
+      const p = this.params();
+      if (!p) {
+        return { accountId: '' };
       }
-    })
-  }
+      return p;
+    },
+    loader: async ({ params: { accountId } }) => {
+      if (!accountId) return Promise.resolve(null);
+
+      return await firstValueFrom(this.getItem(accountId));
+    }
+  });
+
+  public userAccount = computed(() => this.userAccountResource.value());
+  public reloadUserAccount(): void { this.userAccountResource?.reload(); }
+  public clearSelectedAccount(): void { this.userAccountResource.set(null); }
 
   // Lifecycle
 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, Injectable, resource } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Account } from '../model';
+import { AuthService } from '../../auth/service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,36 +15,33 @@ export class UserAccountsService {
 
   // Reactive list of accounts
 
-  private userAccountsResource = this.createUserAccountsResource();
+  private userAccountsResource = resource<Account[], {}>({
+    params: () => ({}),
+    loader: async () => {
+      return await firstValueFrom(this.getUserList());
+    }
+  });
+
   public userAccounts = computed(() => this.userAccountsResource.value());
-
-  public reloadUserAccounts(): void {
-    this.userAccountsResource.reload();
-  }
-
-  public clearUserAccounts(): void {
-    this.userAccountsResource.set([]);
-  }
-
-  // Resources
-
-  private createUserAccountsResource(): any {
-    return resource({
-      params: () => ({ }),
-      loader: async ({ }) => {
-        return await firstValueFrom(this.getUserList());
-      },
-    });
-  }
+  public reloadUserAccounts(): void { this.userAccountsResource.reload(); }
+  public clearUserAccounts(): void { this.userAccountsResource.set([]); }
 
   // Lifecycle
 
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
   ) { }
 
   // API
   getUserList(): Observable<Account[]> {
+    if (!this.authService.isLoggedIn()) {
+      return new Observable(observer => {
+        observer.next([]);
+        observer.complete();
+      });
+    }
+
     return this.http.get<Account[]>(`${this.apiUrl}`);
   }
 }

@@ -11,7 +11,7 @@
       <mat-select formControlName="accountType">
           <mat-option value="" disabled></mat-option>
           @for (type of accountTypes; track type) {
-            <mat-option *ngFor="let type of accountTypes" [value]="type">
+            <mat-option [value]="type">
               {{ type }}
             </mat-option>
           }

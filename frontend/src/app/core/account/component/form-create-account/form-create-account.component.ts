@@ -6,7 +6,7 @@ import { AccountService } from '../../service';
 import { CurrencyService } from '../../../currency/service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserAccountsService } from '../../service';
 
@@ -17,7 +17,7 @@ import { UserAccountsService } from '../../service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatButton,
+    MatButtonModule,
   ],
   templateUrl: './form-create-account.component.html',
   styleUrl: './form-create-account.component.scss'

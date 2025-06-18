@@ -14,7 +14,7 @@
             </app-copy-to-clipboard>
 
             <mat-card-title>
-                <h3>{{ account()?.balance }} {{ account()?.currencySymbol }}</h3>
+                <h3>{{ account()?.balance | formatAmountSigned: account() }}</h3>
             </mat-card-title>
         </mat-card-content>
 

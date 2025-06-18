@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TransferService } from '../../../transfer/service';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
+import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 
 @Component({
   selector: 'app-card-item-account',
@@ -22,6 +23,7 @@ import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipb
     MatIconModule,
     MatTooltipModule,
     CopyToClipboardComponent,
+    FormatAmountSignedPipe,
   ],
   templateUrl: './card-item-account.component.html',
   styleUrl: './card-item-account.component.scss'
@@ -56,6 +58,6 @@ export class CardItemAccountComponent {
   }
 
   openTransferDialog(): void {
-    this.transferService.openCreateTransferFormDialog(this.account());
+    this.transferService.openCreateTransferFormDialog(this.account()?.id);
   }
 }
