@@ -11,32 +11,34 @@ export class PolicyService {
 
   private apiUrl = '/api/policy';
 
-  // Reactive item selected by ID
+  // Selected policy
   private selectedPolicyId = signal<string | null>(null);
+  public selectPolicy(id: string | null): void { this.selectedPolicyId.set(id); }
+  public clearSelectedPolicy(): void { this.selectedPolicyId.set(null); }
 
-  public selectPolicy(id: string | null): void {
-    this.selectedPolicyId.set(id);
-  }
+  // Reactive params
+  private params = computed(() => {
+    const id = this.selectedPolicyId();
+    return id ? { policyId: id } : null;
+  })
 
-  public clearSelectedPolicy(): void {
-    this.selectedPolicyId.set(null);
-  }
-
-  private userPolicyResource = this.createPolicyResource();
-  public userPolicy = computed(() => this.userPolicyResource.value());
-
-  createPolicyResource(): any {
-    return resource({
-      params: () => ({ accountId: this.selectedPolicyId() }),
-      loader: async ({ params: { accountId } }) => {
-        if (!accountId) return Promise.resolve(null);
-
-        return await firstValueFrom(
-          this.getItem(accountId)
-        );
+  // Reactive resource
+  private userPolicyResource = resource<Policy | null, { policyId: string }>({
+    params: () => {
+      const params = this.params();
+      if (!params) {
+        return { policyId: '' };
       }
-    })
-  }
+      return params;
+    },
+    loader: async ({ params: { policyId } }) => {
+      if (!policyId) return Promise.resolve(null);
+
+      return await firstValueFrom(this.getItem(policyId));
+    }
+  })
+
+  public userPolicy = computed(() => this.userPolicyResource.value());
 
   // Lifecycle
 

@@ -25,11 +25,11 @@
             </div>
 
             <mat-card-title>
-                <h3>Premium: {{ policy()?.premium?.toFixed(2) }} {{ policy()?.currencySymbol }}</h3>
+                <h3>Premium: {{ policy()?.premium | formatAmount: policy() }}</h3>
             </mat-card-title>
 
             <mat-card-subtitle>
-                <p>Coverage: {{ policy()?.coverageAmount }} {{ policy()?.currencySymbol }}</p>
+                <p>Coverage: {{ policy()?.coverageAmount | formatAmount: policy() }}</p>
             </mat-card-subtitle>
         </mat-card-content>
 

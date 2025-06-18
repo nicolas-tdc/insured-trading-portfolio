@@ -7,6 +7,30 @@
 
   <div class="col-item">
     <mat-form-field class="form-field-basic">
+      <mat-label>Linked Account</mat-label>
+
+      <mat-select formControlName="accountId">
+        @if (userAccounts.length === 0) {
+          <mat-option value="" disabled>No accounts found</mat-option>
+        }
+        @else {
+          <mat-option value="" disabled></mat-option>
+          @for (account of userAccounts; track account.id) {
+            <mat-option [value]="account.id">
+              {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
+            </mat-option>
+          }
+        }
+      </mat-select>
+
+      @if (policyForm.get('accountId')?.hasError('required')) {
+        <mat-error>Linked Account is required</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="col-item">
+    <mat-form-field class="form-field-basic">
       <mat-label>Policy Type</mat-label>
 
       <mat-select formControlName="policyType">
@@ -38,30 +62,6 @@
       }
       @if (policyForm.get('coverageAmount')?.hasError('pattern')) {
         <mat-error>Coverage Amount must be a positive number</mat-error>
-      }
-    </mat-form-field>
-  </div>
-
-  <div class="col-item">
-    <mat-form-field class="form-field-basic">
-      <mat-label>Linked Account</mat-label>
-
-      <mat-select formControlName="accountId">
-        @if (accounts.length === 0) {
-          <mat-option value="" disabled>No accounts found</mat-option>
-        }
-        @else {
-          <mat-option value="" disabled></mat-option>
-          @for (account of accounts; track account.id) {
-            <mat-option [value]="account.id">
-              {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
-            </mat-option>
-          }
-        }
-      </mat-select>
-
-      @if (policyForm.get('accountId')?.hasError('required')) {
-        <mat-error>Linked Account is required</mat-error>
       }
     </mat-form-field>
   </div>

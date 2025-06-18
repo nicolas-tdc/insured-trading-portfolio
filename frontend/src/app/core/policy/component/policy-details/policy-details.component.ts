@@ -5,6 +5,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 import { MatButtonModule } from '@angular/material/button';
+import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
 
 @Component({
   selector: 'app-policy-details',
@@ -14,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatChipsModule,
     MatButtonModule,
     CopyToClipboardComponent,
+    FormatAmountPipe,
   ],
   templateUrl: './policy-details.component.html',
   styleUrl: './policy-details.component.scss'

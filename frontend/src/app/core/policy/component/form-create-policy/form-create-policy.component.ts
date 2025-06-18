@@ -1,16 +1,15 @@
-import { Component, Inject, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PolicyService } from '../../service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { Account } from '../../../account/model';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormCreateAccountComponent } from '../../../account/component/form-create-account/form-create-account.component';
 import { UserPoliciesService } from '../../service';
+import { UserAccountsService } from '../../../account/service';
 
 @Component({
   selector: 'app-form-create-policy',
@@ -19,9 +18,8 @@ import { UserPoliciesService } from '../../service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatButton,
+    MatButtonModule,
     MatInputModule,
-    MatGridListModule,
   ],
   templateUrl: './form-create-policy.component.html',
   styleUrl: './form-create-policy.component.scss'
@@ -30,18 +28,19 @@ export class FormCreatePolicyComponent {
 
   // Properties
 
-  public policyTypes: string[] = [];
-
   public policyForm!: FormGroup;
 
+  public policyTypes: string[] = [];
+
+  public get userAccounts() { return this.userAccountsService.userAccounts(); }
 
   // Lifecycle
 
   constructor(
     private policyService: PolicyService,
     private userPoliciesService: UserPoliciesService,
+    private userAccountsService: UserAccountsService,
     public dialogRef: MatDialogRef<FormCreateAccountComponent>,
-    @Inject(MAT_DIALOG_DATA) public accounts: Account[]
   ) { }
 
   ngOnInit(): void {
