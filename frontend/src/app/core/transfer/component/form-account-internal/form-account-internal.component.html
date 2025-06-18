@@ -1,0 +1,22 @@
+<form [formGroup]="selectInternalAccountForm!" (ngSubmit)="validateTargetAccount()">
+
+    <mat-form-field class="form-field-basic">
+        <mat-label>Select from your accounts</mat-label>
+
+        <mat-select formControlName="targetAccountId">
+            <mat-option value="" disabled></mat-option>
+            @for (account of userAccounts; track account.id) {
+                <mat-option [value]="account.id">
+                    {{ account.accountNumber }} - {{ account.balance | formatAmountSigned: account }}
+                </mat-option>
+            }
+        </mat-select>
+
+    </mat-form-field>
+
+    <button mat-flat-button
+        [disabled]="!selectInternalAccountForm.get('targetAccountId')?.valid
+        || !selectInternalAccountForm.get('targetAccountId')?.value">
+        Select
+    </button>
+</form>

@@ -1,0 +1,58 @@
+<button mat-stroked-button (click)="stepBack()">Back to selection</button>
+@if (targetAccountError) {
+    <div class="center-container">
+        <mat-error>{{ targetAccountError.message }}</mat-error>
+    </div>
+}
+@else if (transferDetailsForm()) {
+    <form
+    [formGroup]="transferDetailsForm()!"
+    (ngSubmit)="createTransfer()">
+
+    <p>To {{ targetAccount?.accountNumber }} - {{ targetAccount?.secureEmail }}</p>
+
+    <div class="col-item">
+        <mat-form-field class="form-field-basic">
+        <mat-label>Amount</mat-label>
+
+        <input matInput
+            formControlName="amount"
+            placeholder="Ex: 100" />
+
+        @if (transferDetailsForm()?.get('amount')?.hasError('required')) {
+            <mat-error>Amount is required</mat-error>
+        }
+        @if (transferDetailsForm()?.get('amount')?.hasError('pattern')) {
+            <mat-error>Amount must be a positive number</mat-error>
+        }
+        @if (transferDetailsForm()?.get('amount')?.hasError('max')) {
+            <mat-error>Amount must be less than or equal to your balance</mat-error>
+        }
+        </mat-form-field>
+    </div>
+
+    <div class="col-item">
+        <mat-form-field class="form-field-basic">
+        <mat-label>Description</mat-label>
+
+        <input matInput
+            formControlName="description"
+            placeholder="Optional" />
+        </mat-form-field>
+    </div>
+
+    @if (apiError) {
+        <mat-error>{{ apiError }}</mat-error>
+    }
+
+    <div class="col-item">
+        <button mat-flat-button
+        class="btn-basic"
+        [disabled]="!transferDetailsForm()?.valid || sourceAccount?.accountStatus !== 'ACTIVE'"
+        type="submit">
+        Transfer
+        </button>
+    </div>
+
+    </form>
+}

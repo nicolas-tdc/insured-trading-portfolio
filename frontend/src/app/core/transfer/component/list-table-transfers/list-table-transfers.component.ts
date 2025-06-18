@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { TransferService } from '../../service';
 import { MatTableModule } from '@angular/material/table';
 import { OtherAccountNumberPipe } from '../../pipe/other-account-number.pipe';
 import { DirectionalAmountPipe } from '../../pipe/directional-amount.pipe';
 import { AccountService } from '../../../account/service';
 import { ActivatedRoute } from '@angular/router';
+import { AccountTransfersService } from '../../service/account-transfers.service';
+import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 
 @Component({
   selector: 'app-list-table-transfers',
@@ -14,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableModule,
     OtherAccountNumberPipe,
     DirectionalAmountPipe,
+    FormatAmountSignedPipe,
   ],
   templateUrl: './list-table-transfers.component.html',
   styleUrl: './list-table-transfers.component.scss'
@@ -22,13 +24,9 @@ export class ListTableTransfersComponent {
 
   // Properties
 
-  public get account() {
-    return this.accountService.userAccount();
-  }
+  public get account() { return this.accountService.userAccount(); }
 
-  public get transfers() {
-    return this.transferService.accountTransfers();
-  }
+  public get transfers() { return this.accountTransfersService.accountTransfers(); }
 
   public displayedColumns: string[] = [
     'transferNumber',
@@ -41,15 +39,8 @@ export class ListTableTransfersComponent {
   // Lifecycle
 
   constructor(
-    private transferService: TransferService,
+    private accountTransfersService: AccountTransfersService,
     private accountService: AccountService,
     private route: ActivatedRoute,
   ) { }
-
-
-  ngOnInit(): void {
-    this.accountService.selectAccount(
-      this.route.snapshot.paramMap.get('accountId')!
-    );
-  }
 }

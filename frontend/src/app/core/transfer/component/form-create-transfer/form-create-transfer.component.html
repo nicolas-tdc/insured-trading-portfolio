@@ -1,0 +1,32 @@
+@if (createTransferForm) {
+  <mat-stepper #stepper [linear]="true" [formGroup]="createTransferForm">
+
+    @if (createTransferForm.get('selectAccount')) {
+      <mat-step>
+        <ng-template matStepLabel>Select a target account</ng-template>
+
+        <p class="center-container">Select a target from your accounts or by account number.</p>
+
+        <app-form-account-internal
+          [selectAccountForm]="selectAccountForm"
+          [stepper]="stepper">
+        </app-form-account-internal>
+
+        <app-form-account-external
+          [selectAccountForm]="selectAccountForm"
+          [stepper]="stepper">
+        </app-form-account-external>
+      </mat-step>
+    }
+
+    @if (createTransferForm.get('transferDetails')) {
+      <mat-step>
+        <ng-template matStepLabel>Enter details</ng-template>
+        <app-form-transfer-details
+          [transferDetailsForm]="transferDetailsForm"
+          [stepper]="stepper">
+        </app-form-transfer-details>
+      </mat-step>
+    }
+  </mat-stepper>
+}
