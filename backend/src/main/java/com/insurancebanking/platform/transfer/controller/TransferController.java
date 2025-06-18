@@ -21,8 +21,11 @@ import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
 import com.insurancebanking.platform.transfer.dto.TransferResponse;
+import com.insurancebanking.platform.transfer.dto.TransferValidateExternalRequest;
+import com.insurancebanking.platform.transfer.dto.TransferValidateInternalRequest;
 import com.insurancebanking.platform.transfer.model.Transfer;
 import com.insurancebanking.platform.transfer.service.TransferService;
+import com.insurancebanking.platform.account.dto.AccountSecureResponse;
 
 import io.micrometer.common.lang.NonNull;
 
@@ -46,6 +49,26 @@ public class TransferController {
 
         URI location = new URI("/api/transfer/" + transfer.getId());
         return ResponseEntity.created(location).body(TransferResponse.from(transfer));
+    }
+
+    @PostMapping(value = "/validate-internal", produces = "application/json")
+    public ResponseEntity<?> validateInternalTransferAccounts(
+        @RequestBody @NonNull TransferValidateInternalRequest request,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        Account targetAccount = transferService.validateInternalTransferAccounts(request, userDetails.getId());
+
+        return ResponseEntity.ok(AccountSecureResponse.from(targetAccount));
+    }
+
+    @PostMapping(value = "/validate-external", produces = "application/json")
+    public ResponseEntity<?> validateExternalTransferAccounts(
+        @RequestBody @NonNull TransferValidateExternalRequest request,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        Account targetAccount = transferService.validateExternalTransferAccounts(request, userDetails.getId());
+
+        return ResponseEntity.ok(AccountSecureResponse.from(targetAccount));
     }
 
     @GetMapping(value = "/account/{accountId}", produces = "application/json")

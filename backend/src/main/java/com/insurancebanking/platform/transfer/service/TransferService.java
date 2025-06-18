@@ -12,6 +12,8 @@ import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.core.service.BaseEntityService;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
+import com.insurancebanking.platform.transfer.dto.TransferValidateExternalRequest;
+import com.insurancebanking.platform.transfer.dto.TransferValidateInternalRequest;
 import com.insurancebanking.platform.transfer.exception.TransferCreationException;
 import com.insurancebanking.platform.transfer.exception.TransferValidationException;
 import com.insurancebanking.platform.transfer.model.Transfer;
@@ -28,11 +30,30 @@ public class TransferService {
     @Autowired private AccountService accountService;
     @Autowired private AccountRepository accountRepository;
 
-    public Transfer createTransfer(TransferRequest request, UUID userId) {
-        Account source = getSourceAccount(request, userId);
-        Account target = getTargetAccount(request);
+    public Account validateInternalTransferAccounts(TransferValidateInternalRequest request, UUID userId) {
+        Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
+        Account target = accountService.getUserAccountById(request.targetAccountId(), userId);
 
-        validateTransferRules(request, source, target);
+        validateTransferAccountsRules(source, target);
+
+        return target;
+    }
+
+    public Account validateExternalTransferAccounts(TransferValidateExternalRequest request, UUID userId) {
+        Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
+        Account target = accountService.getUserAccountByAccountNumber(request.targetAccountNumber());
+
+        validateTransferAccountsRules(source, target);
+
+        return target;
+    }
+
+    public Transfer createTransfer(TransferRequest request, UUID userId) {
+        Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
+        Account target = accountService.getUserAccountByAccountNumber(request.targetAccountNumber());
+
+        validateTransferAccountsRules(source, target);
+        validateTransferDetailsRules(request, source, target);
 
         String transferNumber = generateTransferNumber();
 
@@ -54,45 +75,34 @@ public class TransferService {
         return transferRepository.save(transfer);
     }
 
-    private void validateTransferRules(TransferRequest request, Account source, Account target) {
+    private void validateTransferAccountsRules(Account source, Account target) {
         if (source == null) {
             throw new TransferValidationException("Invalid source account");
         }
         if (target == null) {
             throw new TransferValidationException("Invalid target account");
         }
-
         if (!AccountStatus.ACTIVE.equals(source.getAccountStatus())) {
             throw new TransferValidationException("Source account is not active");
         }
-
         if (!AccountStatus.ACTIVE.equals(target.getAccountStatus())) {
             throw new TransferValidationException("Target account is not active");
         }
-
-        if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new TransferValidationException("Transfer amount must be positive");
-        }
-
-        if (source.getBalance().compareTo(request.amount()) < 0) {
-            throw new TransferValidationException("Insufficient balance");
-        }
-
         if (source.getId().equals(target.getId())) {
             throw new TransferValidationException("Source and target accounts must be different");
         }
-
         if (!source.getCurrencyCode().equals(target.getCurrencyCode())) {
             throw new TransferValidationException("Currency mismatch between source and target accounts");
         }
     }
 
-    private Account getSourceAccount(TransferRequest request, UUID userId) {
-        return accountService.getUserAccountById(request.sourceAccountId(), userId);
-    }
-
-    private Account getTargetAccount(TransferRequest request) {
-        return accountService.getUserAccountByAccountNumber(request.targetAccountNumber());
+    private void validateTransferDetailsRules(TransferRequest request, Account source, Account target) {
+        if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new TransferValidationException("Transfer amount must be positive");
+        }
+        if (source.getBalance().compareTo(request.amount()) < 0) {
+            throw new TransferValidationException("Insufficient balance");
+        }
     }
 
     private void updateAccounts(Account source, Account target, BigDecimal amount) {
