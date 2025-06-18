@@ -38,8 +38,8 @@ export class UserHeaderComponent {
   // Authentication
 
   logout(): void {
-    this.entityService.clearEntities();
     this.authService.logout();
+    this.entityService.clearEntities();
     this.router.navigate(['/authentication']);
   }
 }

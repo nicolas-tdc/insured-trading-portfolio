@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form-register-auth',
@@ -15,8 +15,8 @@ import { MatIcon } from '@angular/material/icon';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButton,
-    MatIcon,
+    MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './form-register-auth.component.html',
   styleUrls: ['./form-register-auth.component.scss'],

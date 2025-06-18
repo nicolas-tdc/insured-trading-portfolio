@@ -10,25 +10,16 @@ export class AuthService {
 
   private apiUrl = '/api/auth';
 
-  private authUserResource = this.createAuthUserResource();
+  private authUserResource = resource<User | null, { user: User | null }>({
+    params: () => ({ user: this.getUser() }),
+    loader: async ({ params: { user } }) => {
+      if (!user || !this.isLoggedIn()) return Promise.resolve(null);
+      return user;
+    }
+  });
+
   public authUser = computed(() => this.authUserResource?.value() ?? null);
-
-  clearAuthUser(): void {
-    this.authUserResource.set(null);
-  }
-
-  // Resources
-
-  createAuthUserResource() {
-    return resource({
-      params: () => ({ user: this.getUser() }),
-      loader: async ({ params: { user } }) => {
-        if (!user) return Promise.resolve(null);
-
-        return user;
-      },
-    });
-  }
+  clearAuthUser(): void { this.authUserResource?.set(null); }
 
   // Lifecycle
 
@@ -70,7 +61,7 @@ export class AuthService {
   public saveUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
 
-    this.authUserResource.set(user);
+    this.authUserResource?.set(user);
   }
 
   private getUser(): User | null {

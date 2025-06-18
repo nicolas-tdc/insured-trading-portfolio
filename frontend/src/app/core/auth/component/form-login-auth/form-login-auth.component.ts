@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service';
-import { MatError, MatFormFieldModule } from '@angular/material/form-field';
-import { MatButton } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form-login-auth',
@@ -14,9 +14,9 @@ import { MatIcon } from '@angular/material/icon';
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatButton,
+    MatButtonModule,
     MatInputModule,
-    MatIcon,
+    MatIconModule,
   ],
   templateUrl: './form-login-auth.component.html',
   styleUrls: ['./form-login-auth.component.scss'],
