@@ -18,8 +18,6 @@ import com.insurancebanking.platform.core.service.BaseEntityService;
 import com.insurancebanking.platform.transfer.dto.TransferRequest;
 import com.insurancebanking.platform.transfer.exception.TransferCreationException;
 import com.insurancebanking.platform.transfer.exception.TransferValidationException;
-import com.insurancebanking.platform.transfer.model.Transfer;
-import com.insurancebanking.platform.transfer.model.TransferStatus;
 import com.insurancebanking.platform.transfer.repository.TransferRepository;
 import com.insurancebanking.platform.transfer.dto.TransferValidateExternalRequest;
 import com.insurancebanking.platform.transfer.dto.TransferValidateInternalRequest;
