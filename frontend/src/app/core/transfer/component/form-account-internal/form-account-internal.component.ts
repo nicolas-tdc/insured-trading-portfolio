@@ -41,7 +41,9 @@ export class FormAccountInternalComponent {
     if (!this.sourceAccount) return [];
 
     return this.userAccountsService.userAccounts()?.filter(
-      (account: any) => account.id !== this.sourceAccount?.id);
+      (account: any) =>
+        account.id !== this.sourceAccount?.id && account.currencyCode === this.sourceAccount?.currencyCode
+    );
   }
 
   // Lifecycle
