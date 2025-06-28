@@ -5,17 +5,24 @@
       <mat-step>
         <ng-template matStepLabel>Select a target account</ng-template>
 
-        <p class="center-container">Select a target from your accounts or by account number.</p>
+        @if (sourceAccount?.accountType === 'CHECKING') {
+          <p class="center-container">Select a target account from your accounts or by account number.</p>
+        }
+        @else {
+          <p class="center-container">Select a target account from your accounts.</p>
+        }
 
         <app-form-account-internal
           [selectAccountForm]="selectAccountForm"
           [stepper]="stepper">
         </app-form-account-internal>
 
-        <app-form-account-external
-          [selectAccountForm]="selectAccountForm"
-          [stepper]="stepper">
-        </app-form-account-external>
+        @if (sourceAccount?.accountType === 'CHECKING') {
+          <app-form-account-external
+            [selectAccountForm]="selectAccountForm"
+            [stepper]="stepper">
+          </app-form-account-external>
+        }
       </mat-step>
     }
 

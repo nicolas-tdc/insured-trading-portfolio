@@ -30,12 +30,8 @@ export class FormCreateTransferComponent {
 
   // Forms
   createTransferForm!: FormGroup;
-  public get selectAccountForm() {
-    return this.createTransferForm.get('selectAccount') as FormGroup;
-  }
-  public get transferDetailsForm() {
-    return this.createTransferForm.get('transferDetails') as FormGroup;
-  }
+  public get selectAccountForm() { return this.createTransferForm.get('selectAccount') as FormGroup; }
+  public get transferDetailsForm() { return this.createTransferForm.get('transferDetails') as FormGroup; }
 
   // Accounts
   public get sourceAccount() { return this.accountService.userAccount(); }

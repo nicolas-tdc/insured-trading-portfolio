@@ -192,7 +192,7 @@ class AccountServiceTest {
         String accountNumber = "INVALID123";
         when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> accountService.getUserAccountByAccountNumber(accountNumber))
+        assertThatThrownBy(() -> accountService.getAccountByAccountNumber(accountNumber))
             .isInstanceOf(AccountNumberNotFoundException.class)
             .hasMessage("Account with number " + accountNumber + " not found.");
     }
@@ -205,7 +205,7 @@ class AccountServiceTest {
 
         when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(account));
 
-        Account result = accountService.getUserAccountByAccountNumber(accountNumber);
+        Account result = accountService.getAccountByAccountNumber(accountNumber);
 
         assertThat(result).isNotNull();
         assertThat(result.getAccountNumber()).isEqualTo(accountNumber);

@@ -20,6 +20,7 @@ import com.insurancebanking.platform.transfer.model.Transfer;
 import com.insurancebanking.platform.transfer.repository.TransferRepository;
 import com.insurancebanking.platform.account.model.AccountStatus;
 import com.insurancebanking.platform.transfer.model.TransferStatus;
+import com.insurancebanking.platform.account.model.AccountType;
 
 @Service
 @Transactional
@@ -34,6 +35,7 @@ public class TransferService {
         Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
         Account target = accountService.getUserAccountById(request.targetAccountId(), userId);
 
+        validateInternalTransferAccountsRules(source, target);
         validateTransferAccountsRules(source, target);
 
         return target;
@@ -41,8 +43,9 @@ public class TransferService {
 
     public Account validateExternalTransferAccounts(TransferValidateExternalRequest request, UUID userId) {
         Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
-        Account target = accountService.getUserAccountByAccountNumber(request.targetAccountNumber());
+        Account target = accountService.getAccountByAccountNumber(request.targetAccountNumber());
 
+        validateExternalTransferAccountsRules(source, target);
         validateTransferAccountsRules(source, target);
 
         return target;
@@ -50,7 +53,7 @@ public class TransferService {
 
     public Transfer createTransfer(TransferRequest request, UUID userId) {
         Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
-        Account target = accountService.getUserAccountByAccountNumber(request.targetAccountNumber());
+        Account target = accountService.getAccountByAccountNumber(request.targetAccountNumber());
 
         validateTransferAccountsRules(source, target);
         validateTransferDetailsRules(request, source, target);
@@ -76,39 +79,64 @@ public class TransferService {
     }
 
     private void validateTransferAccountsRules(Account source, Account target) {
+        // Accounts must exist
         if (source == null) {
-            throw new TransferValidationException("Invalid source account");
+            throw new TransferValidationException("Source account not found");
         }
         if (target == null) {
-            throw new TransferValidationException("Invalid target account");
+            throw new TransferValidationException("Target account not found");
         }
+        // Accounts must be active
         if (!AccountStatus.ACTIVE.equals(source.getAccountStatus())) {
             throw new TransferValidationException("Source account is not active");
         }
         if (!AccountStatus.ACTIVE.equals(target.getAccountStatus())) {
             throw new TransferValidationException("Target account is not active");
         }
+        // Accounts must be different
         if (source.getId().equals(target.getId())) {
             throw new TransferValidationException("Source and target accounts must be different");
         }
+        // Accounts must use same currency
         if (!source.getCurrencyCode().equals(target.getCurrencyCode())) {
-            throw new TransferValidationException("Currency mismatch between source and target accounts");
+            throw new TransferValidationException("Source and target accounts must have the same currency");
+        }
+    }
+
+    private void validateInternalTransferAccountsRules(Account source, Account target) {
+        // Source and target accounts must belong to the same user
+        if (source.getUser() != target.getUser()) {
+            throw new TransferValidationException("Source and target accounts must belong to the same user");
+        }
+    }
+
+    private void validateExternalTransferAccountsRules(Account source, Account target) {
+        // Source and target accounts must belong to different users
+        if (source.getUser() != target.getUser()) {
+            // Source account must be a checking account
+            if (source.getAccountType() != AccountType.CHECKING) {
+                throw new TransferValidationException("Source account must be a checking account for external transfers");
+            }
         }
     }
 
     private void validateTransferDetailsRules(TransferRequest request, Account source, Account target) {
+        // Amount must be positive
         if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new TransferValidationException("Transfer amount must be positive");
         }
+        // Source account must have enough balance
         if (source.getBalance().compareTo(request.amount()) < 0) {
             throw new TransferValidationException("Insufficient balance");
         }
     }
 
     private void updateAccounts(Account source, Account target, BigDecimal amount) {
+        // Update account balances
         source.setBalance(source.getBalance().subtract(amount));
         target.setBalance(target.getBalance().add(amount));
 
+        // Save accounts
         accountRepository.save(source);
         accountRepository.save(target);
     }

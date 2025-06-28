@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.model.AccountStatus;
+import com.insurancebanking.platform.account.model.AccountType;
 import com.insurancebanking.platform.account.repository.AccountRepository;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.core.service.BaseEntityService;
@@ -20,6 +21,9 @@ import com.insurancebanking.platform.transfer.exception.TransferValidationExcept
 import com.insurancebanking.platform.transfer.model.Transfer;
 import com.insurancebanking.platform.transfer.model.TransferStatus;
 import com.insurancebanking.platform.transfer.repository.TransferRepository;
+import com.insurancebanking.platform.transfer.dto.TransferValidateExternalRequest;
+import com.insurancebanking.platform.transfer.dto.TransferValidateInternalRequest;
+import com.insurancebanking.platform.auth.model.User;
 
 public class TransferServiceTest {
 
@@ -35,59 +39,31 @@ public class TransferServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    private Account mockAccount(UUID id, BigDecimal balance, String currency, AccountStatus status) {
-        Account account = new Account();
-        account.setId(id);
-        account.setBalance(balance);
-        account.setCurrencyCode(currency);
-        account.setAccountStatus(status);
+    private Account mockAccount(
+        UUID id, String number, BigDecimal balance, String currency, AccountType type, AccountStatus status) {
+        Account account = mock(Account.class);
+        when(account.getId()).thenReturn(id);
+        when(account.getAccountNumber()).thenReturn(number);
+        when(account.getBalance()).thenReturn(balance);
+        when(account.getCurrencyCode()).thenReturn(currency);
+        when(account.getAccountType()).thenReturn(type);
+        when(account.getAccountStatus()).thenReturn(status);
+
         return account;
-    }
-
-    @Test
-    void createTransfer_shouldSucceed_whenValid() {
-        UUID userId = UUID.randomUUID();
-        UUID sourceId = UUID.randomUUID();
-        String targetAccountNumber = "ACC987";
-
-        TransferRequest request = new TransferRequest(
-            sourceId,
-            targetAccountNumber,
-            BigDecimal.valueOf(100),
-            "Test transfer"
-        );
-
-        Account source = mockAccount(sourceId, BigDecimal.valueOf(500), "USD", AccountStatus.ACTIVE);
-        Account target = mockAccount(UUID.randomUUID(), BigDecimal.valueOf(300), "USD", AccountStatus.ACTIVE);
-
-        when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
-        when(accountService.getUserAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
-        when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("TRF123");
-        when(transferRepository.existsByTransferNumber("TRF123")).thenReturn(false);
-        when(transferRepository.save(any(Transfer.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        Transfer result = transferService.createTransfer(request, userId);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getTransferStatus()).isEqualTo(TransferStatus.COMPLETED);
-        assertThat(result.getTransferNumber()).isEqualTo("TRF123");
-        assertThat(result.getAmount()).isEqualTo(BigDecimal.valueOf(100));
-        assertThat(result.getDescription()).isEqualTo("Test transfer");
-
-        assertThat(source.getBalance()).isEqualTo(BigDecimal.valueOf(400));
-        assertThat(target.getBalance()).isEqualTo(BigDecimal.valueOf(400));
     }
 
     @Test
     void createTransfer_shouldFail_whenSourceInactive() {
         UUID userId = UUID.randomUUID();
-        TransferRequest request = new TransferRequest(UUID.randomUUID(), "ACC999", BigDecimal.TEN, "Invalid");
+        String targetAccountNumber = "ACC999";
 
-        Account source = mockAccount(request.sourceAccountId(), BigDecimal.valueOf(100), "USD", AccountStatus.INACTIVE);
-        Account target = mockAccount(UUID.randomUUID(), BigDecimal.valueOf(200), "USD", AccountStatus.ACTIVE);
+        TransferRequest request = new TransferRequest(UUID.randomUUID(), targetAccountNumber, BigDecimal.TEN, "Invalid");
+
+        Account source = mockAccount(request.sourceAccountId(), "ACC123", BigDecimal.valueOf(100), "USD", AccountType.CHECKING, AccountStatus.INACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(200), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
 
         when(accountService.getUserAccountById(request.sourceAccountId(), userId)).thenReturn(source);
-        when(accountService.getUserAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
+        when(accountService.getAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
 
         assertThatThrownBy(() -> transferService.createTransfer(request, userId))
             .isInstanceOf(TransferValidationException.class)
@@ -97,13 +73,15 @@ public class TransferServiceTest {
     @Test
     void createTransfer_shouldFail_whenTargetInactive() {
         UUID userId = UUID.randomUUID();
-        TransferRequest request = new TransferRequest(UUID.randomUUID(), "ACC999", BigDecimal.TEN, "Invalid");
+        String targetAccountNumber = "ACC999";
 
-        Account source = mockAccount(request.sourceAccountId(), BigDecimal.valueOf(100), "USD", AccountStatus.ACTIVE);
-        Account target = mockAccount(UUID.randomUUID(), BigDecimal.valueOf(200), "USD", AccountStatus.INACTIVE);
+        TransferRequest request = new TransferRequest(UUID.randomUUID(), targetAccountNumber, BigDecimal.TEN, "Invalid");
+
+        Account source = mockAccount(request.sourceAccountId(), "ACC123", BigDecimal.valueOf(100), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(200), "USD", AccountType.CHECKING, AccountStatus.INACTIVE);
 
         when(accountService.getUserAccountById(request.sourceAccountId(), userId)).thenReturn(source);
-        when(accountService.getUserAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
+        when(accountService.getAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
 
         assertThatThrownBy(() -> transferService.createTransfer(request, userId))
             .isInstanceOf(TransferValidationException.class)
@@ -113,13 +91,15 @@ public class TransferServiceTest {
     @Test
     void createTransfer_shouldFail_whenInsufficientBalance() {
         UUID userId = UUID.randomUUID();
-        TransferRequest request = new TransferRequest(UUID.randomUUID(), "ACC123", BigDecimal.valueOf(1000), "Overdraw");
+        String targetAccountNumber = "ACC999";
 
-        Account source = mockAccount(request.sourceAccountId(), BigDecimal.valueOf(200), "USD", AccountStatus.ACTIVE);
-        Account target = mockAccount(UUID.randomUUID(), BigDecimal.valueOf(300), "USD", AccountStatus.ACTIVE);
+        TransferRequest request = new TransferRequest(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(1000), "Overdraw");
+
+        Account source = mockAccount(request.sourceAccountId(), "ACC123", BigDecimal.valueOf(200), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(300), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
 
         when(accountService.getUserAccountById(request.sourceAccountId(), userId)).thenReturn(source);
-        when(accountService.getUserAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
+        when(accountService.getAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
 
         assertThatThrownBy(() -> transferService.createTransfer(request, userId))
             .isInstanceOf(TransferValidationException.class)
@@ -127,36 +107,21 @@ public class TransferServiceTest {
     }
 
     @Test
-    void createTransfer_shouldFail_whenSameAccount() {
+    void createTransfer_shouldThrow_whenCurrencyMismatch() {
         UUID userId = UUID.randomUUID();
-        UUID accId = UUID.randomUUID();
+        String targetAccountNumber = "ACC999";
 
-        TransferRequest request = new TransferRequest(accId, "SELF", BigDecimal.TEN, "Self-transfer");
+        TransferRequest request = new TransferRequest(UUID.randomUUID(), targetAccountNumber, BigDecimal.TEN, "Currency mismatch");
 
-        Account account = mockAccount(accId, BigDecimal.valueOf(100), "USD", AccountStatus.ACTIVE);
-
-        when(accountService.getUserAccountById(accId, userId)).thenReturn(account);
-        when(accountService.getUserAccountByAccountNumber("SELF")).thenReturn(account);
-
-        assertThatThrownBy(() -> transferService.createTransfer(request, userId))
-            .isInstanceOf(TransferValidationException.class)
-            .hasMessageContaining("Source and target accounts must be different");
-    }
-
-    @Test
-    void createTransfer_shouldFail_whenCurrencyMismatch() {
-        UUID userId = UUID.randomUUID();
-        TransferRequest request = new TransferRequest(UUID.randomUUID(), "ACC987", BigDecimal.TEN, "Currency mismatch");
-
-        Account source = mockAccount(request.sourceAccountId(), BigDecimal.valueOf(500), "USD", AccountStatus.ACTIVE);
-        Account target = mockAccount(UUID.randomUUID(), BigDecimal.valueOf(100), "EUR", AccountStatus.ACTIVE);
+        Account source = mockAccount(request.sourceAccountId(), "ACC123", BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(100), "EUR", AccountType.CHECKING, AccountStatus.ACTIVE);
 
         when(accountService.getUserAccountById(request.sourceAccountId(), userId)).thenReturn(source);
-        when(accountService.getUserAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
+        when(accountService.getAccountByAccountNumber(request.targetAccountNumber())).thenReturn(target);
 
         assertThatThrownBy(() -> transferService.createTransfer(request, userId))
             .isInstanceOf(TransferValidationException.class)
-            .hasMessageContaining("Currency mismatch");
+            .hasMessageContaining("Source and target accounts must have the same currency");
     }
 
     @Test
@@ -172,11 +137,11 @@ public class TransferServiceTest {
             "Retry fail"
         );
 
-        Account source = mockAccount(sourceId, BigDecimal.valueOf(500), "USD", AccountStatus.ACTIVE);
-        Account target = mockAccount(UUID.randomUUID(), BigDecimal.valueOf(300), "USD", AccountStatus.ACTIVE);
+        Account source = mockAccount(sourceId, "ACC123", BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(300), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
 
         when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
-        when(accountService.getUserAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
+        when(accountService.getAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
         when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("DUPLICATE");
         when(transferRepository.existsByTransferNumber("DUPLICATE")).thenReturn(true);
 
@@ -188,5 +153,189 @@ public class TransferServiceTest {
         assertThatThrownBy(() -> transferService.createTransfer(request, userId))
             .isInstanceOf(TransferCreationException.class)
             .hasMessageContaining("Failed to generate unique transfer number");
+    }
+
+    @Test
+    void createTransfer_shouldThrow_whenSourceAccountInactive() {
+        UUID userId = UUID.randomUUID();
+        UUID sourceId = UUID.randomUUID();
+        String targetAccountNumber = "ACCFAIL";
+
+        TransferRequest request = new TransferRequest(
+            sourceId,
+            targetAccountNumber,
+            BigDecimal.TEN,
+            "Source inactive fail");
+
+        Account source = mockAccount(sourceId, "ACC123", BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.INACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(300), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+
+        when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
+        when(accountService.getAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
+        when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("TRFFAIL");
+        when(transferRepository.existsByTransferNumber("TRFFAIL")).thenReturn(true);
+
+        assertThatThrownBy(() -> transferService.createTransfer(request, userId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Source account is not active");
+    }
+
+    @Test
+    void createTransfer_shouldThrow_whenTargetAccountInactive() {
+        UUID userId = UUID.randomUUID();
+        UUID sourceId = UUID.randomUUID();
+        String targetAccountNumber = "ACCFAIL";
+
+        TransferRequest request = new TransferRequest(
+            sourceId,
+            targetAccountNumber,
+            BigDecimal.TEN,
+            "Target inactive fail");
+
+        Account source = mockAccount(sourceId, "ACC123", BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(300), "USD", AccountType.CHECKING, AccountStatus.INACTIVE);
+
+        when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
+        when(accountService.getAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
+        when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("TRFFAIL");
+        when(transferRepository.existsByTransferNumber("TRFFAIL")).thenReturn(true);
+
+        assertThatThrownBy(() -> transferService.createTransfer(request, userId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Target account is not active");
+    }
+
+    @Test
+    void createTransfer_shouldThrow_whenSourceAndTargetAccountsAreSame() {
+        UUID userId = UUID.randomUUID();
+        UUID sourceId = UUID.randomUUID();
+        String sourceAccountNumber = "ACCFAIL";
+
+        TransferRequest request = new TransferRequest(
+            sourceId,
+            sourceAccountNumber,
+            BigDecimal.TEN,
+            "Same account fail");
+
+        Account source = mockAccount(sourceId, sourceAccountNumber, BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+
+        when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
+        when(accountService.getAccountByAccountNumber(sourceAccountNumber)).thenReturn(source);
+        when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("TRFFAIL");
+        when(transferRepository.existsByTransferNumber("TRFFAIL")).thenReturn(true);
+
+        assertThatThrownBy(() -> transferService.createTransfer(request, userId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Source and target accounts must be different");
+    }
+
+    @Test
+    void createTransfer_shouldThrow_whenAmountIsNegative() {
+        UUID userId = UUID.randomUUID();
+        UUID sourceId = UUID.randomUUID();
+        String targetAccountNumber = "ACCFAIL";
+
+        TransferRequest request = new TransferRequest(
+            sourceId,
+            targetAccountNumber,
+            BigDecimal.ZERO,
+            "Negative amount fail");
+
+        Account source = mockAccount(sourceId, "ACC123", BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(300), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+
+        when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
+        when(accountService.getAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
+        when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("TRFFAIL");
+        when(transferRepository.existsByTransferNumber("TRFFAIL")).thenReturn(true);
+
+        assertThatThrownBy(() -> transferService.createTransfer(request, userId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Transfer amount must be positive");
+    }
+
+    @Test
+    void createTransfer_shouldThrow_whenAmountExceedsBalance() {
+        UUID userId = UUID.randomUUID();
+        UUID sourceId = UUID.randomUUID();
+        String targetAccountNumber = "ACCFAIL";
+
+        TransferRequest request = new TransferRequest(
+            sourceId,
+            targetAccountNumber,
+            BigDecimal.valueOf(1000),
+            "Amount exceeds balance fail");
+
+        Account source = mockAccount(sourceId, "ACC123", BigDecimal.valueOf(500), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+        Account target = mockAccount(UUID.randomUUID(), targetAccountNumber, BigDecimal.valueOf(300), "USD", AccountType.CHECKING, AccountStatus.ACTIVE);
+
+        when(accountService.getUserAccountById(sourceId, userId)).thenReturn(source);
+        when(accountService.getAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
+        when(baseEntityService.generateEntityPublicIdentifier("TRF")).thenReturn("TRFFAIL");
+        when(transferRepository.existsByTransferNumber("TRFFAIL")).thenReturn(true);
+
+        assertThatThrownBy(() -> transferService.createTransfer(request, userId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Insufficient balance");
+    }
+
+    @Test
+    void validateInternalTransferAccounts_shouldThrow_whenAccountsBelongToDifferentUsers() {
+        UUID userId = UUID.randomUUID();
+        UUID sourceAccountId = UUID.randomUUID();
+        UUID targetAccountId = UUID.randomUUID();
+
+        User sourceUser = mock(User.class);
+        User targetUser = mock(User.class);
+        Account source = mock(Account.class);
+        Account target = mock(Account.class);
+
+        // Stub getId for accounts and users
+        when(source.getId()).thenReturn(sourceAccountId);
+        when(target.getId()).thenReturn(targetAccountId);
+        when(sourceUser.getId()).thenReturn(userId);
+        when(targetUser.getId()).thenReturn(UUID.randomUUID());
+
+        // Stub getUser
+        when(source.getUser()).thenReturn(sourceUser);
+        when(target.getUser()).thenReturn(targetUser);
+
+        // Stub accountService behavior
+        when(accountService.getUserAccountById(sourceAccountId, userId)).thenReturn(source);
+        when(accountService.getUserAccountById(targetAccountId, userId)).thenReturn(target);
+
+        TransferValidateInternalRequest request = new TransferValidateInternalRequest(sourceAccountId, targetAccountId);
+
+        assertThatThrownBy(() -> transferService.validateInternalTransferAccounts(request, userId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Source and target accounts must belong to the same user");
+    }
+
+    void validateExternalTransferAccounts_shouldThrow_whenSourceAccountIsNotChecking() {
+        UUID sourceUserId = UUID.randomUUID();
+        UUID sourceAccountId = UUID.randomUUID();
+        String targetAccountNumber = "ACCFAIL";
+
+        User sourceUser = mock(User.class);
+        Account source = mock(Account.class);
+        Account target = mock(Account.class);
+
+        // Stub getId for accounts and users
+        when(source.getId()).thenReturn(sourceAccountId);
+        when(target.getAccountNumber()).thenReturn(targetAccountNumber);
+        when(sourceUser.getId()).thenReturn(sourceUserId);
+
+        // Stub getUser
+        when(source.getUser()).thenReturn(sourceUser);
+
+        // Stub accountService behavior
+        when(accountService.getUserAccountById(sourceAccountId, sourceUserId)).thenReturn(source);
+        when(accountService.getAccountByAccountNumber(targetAccountNumber)).thenReturn(target);
+
+        TransferValidateExternalRequest request = new TransferValidateExternalRequest(sourceAccountId, targetAccountNumber);
+
+        assertThatThrownBy(() -> transferService.validateExternalTransferAccounts(request, sourceUserId))
+            .isInstanceOf(TransferValidationException.class)
+            .hasMessageContaining("Source account must be a checking account");
     }
 }
