@@ -10,7 +10,7 @@
       <mat-label>Linked Account</mat-label>
 
       <mat-select formControlName="accountId">
-        @if (userAccounts.length === 0) {
+        @if (userAccounts?.length === 0) {
           <mat-option value="" disabled>No accounts found</mat-option>
         }
         @else {
