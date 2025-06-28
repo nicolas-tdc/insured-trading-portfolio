@@ -60,7 +60,7 @@ public class AccountService {
             .orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
-    public Account getUserAccountByAccountNumber(String accountNumber) {
+    public Account getAccountByAccountNumber(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber)
             .orElseThrow(() -> new AccountNumberNotFoundException(accountNumber));
     }
