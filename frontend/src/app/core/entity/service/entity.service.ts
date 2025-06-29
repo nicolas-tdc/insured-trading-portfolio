@@ -38,4 +38,19 @@ export class EntityService {
     this.transferAccountsService.clearTransferAccounts();
     this.accountTransfersService.clearAccountTransfers();
   }
+
+  getStatusClass(status: string | undefined): string {
+    switch (status) {
+      case 'PENDING':
+        return 'status-pending';
+      case 'ACTIVE':
+      case 'COMPLETED':
+        return 'status-active';
+      case 'INACTIVE':
+      case 'REJECTED':
+        return 'status-inactive';
+      default:
+        return '';
+    }
+  }
 }

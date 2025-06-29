@@ -9,6 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
+import { EntityService } from '../../../entity/service';
 
 @Component({
   selector: 'app-card-item-policy',
@@ -37,6 +38,7 @@ export class CardItemPolicyComponent {
 
   constructor(
     private clipboard: Clipboard,
+    private entityService: EntityService,
   ) { }
 
   copyPolicyNumber() {
@@ -57,5 +59,9 @@ export class CardItemPolicyComponent {
 
   resetTooltip() {
     this.tooltipText = 'Copy to clipboard';
+  }
+
+  getPolicyStatusClass(): string {
+    return this.entityService.getStatusClass(this.policy()?.policyStatus);
   }
 }

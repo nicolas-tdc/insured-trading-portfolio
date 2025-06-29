@@ -3,21 +3,25 @@
 
         <mat-card-header>
             <mat-chip-set>
-                <mat-chip>{{ policy()?.policyStatus }}</mat-chip>
                 <mat-chip>{{ policy()?.policyType }}</mat-chip>
             </mat-chip-set> 
         </mat-card-header>
 
         <mat-card-content>
+            <span class="center-container {{ getPolicyStatusClass() }}">
+                <mat-icon>donut_large</mat-icon>
+                <span>{{ policy()?.policyStatus }}</span>
+            </span>
+
             <div class="col-item">
-                <p>Policy Number</p>
+                <h4>Policy Number</h4>
             </div>
             <div class="col-item">
                 <app-copy-to-clipboard [content]="policy()?.policyNumber">
                 </app-copy-to-clipboard>
             </div>
             <div class="col-item">
-                <p>Account Number</p>
+                <h4>Account Number</h4>
             </div>
             <div class="col-item">
                 <app-copy-to-clipboard [content]="policy()?.accountNumber">

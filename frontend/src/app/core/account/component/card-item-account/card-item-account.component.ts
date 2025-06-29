@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TransferService } from '../../../transfer/service';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
+import { EntityService } from '../../../entity/service';
 
 @Component({
   selector: 'app-card-item-account',
@@ -41,6 +42,7 @@ export class CardItemAccountComponent {
   constructor(
     private clipboard: Clipboard,
     private transferService: TransferService,
+    private entityService: EntityService,
   ) { }
 
   // Tooltip
@@ -59,5 +61,9 @@ export class CardItemAccountComponent {
 
   openTransferDialog(): void {
     this.transferService.openCreateTransferFormDialog(this.account()?.id);
+  }
+
+  getAccountStatusClass(): string {
+    return this.entityService.getStatusClass(this.account()?.accountStatus);
   }
 }

@@ -4,9 +4,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 import { TransferService } from '../../../transfer/service';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 import { AccountService } from '../../service';
+import { EntityService } from '../../../entity/service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-account-details',
@@ -14,7 +16,8 @@ import { AccountService } from '../../service';
     CommonModule,
     MatCardModule,
     MatChipsModule,
-    MatButton,
+    MatButtonModule,
+    MatIconModule,
     CopyToClipboardComponent,
     FormatAmountSignedPipe,
   ],
@@ -31,11 +34,16 @@ export class AccountDetailsComponent {
   constructor(
     private accountService: AccountService,
     private transferService: TransferService,
+    private entityService: EntityService,
   ) { }
 
   // Dialog
 
   openTransferDialog(): void {
     this.transferService.openCreateTransferFormDialog(this.account?.id);
+  }
+
+  getAccountStatusClass(): string {
+    return this.entityService.getStatusClass(this.account?.accountStatus);
   }
 }

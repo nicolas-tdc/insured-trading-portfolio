@@ -4,12 +4,16 @@
         <mat-card-header>
             <mat-chip-set>
                 <mat-chip>{{ account.accountType }}</mat-chip>
-                <mat-chip>{{ account.accountStatus }}</mat-chip>
             </mat-chip-set>
         </mat-card-header>
 
         <mat-card-content>
-            <p>Account Number</p>
+            <span class="center-container {{ getAccountStatusClass() }}">
+                <mat-icon>donut_large</mat-icon>
+                <span>{{ account.accountStatus }}</span>
+            </span>
+
+            <h4>Account Number</h4>
             <app-copy-to-clipboard [content]="account.accountNumber"></app-copy-to-clipboard>
 
             <mat-card-title>

@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+.status-active {
+  color: rgb(61, 219, 61);
+  @include mat.icon-overrides((
+    color: rgb(61, 219, 61),
+  ));
+}
+
+.status-inactive {
+  @include mat.icon-overrides((
+    color: rgb(165, 0, 0),
+  ));
+}
+
+.status-pending {
+  color: rgb(228, 228, 57);
+  @include mat.icon-overrides((
+    color: rgb(228, 228, 57),
+  ));
+}
