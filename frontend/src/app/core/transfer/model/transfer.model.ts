@@ -1,6 +1,7 @@
 export interface Transfer {
   id: string;
   transferNumber: string;
+  transferStatus: string;
   createdAt: Date;
   amount: number;
   currencyCode: string;

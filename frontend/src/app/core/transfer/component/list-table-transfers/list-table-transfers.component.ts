@@ -30,6 +30,7 @@ export class ListTableTransfersComponent {
 
   public displayedColumns: string[] = [
     'transferNumber',
+    'transferStatus',
     'date',
     'amount',
     'otherAccountNumber',
@@ -41,6 +42,5 @@ export class ListTableTransfersComponent {
   constructor(
     private accountTransfersService: AccountTransfersService,
     private accountService: AccountService,
-    private route: ActivatedRoute,
   ) { }
 }

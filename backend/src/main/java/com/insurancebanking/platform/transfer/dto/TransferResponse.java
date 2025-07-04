@@ -6,10 +6,12 @@ import java.util.UUID;
 import java.util.Currency;
 
 import com.insurancebanking.platform.transfer.model.Transfer;
+import com.insurancebanking.platform.transfer.model.TransferStatus;
 
 public record TransferResponse (
     UUID id,
     String transferNumber,
+    TransferStatus transferStatus,
     LocalDateTime createdAt,
     BigDecimal amount,
     String currencyCode,
@@ -30,6 +32,7 @@ public record TransferResponse (
         return new TransferResponse(
             transfer.getId(),
             transfer.getTransferNumber(),
+            transfer.getTransferStatus(),
             transfer.getCreatedAt(),
             transfer.getAmount(),
             transferCurrencyCode,
