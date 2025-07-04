@@ -1,7 +1,7 @@
 package com.insurancebanking.platform.transfer.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.Currency;
 
@@ -12,7 +12,7 @@ public record TransferResponse (
     UUID id,
     String transferNumber,
     TransferStatus transferStatus,
-    LocalDateTime createdAt,
+    Instant createdAt,
     BigDecimal amount,
     String currencyCode,
     String currencySymbol,
