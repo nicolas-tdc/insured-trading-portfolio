@@ -10,12 +10,8 @@
         <mat-card-content>
             <span class="center-container {{ getPolicyStatusClass() }}">
                 <mat-icon>donut_large</mat-icon>
-                <span>{{ policy()?.policyStatus }}</span>
             </span>
 
-            <div class="col-item">
-                <h4>Policy Number</h4>
-            </div>
             <div class="col-item">
                 <app-copy-to-clipboard [content]="policy()?.policyNumber">
                 </app-copy-to-clipboard>

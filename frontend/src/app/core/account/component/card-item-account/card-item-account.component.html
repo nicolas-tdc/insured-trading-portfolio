@@ -2,21 +2,23 @@
     <mat-card class="col-item">
 
         <mat-card-header>
+            <!-- Account Type -->
             <mat-chip-set>
                 <mat-chip>{{ account()?.accountType }}</mat-chip>
             </mat-chip-set>
         </mat-card-header>
 
         <mat-card-content>
-            <span class="center-container {{ getAccountStatusClass() }}">
+            <!-- Account Status -->
+            <div class="center-container {{ getAccountStatusClass() }}">
                 <mat-icon>donut_large</mat-icon>
-                <span>{{ account()?.accountStatus }}</span>
-            </span>
+            </div>
 
-            <h4>Account number</h4>
+            <!-- Account Number -->
             <app-copy-to-clipboard [content]="account()?.accountNumber">
             </app-copy-to-clipboard>
 
+            <!-- Account Balance -->
             <mat-card-title>
                 <h3>{{ account()?.balance | formatAmountSigned: account() }}</h3>
             </mat-card-title>

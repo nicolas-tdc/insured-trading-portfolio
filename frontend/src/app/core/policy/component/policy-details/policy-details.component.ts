@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
+import { EntityService } from '../../../entity/service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-policy-details',
@@ -14,6 +16,7 @@ import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
     MatCardModule,
     MatChipsModule,
     MatButtonModule,
+    MatIconModule,
     CopyToClipboardComponent,
     FormatAmountPipe,
   ],
@@ -25,4 +28,14 @@ export class PolicyDetailsComponent {
   // Properties
 
   policy = input<Policy | null>();
+
+  // Lifecycle
+
+  constructor(
+    private entityService: EntityService,
+  ) { }
+
+  getPolicyStatusClass(): string {
+    return this.entityService.getStatusClass(this.policy()?.policyStatus);
+  }
 }
