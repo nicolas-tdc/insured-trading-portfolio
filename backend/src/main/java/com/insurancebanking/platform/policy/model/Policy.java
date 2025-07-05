@@ -1,6 +1,6 @@
 package com.insurancebanking.platform.policy.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.insurancebanking.platform.account.model.Account;
@@ -59,10 +59,10 @@ public class Policy extends BaseEntity {
     private Double premium;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private Instant startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private Instant endDate;
 
     @Override
     public String toString() {

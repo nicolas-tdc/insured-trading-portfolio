@@ -1,5 +1,6 @@
 package com.insurancebanking.platform.policy.dto;
 
+import java.time.Instant;
 import java.util.Currency;
 import java.util.UUID;
 
@@ -17,7 +18,9 @@ public record PolicyResponse(
     int currencyFractionDigits,
     PolicyType policyType,
     Double premium,
-    Double coverageAmount
+    Double coverageAmount,
+    Instant startDate,
+    Instant endDate
 ) {
     public static PolicyResponse from(Policy policy) {
         String policyCurrencyCode = policy.getCurrencyCode();
@@ -33,7 +36,9 @@ public record PolicyResponse(
             currency.getDefaultFractionDigits(),
             policy.getPolicyType(),
             policy.getPremium(),
-            policy.getCoverageAmount()
+            policy.getCoverageAmount(),
+            policy.getStartDate(),
+            policy.getEndDate()
         );
     }
 }

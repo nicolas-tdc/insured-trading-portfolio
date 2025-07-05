@@ -8,7 +8,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
-import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
 import { EntityService } from '../../../entity/service';
 
 @Component({
@@ -21,7 +20,6 @@ import { EntityService } from '../../../entity/service';
     MatIconModule,
     MatTooltipModule,
     CopyToClipboardComponent,
-    FormatAmountPipe,
   ],
   templateUrl: './card-item-policy.component.html',
   styleUrl: './card-item-policy.component.scss'

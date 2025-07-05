@@ -10,4 +10,6 @@ export interface Policy {
   policyType: string;
   premium: number;
   coverageAmount: number;
+  startDate: Date;
+  endDate: Date;
 }

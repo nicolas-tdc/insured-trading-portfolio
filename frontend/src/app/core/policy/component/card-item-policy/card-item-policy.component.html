@@ -13,24 +13,16 @@
             </span>
 
             <div class="col-item">
+                <h4>Policy Number</h4>
                 <app-copy-to-clipboard [content]="policy()?.policyNumber">
                 </app-copy-to-clipboard>
             </div>
+
             <div class="col-item">
-                <h4>Account Number</h4>
-            </div>
-            <div class="col-item">
+                <h4>Linked account</h4>
                 <app-copy-to-clipboard [content]="policy()?.accountNumber">
                 </app-copy-to-clipboard>
             </div>
-
-            <mat-card-title>
-                <h3>Premium: {{ policy()?.premium | formatAmount: policy() }}</h3>
-            </mat-card-title>
-
-            <mat-card-subtitle>
-                <p>Coverage: {{ policy()?.coverageAmount | formatAmount: policy() }}</p>
-            </mat-card-subtitle>
         </mat-card-content>
 
         <mat-card-footer>

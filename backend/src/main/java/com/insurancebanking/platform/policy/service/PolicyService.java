@@ -1,6 +1,7 @@
 package com.insurancebanking.platform.policy.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,14 +56,14 @@ public class PolicyService {
         Policy policy = Policy.builder()
                 .user(user)
                 .account(account)
-                .policyStatus(PolicyStatus.PENDING)
+                .policyStatus(PolicyStatus.ACTIVE)
                 .policyNumber(generatePolicyNumber())
                 .policyType(request.policyType())
                 .coverageAmount(request.coverageAmount())
                 .premium(calculatePremium(request.policyType(), request.coverageAmount()))
                 .currencyCode(account.getCurrencyCode())
-                .startDate(LocalDateTime.now())
-                .endDate(LocalDateTime.now().plusYears(1))
+                .startDate(Instant.now())
+                .endDate(Instant.now().atZone(ZoneOffset.UTC).plusYears(1).toInstant())
                 .build();
 
         return policyRepository.save(policy);
