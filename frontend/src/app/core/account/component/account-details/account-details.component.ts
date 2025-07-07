@@ -44,7 +44,6 @@ export class AccountDetailsComponent {
   }
 
   getAccountStatusClass(): string {
-    console.log(this.account);
     return this.entityService.getStatusClass(this.account?.accountStatus);
   }
 }
