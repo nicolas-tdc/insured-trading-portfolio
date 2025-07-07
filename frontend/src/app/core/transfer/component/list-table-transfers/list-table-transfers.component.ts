@@ -4,7 +4,6 @@ import { MatTableModule } from '@angular/material/table';
 import { OtherAccountNumberPipe } from '../../pipe/other-account-number.pipe';
 import { DirectionalAmountPipe } from '../../pipe/directional-amount.pipe';
 import { AccountService } from '../../../account/service';
-import { ActivatedRoute } from '@angular/router';
 import { AccountTransfersService } from '../../service/account-transfers.service';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 

@@ -39,6 +39,11 @@ export class DashboardComponent implements OnInit {
     this.userPoliciesService.reloadUserPolicies();
   }
 
+  ngOnDestroy(): void {
+    this.userAccountsService.clearUserAccounts();
+    this.userPoliciesService.clearUserPolicies();
+  }
+
   // Form dialogs
 
   openCreateAccountFormDialog(): void {

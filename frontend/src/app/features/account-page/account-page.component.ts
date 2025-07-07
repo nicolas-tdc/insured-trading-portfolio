@@ -42,10 +42,14 @@ export class AccountPageComponent implements OnInit {
 
     this.accountService.selectAccount(accountId);
     this.accountTransfersService.selectAccount(accountId);
+
+    this.userAccountsService.reloadUserAccounts();
   }
 
   ngOnDestroy(): void {
     this.accountService.selectAccount(null);
+    this.accountService.clearSelectedAccount();
     this.accountTransfersService.selectAccount(null);
+    this.accountTransfersService.clearAccountTransfers();
   }
 }

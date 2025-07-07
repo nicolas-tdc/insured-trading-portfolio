@@ -1,7 +1,9 @@
 package com.insurancebanking.platform.account.service;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +23,7 @@ import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.auth.repository.UserRepository;
 import com.insurancebanking.platform.core.service.BaseEntityService;
 import com.insurancebanking.platform.currency.service.CurrencyService;
+import com.insurancebanking.platform.transfer.model.Transfer;
 
 @Service
 @Transactional
@@ -63,6 +66,15 @@ public class AccountService {
     public Account getAccountByAccountNumber(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber)
             .orElseThrow(() -> new AccountNumberNotFoundException(accountNumber));
+    }
+
+    public List<Transfer> getAccountTransfers(Account account) {
+        Set<Transfer> all = new LinkedHashSet<>(account.getOutgoingTransfers());
+        all.addAll(account.getIncomingTransfers());
+
+        return all.stream()
+            .sorted((t1, t2) -> t2.getCreatedAt().compareTo(t1.getCreatedAt()))
+            .toList();
     }
 
     public Account create(AccountRequest request, UUID userId) {

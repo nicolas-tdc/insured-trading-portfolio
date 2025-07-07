@@ -78,7 +78,7 @@ public class TransferController {
 
         Account account = accountService.getUserAccountById(accountId, userDetails.getId());
 
-        List<TransferResponse> responses = account.getAllTransfers().stream()
+        List<TransferResponse> responses = accountService.getAccountTransfers(account).stream()
             .map(TransferResponse::from)
             .toList();
 
