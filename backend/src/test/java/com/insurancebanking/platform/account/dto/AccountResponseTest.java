@@ -5,9 +5,10 @@ import com.insurancebanking.platform.account.model.AccountStatus;
 import com.insurancebanking.platform.account.model.AccountType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.math.BigDecimal;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AccountResponseTest {
 
@@ -21,11 +22,18 @@ class AccountResponseTest {
             .currencyCode("EUR")
             .build();
 
-        AccountResponse response = AccountResponse.from(account);
+        List<String> policies = List.of("POL123", "POL456");
+
+        AccountResponse response = AccountResponse.from(account, policies);
 
         assertEquals(account.getId(), response.id());
+        assertEquals(account.getAccountStatus(), response.accountStatus());
+        assertEquals(account.getAccountType(), response.accountType());
+        assertEquals(account.getAccountNumber(), response.accountNumber());
+        assertEquals(account.getBalance(), response.balance());
         assertEquals("EUR", response.currencyCode());
         assertEquals("€", response.currencySymbol());
         assertEquals(2, response.currencyFractionDigits());
+        assertEquals(policies, response.policies());
     }
 }

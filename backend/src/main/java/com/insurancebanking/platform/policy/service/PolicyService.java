@@ -47,6 +47,13 @@ public class PolicyService {
         return List.of(PolicyType.values());
     }
 
+    public List<String> getAccountPoliciesNumbers(UUID accountId) {
+        return policyRepository.findByAccount_Id(accountId)
+            .stream()
+            .map(Policy::getPolicyNumber)
+            .toList();
+    }
+
     public Policy create(PolicyRequest request, UUID userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new PolicyCreationException("User not found: " + userId));

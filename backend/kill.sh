@@ -9,3 +9,4 @@ fi
 mode="$1"
 
 kill_service_process "pid"
+pkill java

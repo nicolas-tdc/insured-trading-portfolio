@@ -14,6 +14,7 @@ import com.insurancebanking.platform.account.dto.AccountResponse;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
+import com.insurancebanking.platform.policy.service.PolicyService;
 
 import jakarta.validation.Valid;
 
@@ -23,9 +24,11 @@ import jakarta.validation.Valid;
 public class AccountController {
 
     private final AccountService accountService;
+    private final PolicyService policyService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, PolicyService policyService) {
         this.accountService = accountService;
+        this.policyService = policyService;
     }
 
     @PostMapping(produces = "application/json")
@@ -36,8 +39,11 @@ public class AccountController {
         Account account = accountService.create(request, userDetails.getId());
         URI location = URI.create("/api/account/" + account.getId());
 
-        return ResponseEntity.created(location)
-                             .body(AccountResponse.from(account));
+        // Fetch policies
+        List<String> policies = policyService.getAccountPoliciesNumbers(account.getId());
+        AccountResponse response = AccountResponse.from(account, policies);
+
+        return ResponseEntity.created(location).body(response);
     }
 
     @GetMapping(produces = "application/json")
@@ -45,26 +51,31 @@ public class AccountController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         List<Account> accounts = accountService.getUserAccounts(userDetails.getId());
+
         List<AccountResponse> responses = accounts.stream()
-                                                  .map(AccountResponse::from)
-                                                  .toList();
+            .map(account -> {
+                List<String> policies = policyService.getAccountPoliciesNumbers(account.getId());
+                return AccountResponse.from(account, policies);
+            })
+            .toList();
 
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping(value = "/{accountId}", produces = "application/json")
     public ResponseEntity<?> getAccount(
-        @PathVariable UUID accountId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+            @PathVariable UUID accountId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        return ResponseEntity.ok(AccountResponse.from(
-            accountService.getUserAccountById(accountId, userDetails.getId())
-        ));
+        Account account = accountService.getUserAccountById(accountId, userDetails.getId());
+        List<String> policies = policyService.getAccountPoliciesNumbers(account.getId());
+        AccountResponse response = AccountResponse.from(account, policies);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/type", produces = "application/json")
     public ResponseEntity<List<?>> getAccountTypes() {
-
         return ResponseEntity.ok(accountService.getAccountTypes());
     }
 }

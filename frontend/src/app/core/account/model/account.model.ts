@@ -1,10 +1,11 @@
 export interface Account {
   id: string;
-  accountNumber: string;
+  accountStatus: string;
   accountType: string;
+  accountNumber: string;
   balance: number;
   currencyCode: string;
   currencySymbol: string;
   currencyFractionDigits: number;
-  accountStatus: string;
+  policies: string[];
 }

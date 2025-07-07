@@ -67,6 +67,7 @@ export class FormCreatePolicyComponent {
 
     this.policyService.create(this.policyForm.value).subscribe(() => {
       this.userPoliciesService.reloadUserPolicies();
+      this.userAccountsService.reloadUserAccounts();
       this.dialogRef.close('completed');
     });
   }

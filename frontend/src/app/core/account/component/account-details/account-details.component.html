@@ -9,19 +9,33 @@
         </mat-card-header>
 
         <mat-card-content>
-            <!-- Account Status -->
-            <div class="center-container {{ getAccountStatusClass() }}">
-                <mat-icon>donut_large</mat-icon>
-            </div>
+            <mat-card-title>
+                <h4>Account</h4>
+                <!-- Account Status -->
+                <div class="center-container {{ getAccountStatusClass() }}">
+                    <mat-icon>donut_large</mat-icon>
+                </div>
+                <!-- Account Number -->
+                <div class="center-container">
+                    <app-copy-to-clipboard [content]="account.accountNumber">
+                    </app-copy-to-clipboard>
+                </div>
+            </mat-card-title>
 
-            <!-- Account Number -->
-            <app-copy-to-clipboard [content]="account.accountNumber">
-            </app-copy-to-clipboard>
+            <!-- Policy Numbers -->
+            <mat-card-subtitle>
+                <h4>Policies</h4>
+                @for (policyNumber of account.policies; track policyNumber) {
+                    <app-copy-to-clipboard [content]="policyNumber">
+                    </app-copy-to-clipboard>
+                }
+            </mat-card-subtitle>
 
             <!-- Account Balance -->
-            <mat-card-title>
+            <mat-card-subtitle>
+                <h4>Balance</h4>
                 <h3>{{ account.balance | formatAmountSigned: account }}</h3>
-            </mat-card-title>
+            </mat-card-subtitle>
         </mat-card-content>
 
         <mat-card-footer class="row-container">

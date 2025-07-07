@@ -3,7 +3,8 @@ package com.insurancebanking.platform.policy.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -142,8 +143,8 @@ public class PolicyServiceTest {
             .coverageAmount(5000.0)
             .premium(125.0) // 5000 * 0.025
             .currencyCode("USD")
-            .startDate(LocalDateTime.now())
-            .endDate(LocalDateTime.now().plusYears(1))
+            .startDate(Instant.now())
+            .endDate(Instant.now().atZone(ZoneOffset.UTC).plusYears(1).toInstant())
             .build();
 
         when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
@@ -229,4 +230,24 @@ public class PolicyServiceTest {
             .isInstanceOf(PolicyCreationException.class)
             .hasMessageContaining("Unable to generate unique policy number");
     }
+
+    @Test
+    void getAccountPoliciesNumbers_shouldReturnPolicyNumbers() {
+        UUID accountId = UUID.randomUUID();
+
+        Policy policy1 = new Policy();
+        policy1.setPolicyNumber("POL123");
+
+        Policy policy2 = new Policy();
+        policy2.setPolicyNumber("POL456");
+
+        List<Policy> policies = List.of(policy1, policy2);
+
+        when(policyRepository.findByAccount_Id(accountId)).thenReturn(policies);
+
+        List<String> result = policyService.getAccountPoliciesNumbers(accountId);
+
+        assertThat(result).containsExactly("POL123", "POL456");
+    }
+
 }
