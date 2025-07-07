@@ -51,7 +51,7 @@ public class PolicyServiceTest {
         UUID userId = UUID.randomUUID();
         List<Policy> policies = List.of(mock(Policy.class));
 
-        when(policyRepository.findByUser_Id(userId)).thenReturn(policies);
+        when(policyRepository.findByUser_IdOrderByPolicyNumberAsc(userId)).thenReturn(policies);
 
         List<Policy> result = policyService.getUserPolicies(userId);
 
@@ -243,7 +243,7 @@ public class PolicyServiceTest {
 
         List<Policy> policies = List.of(policy1, policy2);
 
-        when(policyRepository.findByAccount_Id(accountId)).thenReturn(policies);
+        when(policyRepository.findByAccount_IdOrderByPolicyNumberAsc(accountId)).thenReturn(policies);
 
         List<String> result = policyService.getAccountPoliciesNumbers(accountId);
 

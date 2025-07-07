@@ -34,7 +34,7 @@ public class PolicyService {
     private final UserRepository userRepository;
 
     public List<Policy> getUserPolicies(UUID userId) {
-        return policyRepository.findByUser_Id(userId);
+        return policyRepository.findByUser_IdOrderByPolicyNumberAsc(userId);
     }
 
     public Policy getUserPolicyById(UUID policyId, UUID userId) {
@@ -48,7 +48,7 @@ public class PolicyService {
     }
 
     public List<String> getAccountPoliciesNumbers(UUID accountId) {
-        return policyRepository.findByAccount_Id(accountId)
+        return policyRepository.findByAccount_IdOrderByPolicyNumberAsc(accountId)
             .stream()
             .map(Policy::getPolicyNumber)
             .toList();

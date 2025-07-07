@@ -54,7 +54,7 @@ export class UserPoliciesService {
 
   // List of policies - sorting handlers
 
-  private sortField = signal<keyof Policy>('accountNumber');
+  private sortField = signal<keyof Policy>('policyNumber');
   public sortFieldValue = computed(() => this.sortField());
 
   private sortDirection = signal<'asc' | 'desc'>('asc');
