@@ -2,30 +2,38 @@
     <mat-card class="col-item">
 
         <mat-card-header>
+            <!-- Policy Type -->
             <mat-chip-set>
                 <mat-chip>{{ policy()?.policyType }}</mat-chip>
             </mat-chip-set> 
         </mat-card-header>
 
         <mat-card-content>
-            <span class="center-container {{ getPolicyStatusClass() }}">
-                <mat-icon>donut_large</mat-icon>
-            </span>
+            <mat-card-title>
+                <h4>Policy</h4>
+                <!-- Policy Status -->
+                <span class="center-container {{ getPolicyStatusClass() }}">
+                    <mat-icon>donut_large</mat-icon>
+                </span>
+                <!-- Policy Number -->
+                <div class="center-container">
+                    <app-copy-to-clipboard [content]="policy()?.policyNumber">
+                    </app-copy-to-clipboard>
+                </div>
+            </mat-card-title>
 
-            <div class="col-item">
-                <h4>Policy Number</h4>
-                <app-copy-to-clipboard [content]="policy()?.policyNumber">
-                </app-copy-to-clipboard>
-            </div>
-
-            <div class="col-item">
+            <mat-card-subtitle>
                 <h4>Linked account</h4>
-                <app-copy-to-clipboard [content]="policy()?.accountNumber">
-                </app-copy-to-clipboard>
-            </div>
+                <!-- Account Number -->
+                <div class="center-container">
+                    <app-copy-to-clipboard [content]="policy()?.accountNumber">
+                    </app-copy-to-clipboard>
+                </div>
+            </mat-card-subtitle>
         </mat-card-content>
 
         <mat-card-footer>
+            <!-- View Details Button -->
             <mat-card-actions>
                 <button mat-stroked-button
                 class="btn-card"

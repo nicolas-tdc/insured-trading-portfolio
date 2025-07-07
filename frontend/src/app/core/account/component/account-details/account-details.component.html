@@ -22,14 +22,16 @@
                 </div>
             </mat-card-title>
 
-            <!-- Policy Numbers -->
-            <mat-card-subtitle>
-                <h4>Policies</h4>
-                @for (policyNumber of account.policies; track policyNumber) {
-                    <app-copy-to-clipboard [content]="policyNumber">
-                    </app-copy-to-clipboard>
-                }
-            </mat-card-subtitle>
+            @if (account.policies.length > 0) { 
+                <mat-card-subtitle>
+                    <h4>Policies</h4>
+                    <!-- Policy Numbers -->
+                    @for (policyNumber of account.policies; track policyNumber) {
+                        <app-copy-to-clipboard [content]="policyNumber">
+                        </app-copy-to-clipboard>
+                    }
+                </mat-card-subtitle>
+            }
 
             <!-- Account Balance -->
             <mat-card-subtitle>

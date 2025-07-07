@@ -2,40 +2,42 @@
     <mat-card class="col-item">
 
         <mat-card-header>
+            <!-- Policy Type -->
             <mat-chip-set>
                 <mat-chip>{{ policy()?.policyType }}</mat-chip>
             </mat-chip-set> 
         </mat-card-header>
 
         <mat-card-content>
-            <span class="center-container {{ getPolicyStatusClass() }}">
-                <mat-icon>donut_large</mat-icon>
-            </span>
+            <mat-card-title>
+                <h4>Policy</h4>
+                <!-- Policy Status -->
+                <span class="center-container {{ getPolicyStatusClass() }}">
+                    <mat-icon>donut_large</mat-icon>
+                </span>
+                <!-- Policy Number -->
+                <div class="center-container">
+                    <app-copy-to-clipboard [content]="policy()?.policyNumber">
+                    </app-copy-to-clipboard>
+                </div>
+            </mat-card-title>
 
-            <div class="col-item">
-                <mat-card-title>
-                    <h4>Policy Number</h4>
-                </mat-card-title>
-                <app-copy-to-clipboard [content]="policy()?.policyNumber">
-                </app-copy-to-clipboard>
-            </div>
 
-            <div class="col-item">
+            <mat-card-subtitle>
                 <h4>Linked account</h4>
-                <app-copy-to-clipboard [content]="policy()?.accountNumber">
-                </app-copy-to-clipboard>
-            </div>
+                <!-- Account Number -->
+                <div class="center-container">
+                    <app-copy-to-clipboard [content]="policy()?.accountNumber">
+                    </app-copy-to-clipboard>
+                </div>
+            </mat-card-subtitle>
 
 
             <mat-card-subtitle>
+                <h4>Details</h4>
+                <!-- Policy Details -->
                 <p>Premium: {{ policy()?.premium | formatAmount: policy() }}</p>
-            </mat-card-subtitle>
-
-            <mat-card-subtitle>
                 <p>Coverage: {{ policy()?.coverageAmount | formatAmount: policy() }}</p>
-            </mat-card-subtitle>
-
-            <mat-card-subtitle>
                 <p>End date: {{ policy()?.endDate | date: 'short' }}</p>
             </mat-card-subtitle>
         </mat-card-content>
