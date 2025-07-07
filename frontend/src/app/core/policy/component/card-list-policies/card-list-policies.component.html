@@ -4,6 +4,46 @@
     <p>You have no active policies.</p>
   }
   @else {
+    <div class="center-container">
+
+      <!-- Sort Policy Number -->
+      <button matButton="elevated"
+        class="btn-basic"
+        (click)="toggleSortByPolicyNumber()">
+        <div class="center-container">
+          <span>Sort By Policy Number</span>
+          @if (sortField() === 'policyNumber') {
+            <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+          }
+        </div>
+      </button>
+
+      <!-- Sort Account Number -->
+      <button matButton="elevated"
+        class="btn-basic"
+        (click)="toggleSortByAccountNumber()">
+        <div class="center-container">
+          <span>Sort By Account Number</span>
+          @if (sortField() === 'accountNumber') {
+            <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+          }
+        </div>
+      </button>
+
+      <!-- Sort Policy Type -->
+      <button matButton="elevated"
+        class="btn-basic"
+        (click)="toggleSortByPolicyType()">
+        <div class="center-container">
+          <span>Sort By Policy Type</span>
+          @if (sortField() === 'policyType') {
+            <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+          }
+        </div>
+      </button>
+
+    </div>
+
     <div class="grid-3-responsive">
 
       @for (policy of policies(); track policy.id) {

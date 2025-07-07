@@ -1,8 +1,10 @@
-import { computed, Injectable, resource } from '@angular/core';
+import { computed, Injectable, resource, signal } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Policy } from '../model';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/service';
+import { SorterService } from '../../utils/service/sorter.service';
+import { policyFieldTypes } from '../model/policy-field-types.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ export class UserPoliciesService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private sorterService: SorterService,
   ) { }
 
   // API
@@ -33,6 +36,7 @@ export class UserPoliciesService {
 
 
   // List of policies - reactive resource
+
   private userPoliciesResource = resource<Policy[], {}>({
     params: () => ({}),
     loader: async () => {
@@ -50,43 +54,28 @@ export class UserPoliciesService {
 
   // List of policies - sorting handlers
 
-  public reverseUserPolicies(): void {
-    this.userPoliciesResource.set(this.userPoliciesResource.value()?.reverse() ?? []);
-  }
+  private sortField = signal<keyof Policy>('accountNumber');
+  public sortFieldValue = computed(() => this.sortField());
 
-  public sortByPolicyNumber(direction: 'asc' | 'desc'): void {
-    if (direction === 'asc') {
-      this.userPoliciesResource.set(
-        this.userPoliciesResource.value()?.sort((a, b) => a.policyNumber.localeCompare(b.policyNumber)) ?? []
-      );
-    } else {
-      this.userPoliciesResource.set(
-        this.userPoliciesResource.value()?.sort((a, b) => b.policyNumber.localeCompare(a.policyNumber)) ?? []
-      );
-    }
-  }
+  private sortDirection = signal<'asc' | 'desc'>('asc');
+  public sortDirectionValue = computed(() => this.sortDirection());
 
-  public sortByAccountNumber(direction: 'asc' | 'desc'): void {
-    if (direction === 'asc') {
-      this.userPoliciesResource.set(
-        this.userPoliciesResource.value()?.sort((a, b) => a.accountNumber.localeCompare(b.accountNumber)) ?? []
-      );
+  public sortByField(field: keyof Policy): void {
+    if (field === this.sortField()) {
+      this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
     } else {
-      this.userPoliciesResource.set(
-        this.userPoliciesResource.value()?.sort((a, b) => b.accountNumber.localeCompare(a.accountNumber)) ?? []
-      );
-    }
-  }
+      this.sortField.set(field);
 
-  public sortByPolicyType(direction: 'asc' | 'desc'): void {
-    if (direction === 'asc') {
-      this.userPoliciesResource.set(
-        this.userPoliciesResource.value()?.sort((a, b) => a.policyType.localeCompare(b.policyType)) ?? []
-      );
-    } else {
-      this.userPoliciesResource.set(
-        this.userPoliciesResource.value()?.sort((a, b) => b.policyType.localeCompare(a.policyType)) ?? []
-      );
+      this.sortDirection.set('asc');
     }
+
+    this.userPoliciesResource.set(
+      this.sorterService.sortListByField(
+        this.userPoliciesResource.value() ?? [],
+        field,
+        policyFieldTypes[field],
+        this.sortDirection()
+      )
+    );
   }
 }
