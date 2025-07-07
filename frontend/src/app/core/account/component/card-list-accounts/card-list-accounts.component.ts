@@ -36,15 +36,9 @@ export class CardListAccountsComponent {
   get sortField() { return this.userAccountsService.sortFieldValue; }
   get sortDirection() { return this.userAccountsService.sortDirectionValue; }
 
-  toggleSortByBalance(): void {
-    this.userAccountsService.sortByField('balance');
-  }
+  toggleSortByBalance(): void { this.userAccountsService.sortByField('balance'); }
 
-  toggleSortByAccountType(): void {
-    this.userAccountsService.sortByField('accountType');
-  }
+  toggleSortByAccountType(): void { this.userAccountsService.sortByField('accountType'); }
 
-  toggleSortByAccountNumber(): void {
-    this.userAccountsService.sortByField('accountNumber');
-  }
+  toggleSortByAccountNumber(): void { this.userAccountsService.sortByField('accountNumber'); }
 }
