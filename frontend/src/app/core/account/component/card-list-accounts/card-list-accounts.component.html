@@ -4,6 +4,36 @@
     <p>You have no accounts.</p>
   }
   @else {
+    <div class="center-container">
+      <!-- Sort Date -->
+      <button mat-stroked-button
+        class="btn-basic"
+        (click)="toggleSortByDate()">
+        Sort By Date
+      </button>
+
+      <!-- Sort Account Number -->
+      <button mat-stroked-button
+        class="btn-basic"
+        (click)="toggleSortByAccountNumber()">
+        Sort By Account Number
+      </button>
+
+      <!-- Sort Balance -->
+      <button mat-stroked-button
+        class="btn-basic"
+        (click)="toggleSortByBalance()">
+        Sort By Balance
+      </button>
+
+      <!-- Sort Account Type -->
+      <button mat-stroked-button
+        class="btn-basic"
+        (click)="toggleSortByAccountType()">
+        Sort By Account Type
+      </button>
+    </div>
+
     <div class="grid-3-responsive">
 
       @for (account of accounts(); track account.id) {

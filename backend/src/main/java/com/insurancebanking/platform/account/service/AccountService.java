@@ -51,7 +51,7 @@ public class AccountService {
     }
 
     public List<Account> getUserAccounts(UUID userId) {
-        return accountRepository.findByUser_Id(userId);
+        return accountRepository.findByUser_IdOrderByCreatedAtAsc(userId);
     }
 
     public Account getUserAccountById(UUID accountId, UUID userId) {

@@ -10,7 +10,7 @@ import com.insurancebanking.platform.account.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, UUID> {
 
-    List<Account> findByUser_Id(UUID userId);
+    List<Account> findByUser_IdOrderByCreatedAtAsc(UUID userId);
 
     Optional<Account> findByAccountNumber(String accountNumber);
 

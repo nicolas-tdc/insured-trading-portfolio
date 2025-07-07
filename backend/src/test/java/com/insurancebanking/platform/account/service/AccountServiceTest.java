@@ -217,7 +217,7 @@ class AccountServiceTest {
         Account acc1 = new Account();
         Account acc2 = new Account();
 
-        when(accountRepository.findByUser_Id(userId)).thenReturn(List.of(acc1, acc2));
+        when(accountRepository.findByUser_IdOrderByCreatedAtAsc(userId)).thenReturn(List.of(acc1, acc2));
 
         List<Account> accounts = accountService.getUserAccounts(userId);
 
