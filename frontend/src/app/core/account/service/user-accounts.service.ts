@@ -3,6 +3,7 @@ import { computed, Injectable, resource, signal } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Account } from '../model';
 import { AuthService } from '../../auth/service';
+import { SorterService } from '../../utils/service/sorter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class UserAccountsService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private sorterService: SorterService,
   ) { }
 
   // API
@@ -31,7 +33,7 @@ export class UserAccountsService {
     return this.http.get<Account[]>(`${this.apiUrl}`);
   }
 
-  // Reactive list of accounts
+  // List of accounts - reactive resource
 
   private userAccountsResource = resource<Account[], {}>({
     params: () => ({}),
@@ -40,43 +42,51 @@ export class UserAccountsService {
     }
   });
 
+  // List of accounts - basic handlers
+
   public userAccounts = computed(() => this.userAccountsResource.value());
+
   public reloadUserAccounts(): void { this.userAccountsResource.reload(); }
+
   public clearUserAccounts(): void { this.userAccountsResource.set([]); }
 
-  // Sorting
+  // List of accounts - sorting handlers
 
-  public reverseUserAccounts(): void {
-    this.userAccountsResource.set(this.userAccountsResource.value()?.reverse() ?? []);
-  }
+  private sortField = signal<keyof Account>('accountNumber');
+  public sortFieldValue = computed(() => this.sortField());
 
-  public sortByBalance(direction: 'asc' | 'desc'): void {
-    if (direction === 'asc') {
-      this.userAccountsResource.set(
-      this.userAccountsResource.value()?.sort((a, b) => a.balance - b.balance) ?? []);
+  private sortDirection = signal<'asc' | 'desc'>('asc');
+  public sortDirectionValue = computed(() => this.sortDirection());
+
+  public sortByField(field: keyof Account): void {
+    if (field === this.sortField()) {
+      this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
     } else {
-      this.userAccountsResource.set(
-      this.userAccountsResource.value()?.sort((a, b) => b.balance - a.balance) ?? []);
+      this.sortField.set(field);
+      this.sortDirection.set('asc');
     }
-  }
 
-  public sortByAccountType(direction: 'asc' | 'desc'): void {
-    if (direction === 'asc') {
-      this.userAccountsResource.set(
-      this.userAccountsResource.value()?.sort((a, b) => a.accountType.localeCompare(b.accountType)) ?? []);
-    } else {
-      this.userAccountsResource.set(
-      this.userAccountsResource.value()?.sort((a, b) => b.accountType.localeCompare(a.accountType)) ?? []);
-    }
-  }
-
-  public sortByAccountNumber(direction: 'asc' | 'desc'): void {
-    if (direction === 'asc') {
-      this.userAccountsResource.set(
-      this.userAccountsResource.value()?.sort((a, b) => a.accountNumber.localeCompare(b.accountNumber)) ?? []);
-    } else {
-      this.userAccountsResource.set(
-      this.userAccountsResource.value()?.sort((a, b) => b.accountNumber.localeCompare(a.accountNumber)) ?? []);
+    switch(field) {
+      case 'accountNumber':
+        this.sorterService.sortListByStringField(
+          this.userAccountsResource.value() ?? [],
+          field,
+          this.sortDirection()
+        );
+        break;
+      case 'balance':
+        this.sorterService.sortListByNumberField(
+          this.userAccountsResource.value() ?? [],
+          field,
+          this.sortDirection()
+        );
+        break;
+      case 'accountType':
+        this.sorterService.sortListByStringField(
+          this.userAccountsResource.value() ?? [],
+          field,
+          this.sortDirection()
+        );
     }
   }
 }

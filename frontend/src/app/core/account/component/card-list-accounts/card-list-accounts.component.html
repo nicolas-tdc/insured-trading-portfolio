@@ -5,32 +5,41 @@
   }
   @else {
     <div class="center-container">
-      <!-- Sort Date -->
-      <button mat-stroked-button
-        class="btn-basic"
-        (click)="toggleSortByDate()">
-        Sort By Date
-      </button>
 
       <!-- Sort Account Number -->
-      <button mat-stroked-button
+      <button matButton="elevated"
         class="btn-basic"
         (click)="toggleSortByAccountNumber()">
-        Sort By Account Number
+        <div class="center-container">
+          <span>Sort By Account Number</span>
+          @if (sortField() === 'accountNumber') {
+            <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+          }
+        </div>
       </button>
 
       <!-- Sort Balance -->
-      <button mat-stroked-button
+      <button matButton="elevated"
         class="btn-basic"
         (click)="toggleSortByBalance()">
-        Sort By Balance
+        <div class="center-container">
+          <span>Sort By Balance</span>
+          @if (sortField() === 'balance') {
+            <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+          }
+        </div>
       </button>
 
       <!-- Sort Account Type -->
-      <button mat-stroked-button
+      <button matButton="elevated"
         class="btn-basic"
         (click)="toggleSortByAccountType()">
-        Sort By Account Type
+        <div class="center-container">
+          <span>Sort By Account Type</span>
+          @if (sortField() === 'accountType') {
+            <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+          }
+        </div>
       </button>
     </div>
 
