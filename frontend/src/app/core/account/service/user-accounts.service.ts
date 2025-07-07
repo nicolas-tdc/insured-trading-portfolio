@@ -4,6 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { Account } from '../model';
 import { AuthService } from '../../auth/service';
 import { SorterService } from '../../utils/service/sorter.service';
+import { accountFieldTypes } from '../model/account-field-types.model';
 
 @Injectable({
   providedIn: 'root'
@@ -63,30 +64,17 @@ export class UserAccountsService {
       this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
     } else {
       this.sortField.set(field);
+
       this.sortDirection.set('asc');
     }
 
-    switch(field) {
-      case 'accountNumber':
-        this.sorterService.sortListByStringField(
-          this.userAccountsResource.value() ?? [],
-          field,
-          this.sortDirection()
-        );
-        break;
-      case 'balance':
-        this.sorterService.sortListByNumberField(
-          this.userAccountsResource.value() ?? [],
-          field,
-          this.sortDirection()
-        );
-        break;
-      case 'accountType':
-        this.sorterService.sortListByStringField(
-          this.userAccountsResource.value() ?? [],
-          field,
-          this.sortDirection()
-        );
-    }
+    this.userAccountsResource.set(
+      this.sorterService.sortListByField(
+        this.userAccountsResource.value() ?? [],
+        field,
+        accountFieldTypes[field],
+        this.sortDirection()
+      )
+    );
   }
 }
