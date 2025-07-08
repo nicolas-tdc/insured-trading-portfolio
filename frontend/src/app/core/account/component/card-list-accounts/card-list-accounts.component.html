@@ -12,30 +12,36 @@
             <button matButton="elevated"
               class="btn-basic"
               (click)="toggleSortByAccountNumber()">
-              <span>Sort By Account Number</span>
-              @if (sortField() === 'accountNumber') {
-                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-              }
+              <div class="center-container">
+                <span>Sort By Account Number</span>
+                @if (sortField() === 'accountNumber') {
+                  <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+                }
+              </div>
             </button>
 
             <!-- Sort Balance -->
             <button matButton="elevated"
               class="btn-basic"
               (click)="toggleSortByBalance()">
-              <span>Sort By Balance</span>
-              @if (sortField() === 'balance') {
-                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-              }
+              <div class="center-container">
+                <span>Sort By Balance</span>
+                @if (sortField() === 'balance') {
+                  <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+                }
+              </div>
             </button>
 
             <!-- Sort Account Type -->
             <button matButton="elevated"
               class="btn-basic"
               (click)="toggleSortByAccountType()">
-              <span>Sort By Account Type</span>
-              @if (sortField() === 'accountType') {
-                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-              }
+              <div class="center-container">
+                <span>Sort By Account Type</span>
+                @if (sortField() === 'accountType') {
+                  <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+                }
+              </div>
             </button>
           </div>
         </mat-action-list>

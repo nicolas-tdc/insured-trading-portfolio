@@ -11,30 +11,36 @@
             <button matButton="elevated"
               class="btn-basic"
               (click)="toggleSortByPolicyNumber()">
-              <span>Sort By Policy Number</span>
-              @if (sortField() === 'policyNumber') {
-                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-              }
+              <div class="center-container">
+                <span>Sort By Policy Number</span>
+                @if (sortField() === 'policyNumber') {
+                  <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+                }
+              </div>
             </button>
 
             <!-- Sort Account Number -->
             <button matButton="elevated"
               class="btn-basic"
               (click)="toggleSortByAccountNumber()">
-              <span>Sort By Account Number</span>
-              @if (sortField() === 'accountNumber') {
-                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-              }
+              <div class="center-container">
+                <span>Sort By Account Number</span>
+                @if (sortField() === 'accountNumber') {
+                  <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+                }
+              </div>
             </button>
 
             <!-- Sort Policy Type -->
             <button matButton="elevated"
               class="btn-basic"
               (click)="toggleSortByPolicyType()">
-              <span>Sort By Policy Type</span>
-              @if (sortField() === 'policyType') {
-                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-              }
+              <div class="center-container">
+                <span>Sort By Policy Type</span>
+                @if (sortField() === 'policyType') {
+                  <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+                }
+              </div>
             </button>
           </div>
         </mat-action-list>
@@ -46,7 +52,7 @@
       @for (policy of policies(); track policy.id) {
         <app-card-item-policy
           [policy]="policy">
-      </app-card-item-policy>
+        </app-card-item-policy>
       }
     </div>
   }
