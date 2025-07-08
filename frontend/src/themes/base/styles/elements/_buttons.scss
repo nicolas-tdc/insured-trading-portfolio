@@ -4,6 +4,7 @@
 .btn-basic {
   display: inline-flex;
   flex-direction: column;
+  max-width: 300px;
   @include responsive-spacing(margin, $spacing-md);
 }
 
