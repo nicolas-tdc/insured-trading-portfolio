@@ -45,7 +45,7 @@ export class TransferService {
 
     const dialogRef = this.dialog.open(FormCreateTransferComponent, {
       width: '600px',
-      height: '500px',
+      height: '550px',
     });
 
     dialogRef.afterClosed().subscribe((result: string) => {

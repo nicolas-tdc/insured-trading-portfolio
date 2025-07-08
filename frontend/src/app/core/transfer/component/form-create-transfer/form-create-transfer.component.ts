@@ -9,6 +9,7 @@ import { FormAccountInternalComponent } from '../form-account-internal/form-acco
 import { FormTransferDetailsComponent } from '../form-transfer-details/form-transfer-details.component';
 import { AccountService } from '../../../account/service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-form-create-transfer',
@@ -17,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ReactiveFormsModule,
     MatStepperModule,
     MatFormFieldModule,
+    MatDividerModule,
     FormAccountExternalComponent,
     FormAccountInternalComponent,
     FormTransferDetailsComponent,

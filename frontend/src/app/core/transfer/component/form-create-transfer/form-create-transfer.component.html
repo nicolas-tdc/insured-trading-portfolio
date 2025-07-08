@@ -5,19 +5,18 @@
       <mat-step>
         <ng-template matStepLabel>Select a target account</ng-template>
 
-        @if (sourceAccount?.accountType === 'CHECKING') {
-          <p class="center-container">Select a target account from your accounts or by account number.</p>
-        }
-        @else {
-          <p class="center-container">Select a target account from your accounts.</p>
-        }
+        <p>Select a target from your accounts</p>
 
         <app-form-account-internal
           [selectAccountForm]="selectAccountForm"
           [stepper]="stepper">
         </app-form-account-internal>
 
+        <mat-divider></mat-divider>
+
         @if (sourceAccount?.accountType === 'CHECKING') {
+          <p>Or enter an account number</p>
+
           <app-form-account-external
             [selectAccountForm]="selectAccountForm"
             [stepper]="stepper">
