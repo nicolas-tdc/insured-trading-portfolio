@@ -4,8 +4,9 @@ import { CardItemPolicyComponent } from '../card-item-policy/card-item-policy.co
 import { Policy } from '../../model';
 import { UserPoliciesService } from '../../service';
 import { MatIconModule } from '@angular/material/icon';
-import { SortIconPipe } from '../../../utils/pipe/sort-icon.pipe';
+import { SortIconPipe } from '../../../shared/pipe/sort-icon.pipe';
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-card-list-policies',
@@ -13,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
     CardItemPolicyComponent,
     SortIconPipe,
   ],

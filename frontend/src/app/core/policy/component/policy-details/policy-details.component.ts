@@ -3,7 +3,7 @@ import { Policy } from '../../model';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
-import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
+import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clipboard/copy-to-clipboard.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
 import { EntityService } from '../../../entity/service';

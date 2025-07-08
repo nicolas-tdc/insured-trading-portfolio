@@ -1,44 +1,43 @@
 @if (policies()) {
-
   @if ((policies() ?? []).length > 0) {
+
+    <!-- Sort buttons -->
     @if ((policies() ?? []).length > 1) {
-      <!-- Sort buttons -->
       <div class="center-container">
-        <!-- Sort Policy Number -->
-        <button matButton="elevated"
-          class="btn-basic"
-          (click)="toggleSortByPolicyNumber()">
-          <div class="center-container">
-            <span>Sort By Policy Number</span>
-            @if (sortField() === 'policyNumber') {
-              <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-            }
-          </div>
-        </button>
+        <mat-action-list>
+          <div class="grid-3-responsive">
 
-        <!-- Sort Account Number -->
-        <button matButton="elevated"
-          class="btn-basic"
-          (click)="toggleSortByAccountNumber()">
-          <div class="center-container">
-            <span>Sort By Account Number</span>
-            @if (sortField() === 'accountNumber') {
-              <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-            }
-          </div>
-        </button>
+            <!-- Sort Policy Number -->
+            <button matButton="elevated"
+              class="btn-basic"
+              (click)="toggleSortByPolicyNumber()">
+              <span>Sort By Policy Number</span>
+              @if (sortField() === 'policyNumber') {
+                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+              }
+            </button>
 
-        <!-- Sort Policy Type -->
-        <button matButton="elevated"
-          class="btn-basic"
-          (click)="toggleSortByPolicyType()">
-          <div class="center-container">
-            <span>Sort By Policy Type</span>
-            @if (sortField() === 'policyType') {
-              <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
-            }
+            <!-- Sort Account Number -->
+            <button matButton="elevated"
+              class="btn-basic"
+              (click)="toggleSortByAccountNumber()">
+              <span>Sort By Account Number</span>
+              @if (sortField() === 'accountNumber') {
+                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+              }
+            </button>
+
+            <!-- Sort Policy Type -->
+            <button matButton="elevated"
+              class="btn-basic"
+              (click)="toggleSortByPolicyType()">
+              <span>Sort By Policy Type</span>
+              @if (sortField() === 'policyType') {
+                <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
+              }
+            </button>
           </div>
-        </button>
+        </mat-action-list>
       </div>
     }
 
@@ -51,5 +50,4 @@
       }
     </div>
   }
-
 }

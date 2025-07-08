@@ -3,7 +3,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { Policy } from '../model';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/service';
-import { SorterService } from '../../utils/service/sorter.service';
+import { SorterService } from '../../shared/service/sorter.service';
 import { policyFieldTypes } from '../model/policy-field-types.model';
 
 @Injectable({
