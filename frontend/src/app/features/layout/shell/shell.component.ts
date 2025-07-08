@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-shell',
@@ -9,6 +10,7 @@ import { HeaderComponent } from '../header/header.component';
     RouterOutlet,
     FooterComponent,
     HeaderComponent,
+    MatDividerModule,
   ],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss'
