@@ -4,8 +4,9 @@ import { CardItemAccountComponent } from '../card-item-account/card-item-account
 import { Account } from '../../model';
 import { UserAccountsService } from '../../service';
 import { MatButtonModule } from '@angular/material/button';
-import { SortIconPipe } from '../../../utils/pipe/sort-icon.pipe';
+import { SortIconPipe } from '../../../shared/pipe/sort-icon.pipe';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-card-list-accounts',
@@ -13,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
     CardItemAccountComponent,
     SortIconPipe,
   ],

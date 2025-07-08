@@ -1,14 +1,4 @@
 @if (account && transfers && transfers.length) {
-  <div class="section-header">
-    <mat-card>
-      <mat-card-content>
-        <mat-card-title>
-          <h2>Transfer History</h2>
-        </mat-card-title>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
   <table mat-table
     [dataSource]="transfers"
     class="mat-elevation-z8">

@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TransferService } from '../../../transfer/service';
-import { CopyToClipboardComponent } from '../../../utils/component/copy-to-clipboard/copy-to-clipboard.component';
+import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clipboard/copy-to-clipboard.component';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 import { EntityService } from '../../../entity/service';
 

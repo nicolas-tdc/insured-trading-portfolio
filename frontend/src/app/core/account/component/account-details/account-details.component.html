@@ -1,62 +1,39 @@
 @if (account) {
-    <div class="details-header">
-        <mat-card class="col-container">
+    <mat-card class="col-container">
+        <mat-card-content>
+            <!-- Account Details -->
+            <mat-card-title>
+                <h2>Account Details</h2>
+            </mat-card-title>
 
-            <mat-card-header class="col-item">
-                <!-- Account Type -->
-                <mat-chip-set>
-                    <mat-chip>{{ account.accountType }}</mat-chip>
-                </mat-chip-set>
-            </mat-card-header>
+            <!-- Account Number -->
+            <mat-card-subtitle>
+                <div class="center-container">
+                    <app-copy-to-clipboard [content]="account.accountNumber">
+                    </app-copy-to-clipboard>
+                </div>
+            </mat-card-subtitle>
 
-            <mat-card-content>
-                <mat-card-title>
-                    <h2>Account</h2>
-                    <!-- Account Status -->
-                    <div class="center-container {{ getAccountStatusClass() }}">
-                        <mat-icon>donut_large</mat-icon>
-                    </div>
-                    <!-- Account Number -->
-                    <div class="center-container">
-                        <app-copy-to-clipboard [content]="account.accountNumber">
-                        </app-copy-to-clipboard>
-                    </div>
-                </mat-card-title>
+            <!-- Balance -->
+            <mat-card-subtitle>
+                <div class="center-container">
+                    <span>Balance: {{ account.balance | formatAmountSigned: account }}</span>
+                </div>
+            </mat-card-subtitle>
 
-                @if (account.policies.length > 0) { 
-                    <mat-card-subtitle>
-                        <div class="col-item">
-                            <h3>Policies</h3>
-                            <!-- Policy Numbers -->
-                            @for (policyNumber of account.policies; track policyNumber) {
-                                <app-copy-to-clipboard [content]="policyNumber">
-                                </app-copy-to-clipboard>
-                            }
-                        </div>
-                    </mat-card-subtitle>
-                }
+            <!-- Account Status -->
+            <mat-card-subtitle>
+                <div class="center-container">
+                    <span>Account Status: {{ account.accountStatus }}</span>
+                </div>
+            </mat-card-subtitle>
 
-                <!-- Account Balance -->
-                <mat-card-subtitle>
-                    <div class="col-item">
-                        <h3>Balance</h3>
-                        <span>{{ account.balance | formatAmountSigned: account }}</span>
-                    </div>
-                </mat-card-subtitle>
-            </mat-card-content>
-
-            <mat-card-footer class="col-item">
-                <!-- Transfer Button -->
-                <mat-card-actions>
-                    <button mat-flat-button
-                        class="btn-card"
-                        [disabled]="account.accountStatus !== 'ACTIVE'"
-                        (click)="openTransferDialog()">
-                        Transfer
-                    </button>
-                </mat-card-actions>
-            </mat-card-footer>
-
-        </mat-card>
-    </div>
+            <!-- Account Type -->
+            <mat-card-subtitle>
+                <div class="center-container">
+                    <span>Account Type: {{ account.accountType }}</span>
+                </div>
+            </mat-card-subtitle>
+        </mat-card-content>
+    </mat-card>
 }

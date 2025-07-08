@@ -4,11 +4,21 @@
 </button>
 
 @if (account) {
-  <!-- Account -->
-  <app-account-details>
-  </app-account-details>
+  <!-- Account Details -->
+  <div class="details-card-header">
+    <app-account-details>
+    </app-account-details>
+  </div>
+
+  <!-- Policies -->
+  <div class="section-header">
+    <app-account-policies>
+    </app-account-policies>
+  </div>
 
   <!-- Transfers -->
-  <app-list-table-transfers>
-  </app-list-table-transfers>
+  <div class="section-header">
+    <app-account-transfers>
+    </app-account-transfers>
+  </div>
 }

@@ -7,6 +7,7 @@ import { AccountService } from '../../../account/service';
 import { AccountTransfersService } from '../../service/account-transfers.service';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-list-table-transfers',
@@ -14,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     MatTableModule,
     MatCardModule,
+    MatButtonModule,
     OtherAccountNumberPipe,
     DirectionalAmountPipe,
     FormatAmountSignedPipe,
@@ -23,11 +25,15 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class ListTableTransfersComponent {
 
-  // Properties
+  // Account
 
   public get account() { return this.accountService.userAccount(); }
 
+  // Transfers
+
   public get transfers() { return this.accountTransfersService.accountTransfers(); }
+
+  // Table columns
 
   public displayedColumns: string[] = [
     'transferNumber',

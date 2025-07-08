@@ -3,7 +3,7 @@ import { computed, Injectable, resource, signal } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { Account } from '../model';
 import { AuthService } from '../../auth/service';
-import { SorterService } from '../../utils/service/sorter.service';
+import { SorterService } from '../../shared/service/sorter.service';
 import { accountFieldTypes } from '../model/account-field-types.model';
 
 @Injectable({
