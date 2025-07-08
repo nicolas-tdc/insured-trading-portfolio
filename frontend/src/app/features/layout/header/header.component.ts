@@ -9,10 +9,10 @@ import { RouterLink } from '@angular/router';
   selector: 'app-header',
   imports: [
     CommonModule,
-    UserHeaderComponent,
     MatToolbarModule,
     MatButtonModule,
     RouterLink,
+    UserHeaderComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
