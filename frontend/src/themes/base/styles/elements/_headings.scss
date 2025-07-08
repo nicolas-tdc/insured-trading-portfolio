@@ -1,3 +1,8 @@
+@use '@angular/material' as mat;
+
+@import '../variables';
+@import '../mixins';
+
 h1, h2, h3, h4, h5, h6, p {
   line-height: 1.2;
   text-align: center;
@@ -9,3 +14,39 @@ h3 { font-size: 1.25rem; }
 h4 { font-size: 1rem; }
 h5 { font-size: 0.875rem; }
 h6 { font-size: 0.75rem; }
+
+.section-header {
+  margin: $spacing-lg auto;
+  max-width: 30%;
+}
+
+.details-header {
+  margin: $spacing-md auto;
+  max-width: 50%;
+}
+
+.app-user-header {
+  @include mat.elevation(0);
+  padding: 10px;
+  max-width: 550px;
+  background: transparent;
+
+  .user-email {
+    margin: 15px;
+    padding: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .logout-button {
+    margin-top: 4px;
+    padding: 4px 8px;
+    min-width: auto;
+    font-size: 0.75rem;
+
+    mat-icon {
+      font-size: 16px;
+      margin-right: 4px;
+    }
+  }
+}

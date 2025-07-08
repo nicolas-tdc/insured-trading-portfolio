@@ -1,9 +1,6 @@
 @if (policies()) {
 
-  @if (policies()?.length === 0) {
-    <p>You have no active policies.</p>
-  }
-  @else {
+  @if ((policies() ?? []).length > 0) {
     @if ((policies() ?? []).length > 1) {
       <!-- Sort buttons -->
       <div class="center-container">

@@ -1,15 +1,24 @@
 <!-- Accounts Section -->
 
-<h2>Accounts</h2>
+<div class="section-header">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>
+        <h2>Accounts</h2>
+      </mat-card-title>
 
-<!-- New Account Button -->
-<div class="col-item">
-  <button mat-flat-button
-    class="btn-basic"
-    (click)="openCreateAccountFormDialog()">
-    Open new Account
-  </button>
+      <!-- New Account Button -->
+      <mat-card-actions class="center-container">
+        <button mat-flat-button
+          class="btn-basic"
+          (click)="openCreateAccountFormDialog()">
+          Open a new Account
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
 </div>
+
 
 <!-- Accounts list -->
 <app-card-list-accounts
@@ -18,15 +27,23 @@
 
 <!-- Policies Section -->
 
-<h2>Policies</h2>
+<div class="section-header">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>
+        <h2>Policies</h2>
+      </mat-card-title>
 
-<!-- New Policy Button -->
-<div class="col-item">
-  <button mat-flat-button
-    class="btn-basic"
-    (click)="openCreatePolicyFormDialog()">
-    Subscribe new Policy
-  </button>
+      <!-- New Policy Button -->
+      <mat-card-actions class="center-container">
+        <button mat-flat-button
+          class="btn-basic"
+          (click)="openCreatePolicyFormDialog()">
+          Subscribe to a new Policy
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
 </div>
 
 <!-- Policies list -->

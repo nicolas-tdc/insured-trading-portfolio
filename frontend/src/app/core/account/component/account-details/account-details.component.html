@@ -1,56 +1,62 @@
 @if (account) {
-    <mat-card class="col-item">
+    <div class="details-header">
+        <mat-card class="col-container">
 
-        <mat-card-header>
-            <!-- Account Type -->
-            <mat-chip-set>
-                <mat-chip>{{ account.accountType }}</mat-chip>
-            </mat-chip-set>
-        </mat-card-header>
+            <mat-card-header class="col-item">
+                <!-- Account Type -->
+                <mat-chip-set>
+                    <mat-chip>{{ account.accountType }}</mat-chip>
+                </mat-chip-set>
+            </mat-card-header>
 
-        <mat-card-content>
-            <mat-card-title>
-                <h4>Account</h4>
-                <!-- Account Status -->
-                <div class="center-container {{ getAccountStatusClass() }}">
-                    <mat-icon>donut_large</mat-icon>
-                </div>
-                <!-- Account Number -->
-                <div class="center-container">
-                    <app-copy-to-clipboard [content]="account.accountNumber">
-                    </app-copy-to-clipboard>
-                </div>
-            </mat-card-title>
-
-            @if (account.policies.length > 0) { 
-                <mat-card-subtitle>
-                    <h4>Policies</h4>
-                    <!-- Policy Numbers -->
-                    @for (policyNumber of account.policies; track policyNumber) {
-                        <app-copy-to-clipboard [content]="policyNumber">
+            <mat-card-content>
+                <mat-card-title>
+                    <h2>Account</h2>
+                    <!-- Account Status -->
+                    <div class="center-container {{ getAccountStatusClass() }}">
+                        <mat-icon>donut_large</mat-icon>
+                    </div>
+                    <!-- Account Number -->
+                    <div class="center-container">
+                        <app-copy-to-clipboard [content]="account.accountNumber">
                         </app-copy-to-clipboard>
-                    }
+                    </div>
+                </mat-card-title>
+
+                @if (account.policies.length > 0) { 
+                    <mat-card-subtitle>
+                        <div class="col-item">
+                            <h3>Policies</h3>
+                            <!-- Policy Numbers -->
+                            @for (policyNumber of account.policies; track policyNumber) {
+                                <app-copy-to-clipboard [content]="policyNumber">
+                                </app-copy-to-clipboard>
+                            }
+                        </div>
+                    </mat-card-subtitle>
+                }
+
+                <!-- Account Balance -->
+                <mat-card-subtitle>
+                    <div class="col-item">
+                        <h3>Balance</h3>
+                        <span>{{ account.balance | formatAmountSigned: account }}</span>
+                    </div>
                 </mat-card-subtitle>
-            }
+            </mat-card-content>
 
-            <!-- Account Balance -->
-            <mat-card-subtitle>
-                <h4>Balance</h4>
-                <h3>{{ account.balance | formatAmountSigned: account }}</h3>
-            </mat-card-subtitle>
-        </mat-card-content>
+            <mat-card-footer class="col-item">
+                <!-- Transfer Button -->
+                <mat-card-actions>
+                    <button mat-flat-button
+                        class="btn-card"
+                        [disabled]="account.accountStatus !== 'ACTIVE'"
+                        (click)="openTransferDialog()">
+                        Transfer
+                    </button>
+                </mat-card-actions>
+            </mat-card-footer>
 
-        <mat-card-footer class="row-container">
-            <!-- Transfer Button -->
-            <mat-card-actions>
-                <button mat-flat-button
-                    class="btn-card"
-                    [disabled]="account.accountStatus !== 'ACTIVE'"
-                    (click)="openTransferDialog()">
-                    Transfer
-                </button>
-            </mat-card-actions>
-        </mat-card-footer>
-
-    </mat-card>
+        </mat-card>
+    </div>
 }

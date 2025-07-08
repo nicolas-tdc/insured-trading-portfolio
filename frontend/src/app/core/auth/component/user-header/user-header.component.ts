@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { EntityService } from '../../../entity/service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-header',
@@ -15,6 +16,7 @@ import { EntityService } from '../../../entity/service';
     MatIcon,
     MatCardModule,
     MatButton,
+    MatTooltipModule,
   ],
   templateUrl: './user-header.component.html',
   styleUrl: './user-header.component.scss',

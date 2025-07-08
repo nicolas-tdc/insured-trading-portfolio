@@ -1,9 +1,6 @@
 @if (accounts()) {
 
-  @if (accounts()?.length === 0) {
-    <p>You have no accounts.</p>
-  }
-  @else {
+  @if ((accounts() ?? []).length > 0) {
     @if ((accounts() ?? []).length > 1) {
       <!-- Sort buttons -->
       <div class="center-container">

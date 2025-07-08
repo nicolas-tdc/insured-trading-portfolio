@@ -6,12 +6,14 @@ import { DirectionalAmountPipe } from '../../pipe/directional-amount.pipe';
 import { AccountService } from '../../../account/service';
 import { AccountTransfersService } from '../../service/account-transfers.service';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-list-table-transfers',
   imports: [
     CommonModule,
     MatTableModule,
+    MatCardModule,
     OtherAccountNumberPipe,
     DirectionalAmountPipe,
     FormatAmountSignedPipe,

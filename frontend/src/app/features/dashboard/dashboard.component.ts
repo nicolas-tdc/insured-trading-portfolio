@@ -7,13 +7,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { UserAccountsService } from '../../core/account/service';
 import { UserPoliciesService } from '../../core/policy/service';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     CardListAccountsComponent,
     CardListPoliciesComponent,
+    MatCardModule,
     MatButtonModule,
+    MatDividerModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
