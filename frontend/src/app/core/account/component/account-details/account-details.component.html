@@ -8,31 +8,23 @@
 
             <!-- Account Number -->
             <mat-card-subtitle>
-                <div class="center-container">
-                    <app-copy-to-clipboard [content]="account.accountNumber">
-                    </app-copy-to-clipboard>
-                </div>
+                <app-copy-to-clipboard class="center-container" [content]="account.accountNumber">
+                </app-copy-to-clipboard>
             </mat-card-subtitle>
 
             <!-- Balance -->
             <mat-card-subtitle>
-                <div class="center-container">
-                    <span>Balance: {{ account.balance | formatAmountSigned: account }}</span>
-                </div>
+                <span class="center-container">Balance: {{ account.balance | formatAmountSigned: account }}</span>
             </mat-card-subtitle>
 
             <!-- Account Status -->
             <mat-card-subtitle>
-                <div class="center-container">
-                    <span>Account Status: {{ account.accountStatus }}</span>
-                </div>
+                <span class="center-container">Account Status: {{ account.accountStatus }}</span>
             </mat-card-subtitle>
 
             <!-- Account Type -->
             <mat-card-subtitle>
-                <div class="center-container">
-                    <span>Account Type: {{ account.accountType }}</span>
-                </div>
+                <span class="center-container">Account Type: {{ account.accountType }}</span>
             </mat-card-subtitle>
         </mat-card-content>
     </mat-card>
