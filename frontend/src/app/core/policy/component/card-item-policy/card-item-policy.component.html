@@ -16,19 +16,15 @@
                     <mat-icon>donut_large</mat-icon>
                 </span>
                 <!-- Policy Number -->
-                <div class="center-container">
-                    <app-copy-to-clipboard [content]="policy()?.policyNumber">
-                    </app-copy-to-clipboard>
-                </div>
+                <app-copy-to-clipboard class="center-container" [content]="policy()?.policyNumber">
+                </app-copy-to-clipboard>
             </mat-card-title>
 
             <mat-card-subtitle>
                 <h4>Linked account</h4>
                 <!-- Account Number -->
-                <div class="center-container">
-                    <app-copy-to-clipboard [content]="policy()?.accountNumber">
-                    </app-copy-to-clipboard>
-                </div>
+                <app-copy-to-clipboard class="center-container" [content]="policy()?.accountNumber">
+                </app-copy-to-clipboard>
             </mat-card-subtitle>
         </mat-card-content>
 

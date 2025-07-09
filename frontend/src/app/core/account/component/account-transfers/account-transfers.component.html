@@ -6,16 +6,14 @@
       </mat-card-title>
 
       <!-- Transfer Button -->
-      <div class="center-container">
-        <mat-card-actions>
-            <button mat-flat-button
-                class="btn-card"
-                [disabled]="account.accountStatus !== 'ACTIVE'"
-                (click)="openTransferDialog()">
-                Transfer
-            </button>
-        </mat-card-actions>
-      </div>
+      <mat-card-actions class="center-container">
+          <button mat-flat-button
+              class="btn-card"
+              [disabled]="account.accountStatus !== 'ACTIVE'"
+              (click)="openTransferDialog()">
+              Transfer
+          </button>
+      </mat-card-actions>
 
         <!-- Transfers -->
       <mat-card-subtitle>

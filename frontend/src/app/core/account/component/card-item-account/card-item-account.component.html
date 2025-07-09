@@ -11,16 +11,20 @@
         <mat-card-content>
             <mat-card-title>
                 <h4>Account</h4>
-                <!-- Account Status -->
-                <div class="center-container {{ getAccountStatusClass() }}">
-                    <mat-icon>donut_large</mat-icon>
-                </div>
-                <!-- Account Number -->
-                <div class="center-container">
-                    <app-copy-to-clipboard [content]="account()?.accountNumber">
-                    </app-copy-to-clipboard>
-                </div>
             </mat-card-title>
+
+            <!-- Account Status -->
+            <mat-card-subtitle>
+                <div class="center-container">
+                    <mat-icon class="{{ getAccountStatusClass() }}">donut_large</mat-icon>
+                </div>
+            </mat-card-subtitle>
+
+            <!-- Account Number -->
+            <mat-card-subtitle>
+                <app-copy-to-clipboard [content]="account()?.accountNumber">
+                </app-copy-to-clipboard>
+            </mat-card-subtitle>
 
             <!-- Account Balance -->
             <mat-card-subtitle>

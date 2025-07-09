@@ -7,14 +7,12 @@
 
             @if (account.policies.length > 0) {
                 <mat-card-subtitle>                
-                    <div class="center-container row-container">
                         @for (policyNumber of account.policies; track policyNumber) {
                             <mat-card-subtitle>
-                                <app-copy-to-clipboard [content]="policyNumber">
+                                <app-copy-to-clipboard  class="center-container" [content]="policyNumber">
                                 </app-copy-to-clipboard>
                             </mat-card-subtitle>
                         }
-                    </div>
                 </mat-card-subtitle>
             }
         </mat-card-content>
