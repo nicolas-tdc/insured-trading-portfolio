@@ -25,9 +25,9 @@ export class UserHeaderComponent {
 
   // Properties
 
-  public get authUser() {
-    return this.authService.authUser;
-  }
+  public get authUser() { return this.authService.authUser; }
+
+  public get isLoggedIn() { return this.authService.isLoggedIn(); }
 
   // Lifecycle
 
