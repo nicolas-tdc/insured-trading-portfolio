@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AccountService, UserAccountsService } from '../../core/account/service';
 import { AccountDetailsComponent } from '../../core/account/component/account-details/account-details.component';
 import { MatButtonModule } from '@angular/material/button';
-import { ListTableTransfersComponent } from '../../core/transfer/component/list-table-transfers/list-table-transfers.component';
 import { AccountTransfersService } from '../../core/transfer/service/account-transfers.service';
 import { AccountPoliciesComponent } from '../../core/account/component/account-policies/account-policies.component';
 import { AccountTransfersComponent } from '../../core/account/component/account-transfers/account-transfers.component';
@@ -19,7 +18,6 @@ import { AccountTransfersComponent } from '../../core/account/component/account-
     AccountDetailsComponent,
     AccountPoliciesComponent,
     AccountTransfersComponent,
-    ListTableTransfersComponent,
   ],
   templateUrl: './account-page.component.html',
   styleUrl: './account-page.component.scss'
