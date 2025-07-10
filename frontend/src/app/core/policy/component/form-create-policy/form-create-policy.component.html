@@ -33,16 +33,16 @@
     <mat-form-field class="form-field-basic">
       <mat-label>Policy Type</mat-label>
 
-      <mat-select formControlName="policyType">
+      <mat-select formControlName="typeCode">
           <mat-option value="" disabled></mat-option>
-          @for (type of policyTypes; track type) {
-            <mat-option [value]="type">
-              {{ type }}
+          @for (type of policyTypes; track type.code) {
+            <mat-option [value]="type.code">
+              {{ type.displayName }}
             </mat-option>
           }
       </mat-select>
 
-      @if (policyForm.get('policyType')?.hasError('required')) {
+      @if (policyForm.get('typeCode')?.hasError('required')) {
         <mat-error>Policy Type is required</mat-error>
       }
     </mat-form-field>

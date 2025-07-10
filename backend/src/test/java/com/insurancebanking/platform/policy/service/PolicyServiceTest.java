@@ -118,7 +118,7 @@ public class PolicyServiceTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LOSS_PROTECTION, 5000.0);
+        PolicyRequest request = new PolicyRequest(accountId, "LOSS_PROTECTION", 5000.0);
 
         User user = new User();
         user.setId(userId);
@@ -162,7 +162,7 @@ public class PolicyServiceTest {
     @Test
     void create_shouldThrowIfUserNotFound() {
         UUID userId = UUID.randomUUID();
-        PolicyRequest request = new PolicyRequest(UUID.randomUUID(), PolicyType.LOSS_PROTECTION, 10000.0);
+        PolicyRequest request = new PolicyRequest(UUID.randomUUID(), "LOSS_PROTECTION", 10000.0);
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -176,7 +176,7 @@ public class PolicyServiceTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LOSS_PROTECTION, 1000.0);
+        PolicyRequest request = new PolicyRequest(accountId, "LOSS_PROTECTION", 1000.0);
         User user = new User();
         user.setId(userId);
 
@@ -215,7 +215,7 @@ public class PolicyServiceTest {
 
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
-        PolicyRequest request = new PolicyRequest(accountId, PolicyType.LOSS_PROTECTION, 5000.0);
+        PolicyRequest request = new PolicyRequest(accountId, "LOSS_PROTECTION", 5000.0);
 
         User user = new User();
         user.setId(userId);

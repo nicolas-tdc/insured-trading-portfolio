@@ -35,10 +35,13 @@ public class PolicyResponseTest {
         PolicyResponse response = PolicyResponse.from(policy);
 
         assertEquals(policy.getId(), response.id());
+        assertEquals(policy.getPolicyStatus().name(), response.statusCode());
+        assertEquals(policy.getPolicyStatus().getFormattedName(), response.statusDisplayName());
+        assertEquals(policy.getPolicyType().name(), response.typeCode());
+        assertEquals(policy.getPolicyType().getFormattedName(), response.typeDisplayName());
         assertEquals("EUR", response.currencyCode());
         assertEquals("€", response.currencySymbol());
         assertEquals(2, response.currencyFractionDigits());
-        assertEquals(PolicyType.LOSS_PROTECTION, response.policyType());
         assertEquals(Double.valueOf(1000), response.coverageAmount());
     }
 }

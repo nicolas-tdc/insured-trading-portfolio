@@ -4,7 +4,7 @@
         <mat-card-header>
             <!-- Policy Type -->
             <mat-chip-set>
-                <mat-chip>{{ policy()?.policyType }}</mat-chip>
+                <mat-chip>{{ policy()?.typeDisplayName }}</mat-chip>
             </mat-chip-set> 
         </mat-card-header>
 
@@ -33,7 +33,7 @@
             <mat-card-actions>
                 <button mat-stroked-button
                 class="btn-card"
-                [disabled]="policy()?.policyStatus !== 'ACTIVE'"
+                [disabled]="policy()?.statusCode !== 'ACTIVE'"
                 routerLink="/policy/{{ policy()?.id }}">
                     View Details
                 </button>

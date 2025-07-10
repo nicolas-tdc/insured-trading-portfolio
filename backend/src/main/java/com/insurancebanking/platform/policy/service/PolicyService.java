@@ -65,9 +65,9 @@ public class PolicyService {
                 .account(account)
                 .policyStatus(PolicyStatus.ACTIVE)
                 .policyNumber(generatePolicyNumber())
-                .policyType(request.policyType())
+                .policyType(PolicyType.fromCode(request.typeCode()))
                 .coverageAmount(request.coverageAmount())
-                .premium(calculatePremium(request.policyType(), request.coverageAmount()))
+                .premium(calculatePremium(request.typeCode(), request.coverageAmount()))
                 .currencyCode(account.getCurrencyCode())
                 .startDate(Instant.now())
                 .endDate(Instant.now().atZone(ZoneOffset.UTC).plusYears(1).toInstant())
@@ -89,14 +89,15 @@ public class PolicyService {
         throw new PolicyCreationException("Unable to generate unique policy number after " + maxAttempts + " attempts.");
     }
 
-    private double calculatePremium(PolicyType type, double coverage) {
-        double baseRate = switch (type) {
-            case LOSS_PROTECTION -> 0.01;
-            case PERFORMANCE_SHARE -> 0.02;
-            case SUBSCRIPTION_BASED -> 0.03;
-            case CAPITAL_GUARANTEE -> 0.04;
-            case VOLATILITY_INSURANCE -> 0.05;
-            case EVENT_INSURANCE -> 0.06;
+    private double calculatePremium(String accountTypeCode, double coverage) {
+        double baseRate = switch (accountTypeCode) {
+            case "LOSS_PROTECTION" -> 0.01;
+            case "PERFORMANCE_SHARE" -> 0.02;
+            case "SUBSCRIPTION_BASED" -> 0.03;
+            case "CAPITAL_GUARANTEE" -> 0.04;
+            case "VOLATILITY_INSURANCE" -> 0.05;
+            case "EVENT_INSURANCE" -> 0.06;
+            default -> 0.0;
         };
 
         return coverage * baseRate;

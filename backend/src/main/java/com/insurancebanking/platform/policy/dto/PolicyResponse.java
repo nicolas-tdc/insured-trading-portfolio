@@ -5,18 +5,18 @@ import java.util.Currency;
 import java.util.UUID;
 
 import com.insurancebanking.platform.policy.model.Policy;
-import com.insurancebanking.platform.policy.model.PolicyType;
-import com.insurancebanking.platform.policy.model.PolicyStatus;
 
 public record PolicyResponse(
     UUID id,
-    PolicyStatus policyStatus,
+    String statusCode,
+    String statusDisplayName,
+    String typeCode,
+    String typeDisplayName,
     String accountNumber,
     String policyNumber,
     String currencyCode,
     String currencySymbol,
     int currencyFractionDigits,
-    PolicyType policyType,
     Double premium,
     Double coverageAmount,
     Instant startDate,
@@ -28,13 +28,15 @@ public record PolicyResponse(
 
         return new PolicyResponse(
             policy.getId(),
-            policy.getPolicyStatus(),
+            policy.getPolicyStatus().name(),
+            policy.getPolicyStatus().getFormattedName(),
+            policy.getPolicyType().name(),
+            policy.getPolicyType().getFormattedName(),
             policy.getAccount().getAccountNumber(),
             policy.getPolicyNumber(),
             policyCurrencyCode,
             currency.getSymbol(),
             currency.getDefaultFractionDigits(),
-            policy.getPolicyType(),
             policy.getPremium(),
             policy.getCoverageAmount(),
             policy.getStartDate(),

@@ -1,13 +1,15 @@
 
 export interface Policy {
   id: string;
-  policyStatus: string;
-  accountNumber: string;
+  typeCode: string;
+  typeDisplayName: string;
+  statusCode: string;
+  statusDisplayName: string;
   policyNumber: string;
+  accountNumber: string;
   currencyCode: string;
   currencySymbol: string;
   currencyFractionDigits: number;
-  policyType: string;
   premium: number;
   coverageAmount: number;
   startDate: Date;

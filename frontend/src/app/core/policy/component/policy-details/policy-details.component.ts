@@ -36,6 +36,6 @@ export class PolicyDetailsComponent {
   ) { }
 
   getPolicyStatusClass(): string {
-    return this.entityService.getStatusClass(this.policy()?.policyStatus);
+    return this.entityService.getStatusClass(this.policy()?.statusCode);
   }
 }

@@ -5,6 +5,7 @@ import com.insurancebanking.platform.policy.dto.PolicyRequest;
 import com.insurancebanking.platform.policy.dto.PolicyResponse;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.policy.model.PolicyType;
+import com.insurancebanking.platform.policy.dto.PolicyTypeResponse;
 import com.insurancebanking.platform.policy.service.PolicyService;
 
 import jakarta.validation.Valid;
@@ -60,7 +61,12 @@ public class PolicyController {
     }
 
     @GetMapping("/type")
-    public ResponseEntity<List<PolicyType>> getPolicyTypes() {
-        return ResponseEntity.ok(policyService.getPolicyTypes());
+    public ResponseEntity<List<PolicyTypeResponse>> getPolicyTypes() {
+        List<PolicyTypeResponse> policyTypeResponses = policyService.getPolicyTypes()
+            .stream()
+            .map(PolicyTypeResponse::from)
+            .toList();
+
+        return ResponseEntity.ok(policyTypeResponses);
     }
 }

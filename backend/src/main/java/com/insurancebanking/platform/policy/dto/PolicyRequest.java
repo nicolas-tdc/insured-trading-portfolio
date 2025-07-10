@@ -11,7 +11,7 @@ public record PolicyRequest(
     UUID accountId,
 
     @NotNull(message = "Policy type is required")
-    PolicyType policyType,
+    String typeCode,
 
     @NotNull(message = "Coverage amount is required")
     Double coverageAmount

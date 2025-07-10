@@ -25,4 +25,10 @@ public class PolicyExceptionHandler {
         log.warn("Policy creation error: {}", ex.getMessage());
         return ResponseEntity.badRequest().body(new MessageResponse(ex.getMessage()));
     }
+
+    @ExceptionHandler(PolicyTypeNotFoundException.class)
+    public ResponseEntity<MessageResponse> handlePolicyTypeNotFound(PolicyTypeNotFoundException ex) {
+        log.warn("Policy type not found: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
+    }
 }

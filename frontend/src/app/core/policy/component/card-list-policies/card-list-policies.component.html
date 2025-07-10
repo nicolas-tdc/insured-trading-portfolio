@@ -38,7 +38,7 @@
               (click)="toggleSortByPolicyType()">
               <div class="center-container">
                 <span>Sort By Policy Type</span>
-                @if (sortField() === 'policyType') {
+                @if (sortField() === 'typeCode') {
                   <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
                 }
               </div>

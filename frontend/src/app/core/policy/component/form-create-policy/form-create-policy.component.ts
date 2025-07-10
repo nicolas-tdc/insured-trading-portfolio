@@ -10,6 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FormCreateAccountComponent } from '../../../account/component/form-create-account/form-create-account.component';
 import { UserPoliciesService } from '../../service';
 import { UserAccountsService } from '../../../account/service';
+import { PolicyType } from '../../model/policy-type.model';
 
 @Component({
   selector: 'app-form-create-policy',
@@ -30,7 +31,7 @@ export class FormCreatePolicyComponent {
 
   public policyForm!: FormGroup;
 
-  public policyTypes: string[] = [];
+  public policyTypes: PolicyType[] = [];
 
   public get userAccounts() { return this.userAccountsService.userAccounts(); }
 
@@ -47,7 +48,7 @@ export class FormCreatePolicyComponent {
     this.loadPolicyTypes();
 
     this.policyForm = new FormGroup({
-      policyType: new FormControl('', [
+      typeCode: new FormControl('', [
         Validators.required,
       ]),
       coverageAmount: new FormControl('', [

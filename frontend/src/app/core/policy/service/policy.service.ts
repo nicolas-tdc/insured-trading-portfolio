@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 
 import { Policy, PolicyRequest } from '../model';
+import { PolicyType } from '../model/policy-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class PolicyService {
@@ -56,7 +57,7 @@ export class PolicyService {
     return this.http.get<Policy>(`${this.apiUrl}/${policyId}`);
   }
 
-  getTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/type`);
+  getTypes(): Observable<PolicyType[]> {
+    return this.http.get<PolicyType[]>(`${this.apiUrl}/type`);
   }
 }

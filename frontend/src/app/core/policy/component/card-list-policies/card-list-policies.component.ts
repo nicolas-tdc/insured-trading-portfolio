@@ -42,5 +42,5 @@ export class CardListPoliciesComponent {
 
   toggleSortByAccountNumber(): void { this.userPoliciesService.sortByField('accountNumber'); }
 
-  toggleSortByPolicyType(): void { this.userPoliciesService.sortByField('policyType'); }
+  toggleSortByPolicyType(): void { this.userPoliciesService.sortByField('typeCode'); }
 }

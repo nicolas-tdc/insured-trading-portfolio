@@ -9,13 +9,15 @@ export type policyFieldTypes = {
 
 export const policyFieldTypes: policyFieldTypes = {
     id: 'string',
-    policyStatus: 'string',
+    typeCode: 'string',
+    typeDisplayName: 'string',
+    statusCode: 'string',
+    statusDisplayName: 'string',
     accountNumber: 'string',
     policyNumber: 'string',
     currencyCode: 'string',
     currencySymbol: 'string',
     currencyFractionDigits: 'number',
-    policyType: 'string',
     premium: 'number',
     coverageAmount: 'number',
     startDate: 'date',
