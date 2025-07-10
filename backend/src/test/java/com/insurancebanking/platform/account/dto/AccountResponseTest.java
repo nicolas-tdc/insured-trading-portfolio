@@ -1,14 +1,14 @@
 package com.insurancebanking.platform.account.dto;
 
-import com.insurancebanking.platform.account.model.Account;
-import com.insurancebanking.platform.account.model.AccountStatus;
-import com.insurancebanking.platform.account.model.AccountType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.account.model.AccountStatus;
+import com.insurancebanking.platform.account.model.AccountType;
 
 class AccountResponseTest {
 
