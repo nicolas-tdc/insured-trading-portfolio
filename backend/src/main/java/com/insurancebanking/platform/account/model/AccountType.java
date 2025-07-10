@@ -1,5 +1,7 @@
 package com.insurancebanking.platform.account.model;
 
+import com.insurancebanking.platform.account.exception.AccountTypeNotFoundException;
+
 public enum AccountType {
     CHECKING("Checking"),
     SAVINGS("Savings"),
@@ -19,7 +21,7 @@ public enum AccountType {
         try {
             return AccountType.valueOf(code);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid account type code: " + code);
+            throw new AccountTypeNotFoundException(code);
         }
     }
 }

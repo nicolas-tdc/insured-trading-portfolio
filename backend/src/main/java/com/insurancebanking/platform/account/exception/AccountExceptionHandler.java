@@ -20,6 +20,12 @@ public class AccountExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
     }
 
+    @ExceptionHandler(AccountTypeNotFoundException.class)
+    public ResponseEntity<MessageResponse> handleAccountTypeNotFound(AccountTypeNotFoundException ex) {
+        log.warn("Account type not found: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
+    }
+
     @ExceptionHandler(AccountNumberNotFoundException.class)
     public ResponseEntity<MessageResponse> handleAccountNumberNotFound(AccountNumberNotFoundException ex) {
         log.warn("Account number not found: {}", ex.getMessage());
