@@ -64,6 +64,6 @@ export class CardItemAccountComponent {
   }
 
   getAccountStatusClass(): string {
-    return this.entityService.getStatusClass(this.account()?.accountStatus);
+    return this.entityService.getStatusClass(this.account()?.statusCode);
   }
 }

@@ -4,7 +4,7 @@
         <mat-card-header>
             <!-- Account Type -->
             <mat-chip-set>
-                <mat-chip>{{ account()?.accountType }}</mat-chip>
+                <mat-chip>{{ account()?.typeDisplayName }}</mat-chip>
             </mat-chip-set>
         </mat-card-header>
 
@@ -38,7 +38,7 @@
             <mat-card-actions>
                 <button mat-stroked-button
                     class="btn-card"
-                    [disabled]="account()?.accountStatus !== 'ACTIVE'"
+                    [disabled]="account()?.statusCode !== 'ACTIVE'"
                     routerLink="/account/{{ account()?.id }}">
                     View Details
                 </button>
@@ -48,7 +48,7 @@
             <mat-card-actions>
                 <button mat-flat-button
                     class="btn-card"
-                    [disabled]="account()?.accountStatus !== 'ACTIVE'"
+                    [disabled]="account()?.statusCode !== 'ACTIVE'"
                     (click)="openTransferDialog()">
                     Transfer
                 </button>

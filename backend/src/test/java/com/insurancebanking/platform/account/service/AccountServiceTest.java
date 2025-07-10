@@ -60,7 +60,7 @@ class AccountServiceTest {
     @Test
     void shouldCreateAccountSuccessfully() {
         UUID userId = UUID.randomUUID();
-        AccountRequest request = new AccountRequest(AccountType.SAVINGS, "EUR");
+        AccountRequest request = new AccountRequest(AccountType.SAVINGS.name(), "EUR");
         String accountNumber = "ACC123456789";
 
         User user = new User();
@@ -87,7 +87,7 @@ class AccountServiceTest {
     void shouldThrowIfUserNotFound() {
         UUID userId = UUID.randomUUID();
 
-        AccountRequest request = new AccountRequest(AccountType.SAVINGS, "EUR");
+        AccountRequest request = new AccountRequest(AccountType.SAVINGS.name(), "EUR");
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -104,7 +104,7 @@ class AccountServiceTest {
         User user = new User();
         user.setId(userId);
 
-        AccountRequest request = new AccountRequest(AccountType.SAVINGS, currencyCode);
+        AccountRequest request = new AccountRequest(AccountType.SAVINGS.name(), currencyCode);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(currencyService.isCurrencySupported(currencyCode)).thenReturn(false);
@@ -120,7 +120,7 @@ class AccountServiceTest {
         User user = new User();
         user.setId(userId);
 
-        AccountRequest request = new AccountRequest(AccountType.SAVINGS, "EUR");
+        AccountRequest request = new AccountRequest(AccountType.SAVINGS.name(), "EUR");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(currencyService.isCurrencySupported("EUR")).thenReturn(true);

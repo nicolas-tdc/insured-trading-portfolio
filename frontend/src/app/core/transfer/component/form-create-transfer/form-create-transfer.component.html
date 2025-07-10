@@ -14,7 +14,7 @@
 
         <mat-divider></mat-divider>
 
-        @if (sourceAccount?.accountType === 'CHECKING') {
+        @if (sourceAccount?.typeCode === 'CHECKING') {
           <p>Or enter an account number</p>
 
           <app-form-account-external

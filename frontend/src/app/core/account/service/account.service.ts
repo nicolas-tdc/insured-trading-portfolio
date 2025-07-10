@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 
 import { Account, AccountRequest } from '../model';
+import { AccountType } from '../model/account-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -58,7 +59,7 @@ export class AccountService {
     return this.http.get<Account>(`${this.apiUrl}/${accountId}`);
   }
 
-  getTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/type`);
+  getTypes(): Observable<AccountType[]> {
+    return this.http.get<AccountType[]>(`${this.apiUrl}/type`);
   }
 }

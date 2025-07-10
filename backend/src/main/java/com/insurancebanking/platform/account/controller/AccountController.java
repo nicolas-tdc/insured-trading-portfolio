@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.insurancebanking.platform.account.dto.AccountRequest;
 import com.insurancebanking.platform.account.dto.AccountResponse;
+import com.insurancebanking.platform.account.dto.AccountTypeResponse;
 import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.model.UserDetailsImpl;
@@ -32,7 +33,7 @@ public class AccountController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<?> createAccount(
+    public ResponseEntity<AccountResponse> createAccount(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Valid @RequestBody AccountRequest request) {
 
@@ -63,7 +64,7 @@ public class AccountController {
     }
 
     @GetMapping(value = "/{accountId}", produces = "application/json")
-    public ResponseEntity<?> getAccount(
+    public ResponseEntity<AccountResponse> getAccount(
             @PathVariable UUID accountId,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -75,7 +76,12 @@ public class AccountController {
     }
 
     @GetMapping(value = "/type", produces = "application/json")
-    public ResponseEntity<List<?>> getAccountTypes() {
-        return ResponseEntity.ok(accountService.getAccountTypes());
+    public ResponseEntity<List<AccountTypeResponse>> getAccountTypes() {
+        List<AccountTypeResponse> accountTypeResponses = accountService.getAccountTypes()
+            .stream()
+            .map(AccountTypeResponse::from)
+            .toList();
+
+        return ResponseEntity.ok(accountTypeResponses);
     }
 }

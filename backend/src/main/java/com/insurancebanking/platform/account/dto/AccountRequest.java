@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record AccountRequest(
     @NotNull(message = "Account type is required")
-    AccountType accountType,
+    String typeCode,
 
     @NotBlank(message = "Currency code is required")
     String currencyCode

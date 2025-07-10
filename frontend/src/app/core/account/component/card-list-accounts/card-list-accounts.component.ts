@@ -40,7 +40,7 @@ export class CardListAccountsComponent {
 
   toggleSortByBalance(): void { this.userAccountsService.sortByField('balance'); }
 
-  toggleSortByAccountType(): void { this.userAccountsService.sortByField('accountType'); }
+  toggleSortByAccountType(): void { this.userAccountsService.sortByField('typeCode'); }
 
   toggleSortByAccountNumber(): void { this.userAccountsService.sortByField('accountNumber'); }
 }

@@ -1,8 +1,6 @@
 package com.insurancebanking.platform.account.dto;
 
 import com.insurancebanking.platform.account.model.Account;
-import com.insurancebanking.platform.account.model.AccountStatus;
-import com.insurancebanking.platform.account.model.AccountType;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -11,8 +9,10 @@ import java.util.List;
 
 public record AccountResponse(
     UUID id,
-    AccountStatus accountStatus,
-    AccountType accountType,
+    String statusCode,
+    String statusDisplayName,
+    String typeCode,
+    String typeDisplayName,
     String accountNumber,
     BigDecimal balance,
     String currencyCode,
@@ -26,8 +26,10 @@ public record AccountResponse(
 
         return new AccountResponse(
             account.getId(),
-            account.getAccountStatus(),
-            account.getAccountType(),
+            account.getAccountStatus().name(),
+            account.getAccountStatus().getFormattedName(),
+            account.getAccountType().name(),
+            account.getAccountType().getFormattedName(),
             account.getAccountNumber(),
             account.getBalance(),
             currencyCode,

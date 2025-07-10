@@ -92,7 +92,7 @@ public class AccountService {
             .user(user)
             .accountStatus(AccountStatus.ACTIVE)
             .accountNumber(accountNumber)
-            .accountType(request.accountType())
+            .accountType(AccountType.fromCode(request.typeCode()))
             .currencyCode(currency)
             .balance(BigDecimal.ZERO)
             .build();

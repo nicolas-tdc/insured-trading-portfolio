@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserAccountsService } from '../../service';
+import { AccountType } from '../../model/account-type.model';
 
 @Component({
   selector: 'app-form-create-account',
@@ -27,7 +28,7 @@ export class FormCreateAccountComponent implements OnInit {
   // Properties
 
   accountForm!: FormGroup;
-  accountTypes: string[] = [];
+  accountTypes: AccountType[] = [];
   currencies: Currency[] = [];
 
   // Lifecycle
@@ -45,7 +46,7 @@ export class FormCreateAccountComponent implements OnInit {
     this.loadCurrencies();
 
     this.accountForm = new FormGroup({
-      accountType: new FormControl('', [
+      typeCode: new FormControl('', [
         Validators.required,
         Validators.minLength(1),
       ]),

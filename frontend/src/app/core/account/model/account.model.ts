@@ -1,7 +1,9 @@
 export interface Account {
   id: string;
-  accountStatus: string;
-  accountType: string;
+  statusCode: string;
+  statusDisplayName: string;
+  typeCode: string;
+  typeDisplayName: string;
   accountNumber: string;
   balance: number;
   currencyCode: string;

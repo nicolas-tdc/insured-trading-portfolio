@@ -27,8 +27,10 @@ class AccountResponseTest {
         AccountResponse response = AccountResponse.from(account, policies);
 
         assertEquals(account.getId(), response.id());
-        assertEquals(account.getAccountStatus(), response.accountStatus());
-        assertEquals(account.getAccountType(), response.accountType());
+        assertEquals(account.getAccountStatus().name(), response.statusCode());
+        assertEquals(account.getAccountStatus().getFormattedName(), response.statusDisplayName());
+        assertEquals(account.getAccountType().name(), response.typeCode());
+        assertEquals(account.getAccountType().getFormattedName(), response.typeDisplayName());
         assertEquals(account.getAccountNumber(), response.accountNumber());
         assertEquals(account.getBalance(), response.balance());
         assertEquals("EUR", response.currencyCode());

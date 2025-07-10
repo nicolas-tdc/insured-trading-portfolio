@@ -48,7 +48,7 @@
     <div class="col-item">
         <button mat-flat-button
         class="btn-basic"
-        [disabled]="!transferDetailsForm()?.valid || sourceAccount?.accountStatus !== 'ACTIVE'"
+        [disabled]="!transferDetailsForm()?.valid || sourceAccount?.statusCode !== 'ACTIVE'"
         type="submit">
         Transfer
         </button>

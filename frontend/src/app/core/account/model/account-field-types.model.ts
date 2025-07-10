@@ -9,8 +9,10 @@ export type AccountFieldTypes = {
 
 export const accountFieldTypes: AccountFieldTypes = {
   id: 'string',
-  accountStatus: 'string',
-  accountType: 'string',
+  statusCode: 'string',
+  statusDisplayName: 'string',
+  typeCode: 'string',
+  typeDisplayName: 'string',
   accountNumber: 'string',
   balance: 'number',
   currencyCode: 'string',

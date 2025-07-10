@@ -9,7 +9,7 @@
       <mat-card-actions class="center-container">
           <button mat-flat-button
               class="btn-card"
-              [disabled]="account.accountStatus !== 'ACTIVE'"
+              [disabled]="account.statusCode !== 'ACTIVE'"
               (click)="openTransferDialog()">
               Transfer
           </button>

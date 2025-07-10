@@ -8,16 +8,16 @@
     <mat-form-field class="form-field-basic">
       <mat-label>Account Type</mat-label>
 
-      <mat-select formControlName="accountType">
+      <mat-select formControlName="typeCode">
           <mat-option value="" disabled></mat-option>
-          @for (type of accountTypes; track type) {
-            <mat-option [value]="type">
-              {{ type }}
+          @for (type of accountTypes; track type.code) {
+            <mat-option [value]="type.code">
+              {{ type.displayName }}
             </mat-option>
           }
       </mat-select>
 
-      @if (accountForm.get('accountType')?.hasError('required')) {
+      @if (accountForm.get('typeCode')?.hasError('required')) {
         <mat-error>Account Type is required</mat-error>
       }
     </mat-form-field>

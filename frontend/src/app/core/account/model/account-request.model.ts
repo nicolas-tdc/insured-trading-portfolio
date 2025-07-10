@@ -1,4 +1,4 @@
 export interface AccountRequest {
-  accountType: string;
+  typeCode: string;
   currencyCode: string;
 }

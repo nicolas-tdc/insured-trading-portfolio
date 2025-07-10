@@ -38,7 +38,7 @@
               (click)="toggleSortByAccountType()">
               <div class="center-container">
                 <span>Sort By Account Type</span>
-                @if (sortField() === 'accountType') {
+                @if (sortField() === 'typeCode') {
                   <mat-icon>{{ sortDirection() | sortIcon }}</mat-icon>
                 }
               </div>
