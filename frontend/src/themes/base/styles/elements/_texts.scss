@@ -1,0 +1,13 @@
+@use '../variables' as *;
+
+.span-sm {
+    font-size: $font-size-sm;
+}
+
+.span-md {
+    font-size: $font-size-md;
+}
+
+.span-lg {
+    font-size: $font-size-lg;
+}
