@@ -57,6 +57,9 @@ public class TransferResponseTest {
 
         assertEquals(transfer.getId(), response.id());
         assertEquals(transfer.getTransferNumber(), response.transferNumber());
+        assertEquals(transfer.getTransferStatus().name(), response.statusCode());
+        assertEquals(transfer.getTransferStatus().getFormattedName(), response.statusDisplayName());
+        assertEquals(transfer.getCreatedAt(), response.createdAt());
         assertEquals(transfer.getAmount(), response.amount());
         assertEquals(transfer.getDescription(), response.description());
         assertEquals("EUR", response.currencyCode());
