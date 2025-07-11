@@ -1,65 +1,65 @@
-<form
-  [formGroup]="loginForm"
-  (ngSubmit)="login()"
->
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>
+      <h2>Sign in to your account</h2>
+    </mat-card-title>
 
-  <h2>Login</h2>
+    <mat-card-subtitle>
+        <p>(*) Required fields</p>
+    </mat-card-subtitle>
 
-  <p style="font-style: italic;">(*) Required fields</p>
+    <mat-card-subtitle>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="login()"
+      >
 
-  <div class="col-item">
+        <div class="col-item">
 
-    <mat-form-field class="form-field-basic">
-      <mat-label>Email</mat-label>
+          <mat-form-field class="form-field-basic">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+            @if (loginForm.get('email')?.hasError('required')) {
+              <mat-error>Email is required</mat-error>
+            }
+            @if (loginForm.get('email')?.hasError('email')) {
+              <mat-error>Email is invalid</mat-error>
+            }
+          </mat-form-field>
 
-      <input matInput type="email" formControlName="email">
+          <mat-form-field class="form-field-basic">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+            <button mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            type="button">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (loginForm.get('password')?.hasError('required')) {
+              <mat-error>Password is required</mat-error>
+            }
+            @if (loginForm.get('password')?.hasError('minlength')) {
+              <mat-error>Password must be at least 8 characters</mat-error>
+            }
+            @if (loginForm.get('password')?.hasError('maxlength')) {
+              <mat-error>Password must be at most 32 characters</mat-error>
+            }
+            <mat-hint align="end">4-32 characters</mat-hint>
+          </mat-form-field>
+        </div>
 
-      @if (loginForm.get('email')?.hasError('required')) {
-        <mat-error>Email is required</mat-error>
-      }
-      @if (loginForm.get('email')?.hasError('email')) {
-        <mat-error>Email is invalid</mat-error>
-      }
-    </mat-form-field>
+        <mat-card-actions class="center-container">
+          <button mat-flat-button
+          [disabled]="!loginForm.valid"
+          type="submit"
+          class="btn-basic">
+            Login
+          </button>
+        </mat-card-actions>
 
-    <mat-form-field class="form-field-basic">
-      <mat-label>Password</mat-label>
-
-      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
-
-      <button mat-icon-button
-      matSuffix
-      (click)="hidePassword = !hidePassword"
-      [attr.aria-label]="'Hide password'"
-      type="button">
-        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
-
-      @if (loginForm.get('password')?.hasError('required')) {
-        <mat-error>Password is required</mat-error>
-      }
-      @if (loginForm.get('password')?.hasError('minlength')) {
-        <mat-error>Password must be at least 8 characters</mat-error>
-      }
-      @if (loginForm.get('password')?.hasError('maxlength')) {
-        <mat-error>Password must be at most 32 characters</mat-error>
-      }
-
-      <mat-hint align="end">4-32 characters</mat-hint>
-    </mat-form-field>
-
-  </div>
-
-
-  <div class="col-item">
-
-    <button mat-flat-button
-    [disabled]="!loginForm.valid"
-    type="submit"
-    class="btn-basic">
-      Login
-    </button>
-
-  </div>
-
-</form>
+      </form>
+    </mat-card-subtitle>
+  </mat-card-content>
+</mat-card>
