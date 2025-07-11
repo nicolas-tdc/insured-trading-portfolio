@@ -4,6 +4,11 @@ import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { MatDividerModule } from '@angular/material/divider';
 
+/**
+ * ShellComponent
+ * 
+ * Displays the main layout of the application, including the header, main content, and footer.
+ */
 @Component({
   selector: 'app-shell',
   imports: [

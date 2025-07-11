@@ -5,6 +5,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
+/**
+ * HeaderComponent
+ * 
+ * Displays the header section of the application.
+ */
 @Component({
   selector: 'app-header',
   imports: [
@@ -17,6 +22,4 @@ import { RouterLink } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
-
-}
+export class HeaderComponent { }
