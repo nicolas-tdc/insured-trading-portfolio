@@ -36,9 +36,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Initializes the component.
    * Injects required services for accounts and policies data.
    * 
-   * @param userAccountsService 
-   * @param userPoliciesService 
-   * @param dialog 
+   * @param userAccountsService Service for user accounts
+   * @param userPoliciesService Service for user policies
+   * @param authService Service for authentication
+   * @param router Service for routing
+   * @param dialog Service for dialog
    */
   constructor(
     private readonly userAccountsService: UserAccountsService,

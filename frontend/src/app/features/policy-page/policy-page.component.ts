@@ -28,8 +28,10 @@ export class PolicyPageComponent implements OnInit, OnDestroy {
    * Initializes the component.
    * Injects required services for policy data and routing.
    * 
-   * @param route 
-   * @param policyService 
+   * @param policyService Service for policy data
+   * @param authService Service for authentication
+   * @param router Service for routing
+   * @param route Service for route parameters
    */
   constructor(
     private readonly policyService: PolicyService,
