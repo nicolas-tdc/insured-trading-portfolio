@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CardListPoliciesComponent } from '../../core/policy/component/card-list-policies/card-list-policies.component';
 import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { UserAccountsService } from '../../core/account/service';
 import { UserPoliciesService } from '../../core/policy/service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from '../../core/auth/service';
+import { Router } from '@angular/router';
 
+/**
+ * DashboardComponent
+ *
+ * Displays a list of user accounts and policies.
+ * Provides buttons to create new accounts and policies.
+ */
 @Component({
   selector: 'app-dashboard',
   imports: [
@@ -22,40 +30,69 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  // Properties
-
-  get accounts() { return this.userAccountsService.userAccounts(); }
-
-  get policies() { return this.userPoliciesService.userPolicies(); }
-
-  // Lifecycle
-
+  /**
+   * Initializes the component.
+   * Injects required services for accounts and policies data.
+   * 
+   * @param userAccountsService 
+   * @param userPoliciesService 
+   * @param dialog 
+   */
   constructor(
-    private userAccountsService: UserAccountsService,
-    private userPoliciesService: UserPoliciesService,
-    private dialog: MatDialog,
+    private readonly userAccountsService: UserAccountsService,
+    private readonly userPoliciesService: UserPoliciesService,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
   ) { }
 
+  /**
+   * Lifecycle hook called on component initialization.
+   * Reloads user accounts and policies data.
+   */
   ngOnInit(): void {
+    // Redirect to authentication page if not logged in
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/authentication']);
+    }
+
+    // Reload user accounts
     this.userAccountsService.reloadUserAccounts();
+
+    // Reload user policies
     this.userPoliciesService.reloadUserPolicies();
   }
 
+  /**
+   * Lifecycle hook called on component destruction.
+   * Clears user accounts and policies data.
+   */
   ngOnDestroy(): void {
+    // Clear user accounts
     this.userAccountsService.clearUserAccounts();
+
+    // Clear user policies
     this.userPoliciesService.clearUserPolicies();
   }
 
-  // Form dialogs
-
+  /**
+   * Opens a dialog form to create a new account.
+   * 
+   * @returns void
+   */
   openCreateAccountFormDialog(): void {
-    const dialogRef = this.dialog.open(FormCreateAccountComponent, {
-      width: '600px',
-      height: '500px',
-    });
+    // Open the policy creation dialog form
+    const dialogRef: MatDialogRef<FormCreateAccountComponent> = this.dialog.open(
+      FormCreateAccountComponent,
+      {
+        width: '600px',
+        height: '500px',
+      }
+    );
 
+    // Reload user accounts on form completion
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'completed') {
         this.userAccountsService.reloadUserAccounts();
@@ -63,13 +100,22 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Opens a dialog form to create a new policy.
+   * 
+   * @returns void
+   */
   openCreatePolicyFormDialog(): void {
-    const dialogRef = this.dialog.open(FormCreatePolicyComponent, {
-      width: '600px',
-      height: '500px',
-      data: this.accounts
-    });
+    // Open the policy creation dialog form
+    const dialogRef: MatDialogRef<FormCreatePolicyComponent> = this.dialog.open(
+      FormCreatePolicyComponent,
+      {
+        width: '600px',
+        height: '500px',
+      }
+    );
 
+    // Reload user policies on form completion
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'completed') {
         this.userPoliciesService.reloadUserPolicies();

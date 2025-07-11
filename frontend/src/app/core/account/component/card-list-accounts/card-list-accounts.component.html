@@ -1,9 +1,9 @@
-@if (accounts()) {
+@if (accounts) {
 
-  @if ((accounts() ?? []).length > 0) {
+  @if (accounts.length > 0) {
 
     <!-- Sort buttons -->
-    @if ((accounts() ?? []).length > 1) {
+    @if (accounts.length > 1) {
       <div class="center-container">
         <mat-action-list>
           <div class="grid-3-responsive">
@@ -50,7 +50,7 @@
 
     <!-- Accounts -->
     <div class="grid-3-responsive">
-      @for (account of accounts(); track account.id) {
+      @for (account of accounts; track account.id) {
         <app-card-item-account
           [account]="account">
         </app-card-item-account>

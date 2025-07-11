@@ -1,9 +1,9 @@
-@if (policies()) {
+@if (policies) {
 
-  @if ((policies() ?? []).length > 0) {
+  @if (policies.length > 0) {
 
     <!-- Sort buttons -->
-    @if ((policies() ?? []).length > 1) {
+    @if (policies.length > 1) {
       <div class="center-container">
         <mat-action-list>
           <div class="grid-3-responsive">
@@ -50,7 +50,7 @@
 
     <!-- Policies -->
     <div class="grid-3-responsive">
-      @for (policy of policies(); track policy.id) {
+      @for (policy of policies; track policy.id) {
         <app-card-item-policy
           [policy]="policy">
         </app-card-item-policy>

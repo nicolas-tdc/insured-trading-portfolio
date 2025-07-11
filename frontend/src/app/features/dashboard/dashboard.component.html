@@ -1,5 +1,4 @@
-<!-- Accounts Section -->
-
+<!-- Accounts Header -->
 <div class="section-header">
   <mat-card>
     <mat-card-content>
@@ -7,7 +6,7 @@
         <h2>Your Accounts</h2>
       </mat-card-title>
 
-      <!-- New Account Button -->
+      <!-- Open new Account Button -->
       <mat-card-actions class="center-container">
         <button mat-flat-button
           class="btn-basic"
@@ -19,17 +18,15 @@
   </mat-card>
 </div>
 
-
-<!-- Accounts list -->
-<app-card-list-accounts
-  [accounts]="accounts">
+<!-- Accounts List -->
+<app-card-list-accounts>
 </app-card-list-accounts>
 
-<!-- Policies Section -->
-
+<!-- Policies Header -->
 <div class="section-header">
   <mat-card>
     <mat-card-content>
+      <!-- Title -->
       <mat-card-title>
         <h2>Your Policies</h2>
       </mat-card-title>
@@ -47,6 +44,5 @@
 </div>
 
 <!-- Policies list -->
-<app-card-list-policies
-  [policies]="policies">
+<app-card-list-policies>
 </app-card-list-policies>

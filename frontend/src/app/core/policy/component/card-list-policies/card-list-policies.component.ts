@@ -25,7 +25,8 @@ export class CardListPoliciesComponent {
 
   // Properties
 
-  policies = input<Policy[] | null>();
+  // List of user policies
+  get policies(): Policy[] | undefined {return this.userPoliciesService.userPolicies(); }
 
   // Lifecycle
 

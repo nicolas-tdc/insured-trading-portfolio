@@ -23,9 +23,8 @@ import { MatListModule } from '@angular/material/list';
 })
 export class CardListAccountsComponent {
 
-  // Properties
-
-  accounts = input<Account[] | []>();
+  // List of user accounts
+  get accounts(): Account[] | undefined { return this.userAccountsService.userAccounts(); }
 
   // Lifecycle
 
