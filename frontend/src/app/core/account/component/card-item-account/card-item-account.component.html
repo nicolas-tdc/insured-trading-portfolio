@@ -1,59 +1,61 @@
 @if (account()) {
-    <mat-card class="col-item">
 
-        <mat-card-header>
-            <!-- Account Type -->
-            <mat-chip-set>
-                <mat-chip>{{ account()?.typeDisplayName }}</mat-chip>
-            </mat-chip-set>
-        </mat-card-header>
+  <!-- Account Card -->
+  <mat-card class="col-item">
 
-        <mat-card-content>
-            <mat-card-title>
-                <h4>Account</h4>
-            </mat-card-title>
+    <mat-card-header>
+      <!-- Account Type -->
+      <mat-chip-set>
+        <mat-chip>{{ account()?.typeDisplayName }}</mat-chip>
+      </mat-chip-set>
+    </mat-card-header>
 
-            <!-- Account Status -->
-            <mat-card-subtitle>
-                <div class="center-container">
-                    <mat-icon class="{{ getAccountStatusClass() }}">donut_large</mat-icon>
-                </div>
-            </mat-card-subtitle>
+    <mat-card-content>
+      <!-- Title -->
+      <mat-card-title>
+        <h3>Account</h3>
+      </mat-card-title>
 
-            <!-- Account Number -->
-            <mat-card-subtitle>
-                <app-copy-to-clipboard [content]="account()?.accountNumber">
-                </app-copy-to-clipboard>
-            </mat-card-subtitle>
+      <!-- Account Status -->
+      <mat-card-subtitle>
+        <div class="center-container">
+          <mat-icon class="{{ getAccountStatusClass() }}">donut_large</mat-icon>
+        </div>
+      </mat-card-subtitle>
 
-            <!-- Account Balance -->
-            <mat-card-subtitle>
-                <h4>Balance</h4>
-                <h3>{{ account()?.balance | formatAmountSigned: account() }}</h3>
-            </mat-card-subtitle>
-        </mat-card-content>
+      <!-- Account Number -->
+      <mat-card-subtitle>
+        <app-copy-to-clipboard [content]="account()?.accountNumber">
+        </app-copy-to-clipboard>
+      </mat-card-subtitle>
 
-        <mat-card-footer class="row-container">
-            <!-- View Details Button -->
-            <mat-card-actions>
-                <button mat-stroked-button
-                    class="btn-card"
-                    [disabled]="account()?.statusCode !== 'ACTIVE'"
-                    routerLink="/account/{{ account()?.id }}">
-                    View Details
-                </button>
-            </mat-card-actions>
+      <!-- Account Balance -->
+      <mat-card-subtitle>
+        <h4>Balance</h4>
+        <span class="span-lg center-container">{{ account()?.balance | formatAmountSigned: account() }}</span>
+      </mat-card-subtitle>
+    </mat-card-content>
 
-            <!-- Transfer Button -->
-            <mat-card-actions>
-                <button mat-flat-button
-                    class="btn-card"
-                    [disabled]="account()?.statusCode !== 'ACTIVE'"
-                    (click)="openTransferDialog()">
-                    Transfer
-                </button>
-            </mat-card-actions>
-        </mat-card-footer>
+    <mat-card-footer class="row-container">
+      <mat-card-actions>
+        <!-- View Details Button -->
+        <button mat-stroked-button
+          class="btn-card"
+          [disabled]="account()?.statusCode !== 'ACTIVE'"
+          routerLink="/account/{{ account()?.id }}">
+          View Details
+        </button>
 
-    </mat-card>
+          <!-- Transfer Button -->
+        <button mat-flat-button
+          class="btn-card"
+          [disabled]="account()?.statusCode !== 'ACTIVE'"
+          (click)="openTransferDialog()">
+          Transfer
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+
+  </mat-card>
+
 }

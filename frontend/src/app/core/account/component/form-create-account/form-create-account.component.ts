@@ -10,7 +10,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserAccountsService } from '../../service';
 import { AccountType } from '../../model/account-type.model';
+import { MatCardModule } from '@angular/material/card';
 
+/**
+ * FormCreateAccountComponent
+ * 
+ * Form for creating a new account
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-form-create-account',
   imports: [
@@ -19,32 +27,54 @@ import { AccountType } from '../../model/account-type.model';
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
+    MatCardModule,
   ],
   templateUrl: './form-create-account.component.html',
   styleUrl: './form-create-account.component.scss'
 })
 export class FormCreateAccountComponent implements OnInit {
 
-  // Properties
-
+  /**
+   * Account form group
+   */
   accountForm!: FormGroup;
+
+  /**
+   * Account types
+   */
   accountTypes: AccountType[] = [];
+
+  /**
+   * Currencies
+   */
   currencies: Currency[] = [];
 
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for account, user accounts and currency data
+   * 
+   * @param accountService Service for account data
+   * @param userAccountsService Service for user accounts
+   * @param currencyService Service for currency data
+   * @param dialogRef Service for dialog
+   */
   constructor(
-    private accountService: AccountService,
-    private userAccountsService: UserAccountsService,
-    private currencyService: CurrencyService,
-    public dialogRef: MatDialogRef<FormCreateAccountComponent>,
+    private readonly accountService: AccountService,
+    private readonly userAccountsService: UserAccountsService,
+    private readonly currencyService: CurrencyService,
+    public readonly dialogRef: MatDialogRef<FormCreateAccountComponent>,
   ) { }
 
-
+  /**
+   * Lifecycle hook called on component initialization
+   * Loads account types and currencies
+   */
   ngOnInit(): void {
+    // Load data
     this.loadAccountTypes();
     this.loadCurrencies();
 
+    // Create form
     this.accountForm = new FormGroup({
       typeCode: new FormControl('', [
         Validators.required,
@@ -56,23 +86,38 @@ export class FormCreateAccountComponent implements OnInit {
     });
   }
 
-  // API
-
+  /**
+   * Creates a new account
+   * 
+   * @returns void
+   */
   createAccount(): void {
+    // Check form validity
     if (this.accountForm.invalid) return;
 
+    // Create account, reload user accounts and close dialog
     this.accountService.create(this.accountForm.value).subscribe(() => {
       this.userAccountsService.reloadUserAccounts();
       this.dialogRef.close('completed');
     });
   }
 
+  /**
+   * Loads account types
+   * 
+   * @returns void
+   */
   loadAccountTypes(): void {
     this.accountService.getTypes().subscribe(data => {
       this.accountTypes = data;
     });
   }
 
+  /**
+   * Loads currencies
+   * 
+   * @returns void
+   */
   loadCurrencies(): void {
     this.currencyService.getList().subscribe(data => {
       this.currencies = data;

@@ -5,7 +5,15 @@ import { MatCardModule } from '@angular/material/card';
 import { AccountService } from '../../service';
 import { TransferService } from '../../../transfer/service';
 import { ListTableTransfersComponent } from '../../../transfer/component/list-table-transfers/list-table-transfers.component';
+import { Account } from '../../model';
 
+/**
+ * AccountTransfersComponent
+ * 
+ * Displays account transfers
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-account-transfers',
   imports: [
@@ -19,19 +27,29 @@ import { ListTableTransfersComponent } from '../../../transfer/component/list-ta
 })
 export class AccountTransfersComponent {
 
-  // Account
+  /**
+   * Current user's account
+   * Provided by the account service
+   */
+  public get account(): Account | undefined | null { return this.accountService.userAccount(); }
 
-  public get account() { return this.accountService.userAccount(); }
-
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for account and transfer data
+   * 
+   * @param accountService Service for account data
+   * @param transferService Service for transfer data
+   */
   constructor(
-    private accountService: AccountService,
-    private transferService: TransferService,
+    private readonly accountService: AccountService,
+    private readonly transferService: TransferService,
   ) { }
 
-  // Dialog
-
+  /**
+   * Opens the transfer form dialog
+   * 
+   * @returns void
+   */
   openTransferDialog(): void {
     this.transferService.openCreateTransferFormDialog(this.account?.id);
   }

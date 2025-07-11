@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, InputSignal, WritableSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Account } from '../../model';
@@ -13,6 +13,13 @@ import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clip
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 import { EntityService } from '../../../entity/service';
 
+/**
+ * CardItemAccountComponent
+ * 
+ * Displays a card for an account
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-card-item-account',
   imports: [
@@ -31,39 +38,73 @@ import { EntityService } from '../../../entity/service';
 })
 export class CardItemAccountComponent {
 
-  // Properties
+  /**
+   * The account to display
+   * Provided as input
+   */
+  account: InputSignal<Account | null | undefined> = input<Account | null>();
 
-  account = input<Account | null>();
+  /**
+   * The tooltip text
+   */
+  tooltipText: string = 'Copy to clipboard';
 
-  tooltipText = 'Copy to clipboard';
-
-  // Lifecycle
-
+  /**
+   * Initializes the component.
+   * Injects required services for clipboard, transfer and entity data.
+   * 
+   * @param clipboard Service for clipboard utils
+   * @param transferService Service for transfer data
+   * @param entityService Service for entity data
+   */
   constructor(
-    private clipboard: Clipboard,
-    private transferService: TransferService,
-    private entityService: EntityService,
+    private readonly clipboard: Clipboard,
+    private readonly transferService: TransferService,
+    private readonly entityService: EntityService,
   ) { }
 
-  // Tooltip
-
-  copyAccountNumber() {
-    const accountNumber = this.account()?.accountNumber;
+  /**
+   * Copies the account number to the clipboard
+   * 
+   * @returns void
+   */
+  copyAccountNumber(): void {
+    // Get the account number
+    const accountNumber: string | undefined = this.account()?.accountNumber;
     if (!accountNumber) return;
 
+    // Copy to clipboard
     this.clipboard.copy(accountNumber);
     this.tooltipText = 'Copied!';
   }
 
+  /**
+   * Resets the tooltip text
+   * 
+   * @returns void
+   */
   resetTooltip() {
+    // Reset tooltip
     this.tooltipText = 'Copy to clipboard';
   }
 
+  /**
+   * Opens the transfer form dialog
+   * 
+   * @returns void
+   */
   openTransferDialog(): void {
+    // Open the transfer form dialog
     this.transferService.openCreateTransferFormDialog(this.account()?.id);
   }
 
+  /**
+   * Gets the account status class
+   * 
+   * @returns string
+   */
   getAccountStatusClass(): string {
+    // Get the entity status class
     return this.entityService.getStatusClass(this.account()?.statusCode);
   }
 }

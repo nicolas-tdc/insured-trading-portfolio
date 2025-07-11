@@ -1,31 +1,36 @@
 @if (account) {
-    <mat-card class="col-container">
-        <mat-card-content>
-            <!-- Account Details -->
-            <mat-card-title>
-                <h2>Account Details</h2>
-            </mat-card-title>
 
-            <!-- Account Number -->
-            <mat-card-subtitle>
-                <app-copy-to-clipboard class="center-container" [content]="account.accountNumber">
-                </app-copy-to-clipboard>
-            </mat-card-subtitle>
+  <!-- Account Details -->
+  <mat-card class="col-container details-card-header">
 
-            <!-- Balance -->
-            <mat-card-subtitle>
-                <span class="center-container">Balance: {{ account.balance | formatAmountSigned: account }}</span>
-            </mat-card-subtitle>
+    <mat-card-content>
+      <!-- Title -->
+      <mat-card-title>
+        <h2>Account Details</h2>
+      </mat-card-title>
 
-            <!-- Account Status -->
-            <mat-card-subtitle>
-                <span class="center-container">Account Status: {{ account.statusDisplayName }}</span>
-            </mat-card-subtitle>
+      <!-- Account Number -->
+      <mat-card-subtitle>
+        <app-copy-to-clipboard class="center-container" [content]="account.accountNumber">
+        </app-copy-to-clipboard>
+      </mat-card-subtitle>
 
-            <!-- Account Type -->
-            <mat-card-subtitle>
-                <span class="center-container">Account Type: {{ account.typeDisplayName }}</span>
-            </mat-card-subtitle>
-        </mat-card-content>
-    </mat-card>
+      <!-- Balance -->
+      <mat-card-subtitle>
+        <span class="center-container">Balance: {{ account.balance | formatAmountSigned: account }}</span>
+      </mat-card-subtitle>
+
+      <!-- Account Status -->
+      <mat-card-subtitle>
+        <span class="center-container">Account Status: {{ account.statusDisplayName }}</span>
+      </mat-card-subtitle>
+
+      <!-- Account Type -->
+      <mat-card-subtitle>
+        <span class="center-container">Account Type: {{ account.typeDisplayName }}</span>
+      </mat-card-subtitle>
+    </mat-card-content>
+
+  </mat-card>
+
 }

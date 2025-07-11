@@ -1,20 +1,29 @@
-@if (account) {
-    <mat-card>
-        <mat-card-content>
-            <mat-card-title>
-                <h2>Policies</h2>
-            </mat-card-title>
+@if (account && account.policies.length > 0) {
 
-            @if (account.policies.length > 0) {
-                <mat-card-subtitle>                
-                        @for (policyNumber of account.policies; track policyNumber) {
-                            <mat-card-subtitle>
-                                <app-copy-to-clipboard  class="center-container" [content]="policyNumber">
-                                </app-copy-to-clipboard>
-                            </mat-card-subtitle>
-                        }
-                </mat-card-subtitle>
-            }
-        </mat-card-content>
-    </mat-card>
+  <!-- Account Policies -->
+  <mat-card class="section-header">
+
+    <mat-card-content>
+      <!-- Title -->
+      <mat-card-title>
+        <h2>Policies</h2>
+      </mat-card-title>
+
+      <!-- Policy Numbers -->
+      <mat-card-subtitle>
+
+        @for (policyNumber of account.policies; track policyNumber) {
+          <!-- Policy Number -->
+          <mat-card-subtitle>
+            <app-copy-to-clipboard class="center-container"
+            [content]="policyNumber">
+            </app-copy-to-clipboard>
+          </mat-card-subtitle>
+        }
+
+      </mat-card-subtitle>
+    </mat-card-content>
+
+  </mat-card>
+
 }

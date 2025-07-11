@@ -1,52 +1,68 @@
-<form
-  [formGroup]="accountForm"
-  (ngSubmit)="createAccount()">
+<mat-card>
 
-  <h2>Open new account</h2>
+  <mat-card-content>
+    <!-- Title -->
+    <mat-card-title>
+      <h2>Open a new Account</h2>
+    </mat-card-title>
 
-  <div class="col-item">
-    <mat-form-field class="form-field-basic">
-      <mat-label>Account Type</mat-label>
+    <!-- Required fields -->
+    <mat-card-subtitle>
+      <p>(*) Required fields</p>
+    </mat-card-subtitle>
 
-      <mat-select formControlName="typeCode">
-          <mat-option value="" disabled></mat-option>
-          @for (type of accountTypes; track type.code) {
-            <mat-option [value]="type.code">
-              {{ type.displayName }}
-            </mat-option>
-          }
-      </mat-select>
+    <!-- Create Account Form -->
+    <mat-card-subtitle>
+      <form
+        [formGroup]="accountForm"
+        (ngSubmit)="createAccount()">
 
-      @if (accountForm.get('typeCode')?.hasError('required')) {
-        <mat-error>Account Type is required</mat-error>
-      }
-    </mat-form-field>
+        <div class="col-item">
+          <!-- Account Type -->
+          <mat-form-field class="form-field-basic">
+            <mat-label>Account Type</mat-label>
+            <mat-select formControlName="typeCode">
+                <mat-option value="" disabled></mat-option>
+                @for (type of accountTypes; track type.code) {
+                  <mat-option [value]="type.code">
+                    {{ type.displayName }}
+                  </mat-option>
+                }
+            </mat-select>
+            @if (accountForm.get('typeCode')?.hasError('required')) {
+              <mat-error>Account Type is required</mat-error>
+            }
+          </mat-form-field>
 
-    <mat-form-field class="form-field-basic">
-      <mat-label>Currency</mat-label>
+          <!-- Currency -->
+          <mat-form-field class="form-field-basic">
+            <mat-label>Currency</mat-label>
+            <mat-select formControlName="currencyCode">
+              <mat-option value="" disabled></mat-option>
+              @for (currency of currencies; track currency.currencyCode) {
+                <mat-option [value]="currency.currencyCode">
+                  {{ currency.currencyCode }} - {{ currency.currencySymbol }}
+                </mat-option>
+              }
+            </mat-select>
+            @if (accountForm.get('currencyCode')?.hasError('required')) {
+              <mat-error>Currency is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-      <mat-select formControlName="currencyCode">
-        <mat-option value="" disabled></mat-option>
-        @for (currency of currencies; track currency.currencyCode) {
-          <mat-option [value]="currency.currencyCode">
-            {{ currency.currencyCode }} - {{ currency.currencySymbol }}
-          </mat-option>
-        }
-      </mat-select>
+        <mat-card-actions class="col-item">
+        <!-- Submit Button -->
+        <button mat-flat-button
+          class="btn-basic"
+          type="submit"
+          [disabled]="!accountForm.valid">
+            Open
+          </button>
+        </mat-card-actions>
 
-      @if (accountForm.get('currencyCode')?.hasError('required')) {
-        <mat-error>Currency is required</mat-error>
-      }
-    </mat-form-field>
-  </div>
+      </form>
+    </mat-card-subtitle>
+  </mat-card-content>
 
-  <div class="col-item">
-    <button mat-flat-button
-    class="btn-basic"
-    type="submit"
-    [disabled]="!accountForm.valid">
-      Open
-    </button>
-  </div>
-
-</form>
+</mat-card>

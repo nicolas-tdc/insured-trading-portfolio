@@ -1,25 +1,31 @@
 @if (account) {
-  <mat-card>
+
+  <!-- Account Transfers -->
+  <mat-card class="section-header">
+
     <mat-card-content>
+      <!-- Title -->
       <mat-card-title>
         <h2>Transfers</h2>
       </mat-card-title>
 
-      <!-- Transfer Button -->
       <mat-card-actions class="center-container">
-          <button mat-flat-button
-              class="btn-card"
-              [disabled]="account.statusCode !== 'ACTIVE'"
-              (click)="openTransferDialog()">
-              Transfer
-          </button>
+        <!-- Transfer Button -->
+        <button mat-flat-button
+          class="btn-card"
+          [disabled]="account.statusCode !== 'ACTIVE'"
+          (click)="openTransferDialog()">
+          Transfer
+        </button>
       </mat-card-actions>
 
-        <!-- Transfers -->
+      <!-- Transfers -->
       <mat-card-subtitle>
         <app-list-table-transfers>
         </app-list-table-transfers>
       </mat-card-subtitle>
     </mat-card-content>
+
   </mat-card>
+
 }

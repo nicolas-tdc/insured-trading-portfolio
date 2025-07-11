@@ -6,9 +6,16 @@ import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clip
 import { MatButtonModule } from '@angular/material/button';
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 import { AccountService } from '../../service';
-import { EntityService } from '../../../entity/service';
 import { MatListModule } from '@angular/material/list';
+import { Account } from '../../model';
 
+/**
+ * Account details component
+ * 
+ * Displays account details such as account number, balance, status, and type.
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-account-details',
   imports: [
@@ -25,13 +32,19 @@ import { MatListModule } from '@angular/material/list';
 })
 export class AccountDetailsComponent {
 
-  // Account
+  /**
+   * Current user's account
+   * Provided by the account service
+   */
+  public get account(): Account | undefined | null { return this.accountService.userAccount(); }
 
-  public get account() { return this.accountService.userAccount(); }
-
-  // Lifecycle
-
+  /**
+   * Initializes the component.
+   * Injects required services for account data.
+   * 
+   * @param accountService Service for account data
+   */
   constructor(
-    private accountService: AccountService,
+    private readonly accountService: AccountService,
   ) { }
 }

@@ -1,3 +1,8 @@
+/**
+ * Account model
+ * 
+ * @export
+ */
 export interface Account {
   id: string;
   statusCode: string;

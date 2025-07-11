@@ -1,5 +1,10 @@
 import { Account } from './account.model';
 
+/**
+ * Account fieldTypes types
+ * 
+ * @export
+ */
 export type AccountFieldTypes = {
   [K in keyof Account]: Account[K] extends string ? 'string'
                       : Account[K] extends number ? 'number'
@@ -7,6 +12,11 @@ export type AccountFieldTypes = {
                       : 'unknown';
 };
 
+/**
+ * Account fieldTypes names
+ * 
+ * @export
+ */
 export const accountFieldTypes: AccountFieldTypes = {
   id: 'string',
   statusCode: 'string',

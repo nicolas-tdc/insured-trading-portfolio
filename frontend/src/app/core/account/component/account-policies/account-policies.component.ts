@@ -3,7 +3,15 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clipboard/copy-to-clipboard.component';
 import { AccountService } from '../../service';
+import { Account } from '../../model';
 
+/**
+ * AccountPoliciesComponent
+ * 
+ * Displays account policies
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-account-policies',
   imports: [
@@ -16,13 +24,19 @@ import { AccountService } from '../../service';
 })
 export class AccountPoliciesComponent {
 
-  // Account
+  /**
+   * Current user's account
+   * Provided by the account service
+   */
+  public get account(): Account | undefined | null { return this.accountService.userAccount(); }
 
-  public get account() { return this.accountService.userAccount(); }
-
-  // Lifecycle
-
+  /**
+   * Initializes the component.
+   * Injects required services for account data.
+   * 
+   * @param accountService Service for account data
+   */
   constructor(
-    private accountService: AccountService,
+    private readonly accountService: AccountService,
   ) { }
 }
