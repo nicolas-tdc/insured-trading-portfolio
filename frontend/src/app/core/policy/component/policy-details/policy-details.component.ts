@@ -1,5 +1,4 @@
 import { Component, input, Input } from '@angular/core';
-import { Policy } from '../../model';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
@@ -8,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
 import { EntityService } from '../../../entity/service';
 import { MatIconModule } from '@angular/material/icon';
+import { PolicyService } from '../../service';
 
 @Component({
   selector: 'app-policy-details',
@@ -27,15 +27,16 @@ export class PolicyDetailsComponent {
 
   // Properties
 
-  policy = input<Policy | null>();
+  public get policy() { return this.policyService.userPolicy(); }
 
   // Lifecycle
 
   constructor(
     private entityService: EntityService,
+    private policyService: PolicyService,
   ) { }
 
   getPolicyStatusClass(): string {
-    return this.entityService.getStatusClass(this.policy()?.statusCode);
+    return this.entityService.getStatusClass(this.policy?.statusCode);
   }
 }

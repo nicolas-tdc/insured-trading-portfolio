@@ -1,4 +1,4 @@
-@if (policy()) {
+@if (policy) {
     <mat-card class="col-container">
         <mat-card-content>
             <!-- Policy Details -->
@@ -8,7 +8,7 @@
 
             <!-- Policy Number -->
             <mat-card-subtitle>
-                <app-copy-to-clipboard class="center-container" [content]="policy()?.policyNumber">
+                <app-copy-to-clipboard class="center-container" [content]="policy.policyNumber">
                 </app-copy-to-clipboard>
             </mat-card-subtitle>
 
@@ -16,34 +16,34 @@
             <mat-card-subtitle>
                 <div class="col-container">
                     <h3 class="col-item">Linked Account</h3>
-                    <app-copy-to-clipboard class="col-item" [content]="policy()?.accountNumber">
+                    <app-copy-to-clipboard class="col-item" [content]="policy.accountNumber">
                     </app-copy-to-clipboard>
                 </div>
             </mat-card-subtitle>
 
             <!-- Policy Type -->
             <mat-card-subtitle>
-                <span class="center-container">Policy Type: {{ policy()?.typeDisplayName }}</span>
+                <span class="center-container">Policy Type: {{ policy.typeDisplayName }}</span>
             </mat-card-subtitle>
 
             <!-- Policy Status -->
             <mat-card-subtitle>
-                <span class="center-container">Policy Status: {{ policy()?.statusDisplayName }}</span>
+                <span class="center-container">Policy Status: {{ policy.statusDisplayName }}</span>
             </mat-card-subtitle>
 
             <!-- Premium -->
             <mat-card-subtitle>
-                <span class="center-container">Premium: {{ policy()?.premium | formatAmount: policy() }}</span>
+                <span class="center-container">Premium: {{ policy.premium | formatAmount: policy }}</span>
             </mat-card-subtitle>
 
             <!-- Coverage Amount -->
             <mat-card-subtitle>
-                <span class="center-container">Coverage Amount: {{ policy()?.coverageAmount | formatAmount: policy() }}</span>
+                <span class="center-container">Coverage Amount: {{ policy.coverageAmount | formatAmount: policy }}</span>
             </mat-card-subtitle>
 
             <!-- End Date -->
             <mat-card-subtitle>
-                <span class="center-container">End Date: {{ policy()?.endDate | date: 'mediumDate' }}</span>
+                <span class="center-container">End Date: {{ policy.endDate | date: 'mediumDate' }}</span>
             </mat-card-subtitle>
         </mat-card-content>
     </mat-card>

@@ -5,12 +5,6 @@
   < Back to Dashboard
 </button>
 
-@if (policy) {
-  <!-- Policy Details -->
-  <app-policy-details
-    [policy]="policy">
-  </app-policy-details>
-}
-@else {
-  <p>Policy not found.</p>
-}
+<!-- Policy Details -->
+<app-policy-details>
+</app-policy-details>
