@@ -1,6 +1,5 @@
 package com.insurancebanking.platform.account.dto;
 
-import com.insurancebanking.platform.account.model.AccountType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

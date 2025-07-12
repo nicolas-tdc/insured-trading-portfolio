@@ -2,8 +2,6 @@ package com.insurancebanking.platform.policy.dto;
 
 import java.util.UUID;
 
-import com.insurancebanking.platform.policy.model.PolicyType;
-
 import jakarta.validation.constraints.NotNull;
 
 public record PolicyRequest(

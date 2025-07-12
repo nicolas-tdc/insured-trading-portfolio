@@ -4,7 +4,6 @@ import com.insurancebanking.platform.auth.model.UserDetailsImpl;
 import com.insurancebanking.platform.policy.dto.PolicyRequest;
 import com.insurancebanking.platform.policy.dto.PolicyResponse;
 import com.insurancebanking.platform.policy.model.Policy;
-import com.insurancebanking.platform.policy.model.PolicyType;
 import com.insurancebanking.platform.policy.dto.PolicyTypeResponse;
 import com.insurancebanking.platform.policy.service.PolicyService;
 
