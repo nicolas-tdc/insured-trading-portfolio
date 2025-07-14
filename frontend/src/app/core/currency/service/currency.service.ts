@@ -1,25 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Currency } from '../model';
 
+/**
+ * Currency service
+ * 
+ * @export
+ */
 @Injectable({ providedIn: 'root' })
 export class CurrencyService {
 
-  // Properties
+  /**
+   * API URL
+   */
+  private apiUrl: string = '/api/currency';
 
-  // API
-  private apiUrl = '/api/currency';
-
-  // Lifecycle
-
+  /**
+   * Initializes the service
+   * Injects required services for http client
+   * 
+   * @param http HTTP client
+   */
   constructor(
-    private http: HttpClient,
+    private readonly http: HttpClient,
   ) { }
 
-  // API
-
+  /**
+   * Gets list of currencies
+   * 
+   * @returns List of currencies
+   */
   getList(): Observable<Currency[]> {
     return this.http.get<Currency[]>(`${this.apiUrl}`);
   }
