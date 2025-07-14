@@ -29,6 +29,18 @@
       <mat-card-subtitle>
         <span class="center-container">Account Type: {{ account.typeDisplayName }}</span>
       </mat-card-subtitle>
+
+      <!-- Dummy trade button -->
+      @if (account.typeCode === 'TRADING') {
+        <div matTooltip="No exchange page. For demo purpose only.">
+          <mat-card-actions class="center-container">
+            <button mat-flat-button class="btn-basic"
+              disabled>
+              Trade
+            </button>
+          </mat-card-actions>
+        </div>
+      }
     </mat-card-content>
 
   </mat-card>

@@ -9,5 +9,6 @@
 }
 
 .btn-card {
+  max-width: 200px;
   @include responsive-spacing(margin, $spacing-sm);
 }

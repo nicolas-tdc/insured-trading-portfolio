@@ -36,23 +36,35 @@
       </mat-card-subtitle>
     </mat-card-content>
 
-    <mat-card-footer class="row-container">
+    <mat-card-footer>
       <mat-card-actions>
-        <!-- View Details Button -->
-        <button mat-stroked-button
-          class="btn-card"
-          [disabled]="account()?.statusCode !== 'ACTIVE'"
-          routerLink="/account/{{ account()?.id }}">
-          View Details
-        </button>
+        <div class="grid-{{ account()?.typeCode === 'TRADING' ? '3' : '2' }}-responsive">
+          <!-- View Details Button -->
+          <button mat-stroked-button
+            class="btn-card"
+            [disabled]="account()?.statusCode !== 'ACTIVE'"
+            routerLink="/account/{{ account()?.id }}">
+            View Details
+          </button>
 
-          <!-- Transfer Button -->
-        <button mat-flat-button
-          class="btn-card"
-          [disabled]="account()?.statusCode !== 'ACTIVE'"
-          (click)="openTransferDialog()">
-          Transfer
-        </button>
+            <!-- Transfer Button -->
+          <button mat-flat-button
+            class="btn-card"
+            [disabled]="account()?.statusCode !== 'ACTIVE'"
+            (click)="openTransferDialog()">
+            Transfer
+          </button>
+
+          @if (account()?.typeCode === 'TRADING') {
+            <!-- Trade Button -->
+            <div matTooltip="No exchange page. For demo purpose only.">
+              <button mat-flat-button class="btn-card"
+                disabled>
+                Trade
+              </button>
+            </div>
+          }
+        </div>
       </mat-card-actions>
     </mat-card-footer>
 

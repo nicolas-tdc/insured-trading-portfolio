@@ -8,6 +8,7 @@ import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-sig
 import { AccountService } from '../../service';
 import { MatListModule } from '@angular/material/list';
 import { Account } from '../../model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /**
  * Account details component
@@ -24,6 +25,7 @@ import { Account } from '../../model';
     MatChipsModule,
     MatButtonModule,
     MatListModule,
+    MatTooltipModule,
     CopyToClipboardComponent,
     FormatAmountSignedPipe,
   ],
