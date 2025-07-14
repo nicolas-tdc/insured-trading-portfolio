@@ -11,7 +11,7 @@ import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clip
 import { EntityService } from '../../../entity/service';
 
 @Component({
-  selector: 'app-card-item-policy',
+  selector: 'app-policies-list-item',
   imports: [
     RouterLink,
     MatCardModule,
@@ -21,10 +21,10 @@ import { EntityService } from '../../../entity/service';
     MatTooltipModule,
     CopyToClipboardComponent,
   ],
-  templateUrl: './card-item-policy.component.html',
-  styleUrl: './card-item-policy.component.scss'
+  templateUrl: './policies-list-item.component.html',
+  styleUrl: './policies-list-item.component.scss'
 })
-export class CardItemPolicyComponent {
+export class PoliciesListItemComponent {
 
   /**
    * The policy to display

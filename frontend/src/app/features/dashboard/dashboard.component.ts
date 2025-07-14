@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CardListPoliciesComponent } from '../../core/policy/component/card-list-policies/card-list-policies.component';
+import { PoliciesListComponent } from '../../core/policy/component/policies-list/policies-list.component';
 import { AccountsListComponent } from '../../core/account/component/accounts-list/accounts-list.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
   selector: 'app-dashboard',
   imports: [
     AccountsListComponent,
-    CardListPoliciesComponent,
+    PoliciesListComponent,
     MatCardModule,
     MatButtonModule,
     MatDividerModule

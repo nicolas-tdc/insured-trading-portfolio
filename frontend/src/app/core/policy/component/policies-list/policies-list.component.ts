@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, Signal } from '@angular/core';
-import { CardItemPolicyComponent } from '../card-item-policy/card-item-policy.component';
+import { PoliciesListItemComponent } from '../policies-list-item/policies-list-item.component';
 import { Policy } from '../../model';
 import { UserPoliciesService } from '../../service';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,26 +9,26 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 
 /**
- * CardListPoliciesComponent
+ * PoliciesListComponent
  * 
  * Displays a list of policies
  * 
  * @export
  */
 @Component({
-  selector: 'app-card-list-policies',
+  selector: 'app-policies-list',
   imports: [
     CommonModule,
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    CardItemPolicyComponent,
+    PoliciesListItemComponent,
     SortIconPipe,
   ],
-  templateUrl: './card-list-policies.component.html',
-  styleUrl: './card-list-policies.component.scss'
+  templateUrl: './policies-list.component.html',
+  styleUrl: './policies-list.component.scss'
 })
-export class CardListPoliciesComponent {
+export class PoliciesListComponent {
 
   /**
    * The list of policies
