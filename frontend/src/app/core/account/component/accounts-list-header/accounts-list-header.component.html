@@ -1,18 +1,19 @@
-<div class="section-header">
-  <mat-card>
-    <mat-card-content>
-      <mat-card-title>
-        <h2>Your Accounts</h2>
-      </mat-card-title>
+<mat-card class="section-header">
 
+  <mat-card-content>
+    <!-- Title -->
+    <mat-card-title>
+      <h2>Your Accounts</h2>
+    </mat-card-title>
+
+    <mat-card-actions class="center-container">
       <!-- Open new Account Button -->
-      <mat-card-actions class="center-container">
-        <button mat-flat-button
-          class="btn-basic"
-          (click)="openCreateAccountFormDialog()">
-          Open a new Account
-        </button>
-      </mat-card-actions>
-    </mat-card-content>
-  </mat-card>
-</div>
+      <button mat-flat-button
+        class="btn-basic"
+        (click)="openCreateAccountFormDialog()">
+        Open a new Account
+      </button>
+    </mat-card-actions>
+  </mat-card-content>
+
+</mat-card>
