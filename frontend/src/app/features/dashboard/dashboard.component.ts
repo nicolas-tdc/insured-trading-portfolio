@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../core/auth/service';
 import { Router } from '@angular/router';
+import { AccountsListHeaderComponent } from '../../core/account/component/accounts-list-header/accounts-list-header.component';
 
 /**
  * DashboardComponent
@@ -21,6 +22,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   imports: [
+    AccountsListHeaderComponent,
     AccountsListComponent,
     PoliciesListComponent,
     MatCardModule,
