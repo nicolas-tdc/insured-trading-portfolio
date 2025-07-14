@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ContactLinksComponent } from '../../../core/portfolio/contact-links/contact-links.component';
-import { AboutMeComponent } from '../../../core/portfolio/about-me/about-me.component';
-import { TechStackComponent } from '../../../core/portfolio/tech-stack/tech-stack.component';
+import { ContactLinksComponent } from '../../../core/portfolio/component/contact-links/contact-links.component';
+import { AboutMeComponent } from '../../../core/portfolio/component/about-me/about-me.component';
+import { TechStackComponent } from '../../../core/portfolio/component/tech-stack/tech-stack.component';
 
 /**
  * FooterComponent
