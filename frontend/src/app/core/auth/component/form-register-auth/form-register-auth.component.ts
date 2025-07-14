@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service';
@@ -9,6 +8,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
+/**
+ * FormRegisterAuthComponent
+ * 
+ * Form for registering a new user
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-form-register-auth',
   imports: [
@@ -25,20 +31,32 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class FormRegisterAuthComponent implements OnInit {
 
-  // Properties
-
+  /**
+   * Register form group
+   */
   public registerForm!: FormGroup;
 
-  public hidePassword = true;
+  /**
+   * Hide password flag
+   */
+  public hidePassword: boolean = true;
 
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for authentication
+   * 
+   * @param authService Service for authentication
+   */
   constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+    private readonly authService: AuthService,
+  ) { }
 
+  /**
+   * Lifecycle hook called on component initialization
+   * Initializes register form
+   */
   ngOnInit(): void {
+    // Initialize register form
     this.registerForm = new FormGroup({
       firstName: new FormControl('', [
         Validators.required,
@@ -61,11 +79,17 @@ export class FormRegisterAuthComponent implements OnInit {
       ]),
     });
   }
-  // API
 
+  /**
+   * Registers a new user
+   * 
+   * @returns void
+   */
   register(): void {
+    // Register using authentication service
     this.authService.register(this.registerForm.value).subscribe({
       next: res => {
+        // On success, reset form and disable
         this.registerForm.reset();
         this.registerForm.disable();
       },

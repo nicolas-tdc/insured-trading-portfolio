@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { AuthService } from '../../service';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -7,7 +7,15 @@ import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { EntityService } from '../../../entity/service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { User } from '../../model';
 
+/**
+ * UserHeaderComponent
+ * 
+ * Component for displaying user information and logout button
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-user-header',
   standalone: true,
@@ -23,25 +31,48 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class UserHeaderComponent {
 
-  // Properties
+  /**
+   * Get the authenticated user
+   * Provided by the authentication service
+   * 
+   * @returns Signal<User | null>
+   */
+  public get authUser(): Signal<User | null> { return this.authService.authUser; }
 
-  public get authUser() { return this.authService.authUser; }
+  /**
+   * Check if the user is logged in
+   * 
+   * @returns boolean
+   */
+  public get isLoggedIn(): boolean { return this.authService.isLoggedIn(); }
 
-  public get isLoggedIn() { return this.authService.isLoggedIn(); }
-
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for entities, routing and authentication
+   * 
+   * @param authService Service for authentication
+   * @param router Service for routing
+   * @param entityService Service for entities
+   */
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private entityService: EntityService,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly entityService: EntityService,
   ) { }
 
-  // Authentication
-
+  /**
+   * Logs out the user
+   * 
+   * @returns void
+   */
   logout(): void {
+    // Logout using authentication service
     this.authService.logout();
+  
+    // Clear entities
     this.entityService.clearEntities();
+
+    // Navigate to authentication
     this.router.navigate(['/authentication']);
   }
 }

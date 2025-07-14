@@ -1,3 +1,8 @@
+/**
+ * Register request model
+ * 
+ * @export
+ */
 export interface RegisterRequest {
   firstName: string;
   lastName: string;

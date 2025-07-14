@@ -9,6 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
+/**
+ * FormLoginAuthComponent
+ * 
+ * Form for logging in
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-form-login-auth',
   imports: [
@@ -25,20 +32,34 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class FormLoginAuthComponent implements OnInit {
 
-  // Properties
-
+  /**
+   * Login form group
+   */
   public loginForm!: FormGroup;
 
-  public hidePassword = true;
+  /**
+   * Hide password flag
+   */
+  public hidePassword: boolean = true;
 
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for routing and authentication
+   * 
+   * @param router 
+   * @param authService 
+   */
   constructor(
-    private router: Router,
-    private authService: AuthService,
+    private readonly router: Router,
+    private readonly authService: AuthService,
   ) { }
 
+  /**
+   * Lifecycle hook called on component initialization
+   * Initializes login form
+   */
   ngOnInit(): void {
+    // Initialize login form
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -53,11 +74,17 @@ export class FormLoginAuthComponent implements OnInit {
     });
   }
 
-  // API
-
+  /**
+   * Logs in the user
+   * 
+   * @returns void
+   */
   login(): void {
+    // Login using authentication service
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
+        // On success, reset form and navigate to dashboard
+        this.loginForm.reset();
         this.router.navigate(['/dashboard']);
       },
       error: err => {

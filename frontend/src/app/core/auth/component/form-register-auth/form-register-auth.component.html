@@ -1,23 +1,29 @@
 <mat-card>
+
   <mat-card-content>
+    <!-- Title -->
     <mat-card-title>
       <h2>Register a new account</h2>
     </mat-card-title>
 
+    <!-- Required fields -->
     <mat-card-subtitle>
         <p>(*) Required fields</p>
     </mat-card-subtitle>
 
+    <!-- Register Form -->
     <mat-card-subtitle>
       <form
         [formGroup]="registerForm"
         (ngSubmit)="register()">
 
+        <!-- Form fields -->
         <div class="col-item">
-
+          <!-- First Name -->
           <mat-form-field class="form-field-basic">
             <mat-label>First Name</mat-label>
             <input matInput type="text" formControlName="firstName">
+            <!-- Errors -->
             @if (registerForm.get('firstName')?.hasError('required')) {
               <mat-error>First Name is required</mat-error>
             }
@@ -29,9 +35,11 @@
             }
           </mat-form-field>
 
+          <!-- Last Name -->
           <mat-form-field class="form-field-basic">
             <mat-label>Last Name</mat-label>
             <input matInput type="text" formControlName="lastName">
+            <!-- Errors -->
             @if (registerForm.get('lastName')?.hasError('required')) {
               <mat-error>Last Name is required</mat-error>
             }
@@ -43,9 +51,11 @@
             }
           </mat-form-field>
 
+          <!-- Email -->
           <mat-form-field class="form-field-basic">
             <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="email">
+            <!-- Errors -->
             @if (registerForm.get('email')?.hasError('required')) {
               <mat-error>Email is required</mat-error>
             }
@@ -54,6 +64,7 @@
             }
           </mat-form-field>
 
+          <!-- Password -->
           <mat-form-field class="form-field-basic">
             <mat-label>Password</mat-label>
             <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
@@ -64,6 +75,7 @@
             type="button">
               <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
+            <!-- Errors -->
             @if (registerForm.get('password')?.hasError('required')) {
               <mat-error>Password is required</mat-error>
             }
@@ -75,15 +87,17 @@
             }
             <mat-hint align="end">4-32 characters</mat-hint>
           </mat-form-field>
-
         </div>
 
         <mat-card-actions class="center-container">
+          <!-- Register button -->
           <button mat-flat-button [disabled]="!registerForm.valid" type="submit">
             Register
           </button>
         </mat-card-actions>
+
       </form>
     </mat-card-subtitle>
   </mat-card-content>
+
 </mat-card>
