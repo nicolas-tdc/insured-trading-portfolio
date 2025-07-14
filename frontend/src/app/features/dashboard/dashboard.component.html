@@ -7,25 +7,8 @@
 </app-accounts-list>
 
 <!-- Policies Header -->
-<div class="section-header">
-  <mat-card>
-    <mat-card-content>
-      <!-- Title -->
-      <mat-card-title>
-        <h2>Your Policies</h2>
-      </mat-card-title>
-
-      <!-- New Policy Button -->
-      <mat-card-actions class="center-container">
-        <button mat-flat-button
-          class="btn-basic"
-          (click)="openCreatePolicyFormDialog()">
-          Subscribe to a new Policy
-        </button>
-      </mat-card-actions>
-    </mat-card-content>
-  </mat-card>
-</div>
+<app-policies-list-header>
+</app-policies-list-header>
 
 <!-- Policies list -->
 <app-policies-list>
