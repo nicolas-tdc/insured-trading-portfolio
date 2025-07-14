@@ -35,6 +35,8 @@ export class AccountDetailsComponent {
   /**
    * Current user's account
    * Provided by the account service
+   * 
+   * @returns Account
    */
   public get account(): Account | undefined | null { return this.accountService.userAccount(); }
 

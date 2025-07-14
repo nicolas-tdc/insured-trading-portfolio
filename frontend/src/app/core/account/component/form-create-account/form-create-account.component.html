@@ -20,15 +20,20 @@
         <div class="col-item">
           <!-- Account Type -->
           <mat-form-field class="form-field-basic">
+            <!-- Label -->
             <mat-label>Account Type</mat-label>
+            <!-- Account Type Select -->
             <mat-select formControlName="typeCode">
                 <mat-option value="" disabled></mat-option>
+                <!-- Account Type Options -->
                 @for (type of accountTypes; track type.code) {
+                  <!-- Account Type Option -->
                   <mat-option [value]="type.code">
                     {{ type.displayName }}
                   </mat-option>
                 }
             </mat-select>
+            <!-- Errors -->
             @if (accountForm.get('typeCode')?.hasError('required')) {
               <mat-error>Account Type is required</mat-error>
             }
@@ -36,15 +41,20 @@
 
           <!-- Currency -->
           <mat-form-field class="form-field-basic">
+            <!-- Label -->
             <mat-label>Currency</mat-label>
+            <!-- Currency Select -->
             <mat-select formControlName="currencyCode">
               <mat-option value="" disabled></mat-option>
+              <!-- Currency Options -->
               @for (currency of currencies; track currency.currencyCode) {
+                <!-- Currency Option -->
                 <mat-option [value]="currency.currencyCode">
                   {{ currency.currencyCode }} - {{ currency.currencySymbol }}
                 </mat-option>
               }
             </mat-select>
+            <!-- Errors -->
             @if (accountForm.get('currencyCode')?.hasError('required')) {
               <mat-error>Currency is required</mat-error>
             }
@@ -52,11 +62,10 @@
         </div>
 
         <mat-card-actions class="col-item">
-        <!-- Submit Button -->
-        <button mat-flat-button
-          class="btn-basic"
-          type="submit"
-          [disabled]="!accountForm.valid">
+          <!-- Submit Button -->
+          <button mat-flat-button class="btn-basic"
+            type="submit"
+            [disabled]="!accountForm.valid">
             Open
           </button>
         </mat-card-actions>

@@ -4,6 +4,6 @@
  * @export
  */
 export interface AccountType {
-    code: string;
-    displayName: string;
+  code: string;
+  displayName: string;
 }
