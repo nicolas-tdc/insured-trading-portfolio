@@ -1,24 +1,27 @@
+<!-- Form for selecting an external account -->
 <form [formGroup]="enterExternalAccountForm!" (ngSubmit)="validateTargetAccount()">
-    <div class="col-item">
 
-        <mat-form-field class="form-field-basic">
-            <mat-label>Find by account number</mat-label>
+  <div class="col-item">
+    <!-- Account number input -->
+    <mat-form-field class="form-field-basic">
+      <mat-label>Find by account number</mat-label>
+      <input matInput formControlName="targetAccountNumber"
+        type="text"
+        maxlength="12"
+        placeholder="Ex: ACC123456789" />
+      <!-- Errors -->
+      @if (enterExternalAccountForm.get('targetAccountNumber')?.hasError('max')) {
+        <mat-error>Account number must be 12 characters</mat-error>
+      }
+      <mat-hint align="end">12 characters</mat-hint>
+    </mat-form-field>
 
-            <input matInput formControlName="targetAccountNumber"
-                type="text"
-                maxlength="12"
-                placeholder="Ex: ACC123456789" />
+    <!-- Enter button -->
+    <button mat-flat-button
+      [disabled]="!enterExternalAccountForm.get('targetAccountNumber')?.valid
+      || !enterExternalAccountForm.get('targetAccountNumber')?.value">
+      Enter
+    </button>
+  </div>
 
-            @if (enterExternalAccountForm.get('targetAccountNumber')?.hasError('max')) {
-                <mat-error>Account number must be 12 characters</mat-error>
-            }
-            <mat-hint align="end">12 characters</mat-hint>
-        </mat-form-field>
-
-        <button mat-flat-button
-        [disabled]="!enterExternalAccountForm.get('targetAccountNumber')?.valid
-        || !enterExternalAccountForm.get('targetAccountNumber')?.value">
-            Enter
-        </button>
-    </div>
 </form>

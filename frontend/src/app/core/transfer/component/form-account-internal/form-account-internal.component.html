@@ -1,6 +1,8 @@
+<!-- Form for selecting an internal account -->
 <form [formGroup]="selectInternalAccountForm!" (ngSubmit)="validateTargetAccount()">
 
     <div class="col-item">
+        <!-- Account number input -->
         <mat-form-field class="form-field-basic">
             <mat-label>Select from your accounts</mat-label>
             <mat-select formControlName="targetAccountId">
@@ -13,6 +15,7 @@
             </mat-select>
         </mat-form-field>
 
+        <!-- Select button -->
         <button mat-flat-button
             [disabled]="!selectInternalAccountForm.get('targetAccountId')?.valid
             || !selectInternalAccountForm.get('targetAccountId')?.value">

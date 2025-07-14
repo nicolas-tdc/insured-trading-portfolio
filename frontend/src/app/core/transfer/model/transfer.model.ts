@@ -1,3 +1,8 @@
+/**
+ * Transfer model
+ * 
+ * @export
+ */
 export interface Transfer {
   id: string;
   transferNumber: string;

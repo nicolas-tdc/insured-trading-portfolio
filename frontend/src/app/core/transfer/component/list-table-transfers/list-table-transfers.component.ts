@@ -8,7 +8,16 @@ import { AccountTransfersService } from '../../service/account-transfers.service
 import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-signed';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Account } from '../../../account/model';
+import { Transfer } from '../../model';
 
+/**
+ * ListTableTransfersComponent
+ * 
+ * Component for displaying a table of transfers
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-list-table-transfers',
   imports: [
@@ -25,16 +34,30 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ListTableTransfersComponent {
 
-  // Account
+  /**
+   * Current user's account
+   * Provided by the account service
+   * 
+   * @readonly
+   * @type {Account | null | undefined}
+   */
+  public get account(): Account | null | undefined { return this.accountService.userAccount(); }
 
-  public get account() { return this.accountService.userAccount(); }
+  /**
+   * Account transfers
+   * Provided by the account transfers service
+   * 
+   * @readonly
+   * @type {Transfer[] | undefined}
+   */
+  public get transfers(): Transfer[] | undefined { return this.accountTransfersService.accountTransfers(); }
 
-  // Transfers
-
-  public get transfers() { return this.accountTransfersService.accountTransfers(); }
-
-  // Table columns
-
+  /**
+   * Table columns
+   * 
+   * @readonly
+   * @type {string[]}
+   */
   public displayedColumns: string[] = [
     'transferNumber',
     'transferStatus',
@@ -44,10 +67,15 @@ export class ListTableTransfersComponent {
     'description',
   ];
 
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for displaying a table of transfers
+   * 
+   * @param accountTransfersService Service for account transfers
+   * @param accountService Service for account
+   */
   constructor(
-    private accountTransfersService: AccountTransfersService,
-    private accountService: AccountService,
+    private readonly accountTransfersService: AccountTransfersService,
+    private readonly accountService: AccountService,
   ) { }
 }

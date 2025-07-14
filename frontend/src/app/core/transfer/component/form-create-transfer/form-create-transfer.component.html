@@ -1,12 +1,16 @@
 @if (createTransferForm) {
+
+  <!-- Stepper for creating a transfer -->
   <mat-stepper #stepper [linear]="true" [formGroup]="createTransferForm">
 
     @if (createTransferForm.get('selectAccount')) {
+
+      <!-- Step 1: Chose a target account -->
       <mat-step>
         <ng-template matStepLabel>Select a target account</ng-template>
 
+        <!-- Select an internal account -->
         <p>Select a target from your accounts</p>
-
         <app-form-account-internal
           [selectAccountForm]="selectAccountForm"
           [stepper]="stepper">
@@ -14,9 +18,9 @@
 
         <mat-divider></mat-divider>
 
+        <!-- Enter an external account number if checking account -->
         @if (sourceAccount?.typeCode === 'CHECKING') {
           <p>Or enter an account number</p>
-
           <app-form-account-external
             [selectAccountForm]="selectAccountForm"
             [stepper]="stepper">
@@ -25,8 +29,10 @@
       </mat-step>
     }
 
+    <!-- Step 2: Enter transfer details -->
     @if (createTransferForm.get('transferDetails')) {
       <mat-step>
+        <!-- Transfer details -->
         <ng-template matStepLabel>Enter details</ng-template>
         <app-form-transfer-details
           [transferDetailsForm]="transferDetailsForm"

@@ -1,4 +1,5 @@
-@if (account && transfers && transfers.length) {
+@if (account && transfers && transfers.length > 0) {
+
   <table mat-table
     [dataSource]="transfers"
     class="mat-elevation-z8">
