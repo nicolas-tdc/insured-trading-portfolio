@@ -1,9 +1,11 @@
-<button mat-raised-button
-    class="btn-card"
-    matTooltip="{{ tooltipText }}"
-    aria-label="Button to copy Number to clipboard"
-    (click)="copyToClipboard()"
-    (mouseleave)="resetTooltip()">
-    <mat-icon>content_copy</mat-icon>
-    <span>{{ content() }}</span>
+<!-- Copy to clipboard button -->
+<button mat-raised-button class="btn-card"
+  matTooltip="{{ tooltipText }}"
+  aria-label="Button to copy Number to clipboard"
+  (click)="copyToClipboard()"
+  (mouseleave)="resetTooltip()">
+  <!-- Copy icon -->
+  <mat-icon>content_copy</mat-icon>
+  <!-- Clipboard content -->
+  <span>{{ content() }}</span>
 </button>

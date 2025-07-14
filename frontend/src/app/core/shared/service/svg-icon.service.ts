@@ -2,13 +2,21 @@ import { Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
+/**
+ * Service for registering SVG icons
+ * 
+ * @export
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class SvgIconService {
 
-  // Icons
-
+  /**
+   * Icons
+   * 
+   * @private
+   */
   private icons: { name: string, path: string }[] = [
     { name: 'linkedin', path: 'assets/icons/linkedin.svg' },
     { name: 'github', path: 'assets/icons/github.svg' },
@@ -19,15 +27,23 @@ export class SvgIconService {
     { name: 'docker', path: 'assets/icons/docker.svg' },
   ];
 
-  // Lifecycle
-
+  /**
+   * Initializes the service
+   * Injects services for DomSanitizer and MatIconRegistry
+   * 
+   * @param domSanitizer DomSanitizer
+   * @param matIconRegistry MatIconRegistry
+   */
   constructor(
-    private domSanitizer: DomSanitizer,
-    private matIconRegistry: MatIconRegistry,
+    private readonly domSanitizer: DomSanitizer,
+    private readonly matIconRegistry: MatIconRegistry,
   ) { }
 
-  // Register icons
-
+  /**
+   * Registers SVG icons
+   * 
+   * @returns void
+   */
   public registerIcons(): void {
     this.icons.forEach(icon => {
       this.matIconRegistry.addSvgIcon(
