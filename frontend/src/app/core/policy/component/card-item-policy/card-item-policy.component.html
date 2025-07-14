@@ -1,44 +1,47 @@
 @if (policy()) {
-    <mat-card class="col-item">
 
-        <mat-card-header>
-            <!-- Policy Type -->
-            <mat-chip-set>
-                <mat-chip>{{ policy()?.typeDisplayName }}</mat-chip>
-            </mat-chip-set> 
-        </mat-card-header>
+  <!-- Policy Card -->
+  <mat-card class="col-item">
 
-        <mat-card-content>
-            <mat-card-title>
-                <h4>Policy</h4>
-                <!-- Policy Status -->
-                <span class="center-container {{ getPolicyStatusClass() }}">
-                    <mat-icon>donut_large</mat-icon>
-                </span>
-                <!-- Policy Number -->
-                <app-copy-to-clipboard class="center-container" [content]="policy()?.policyNumber">
-                </app-copy-to-clipboard>
-            </mat-card-title>
+    <mat-card-header>
+      <!-- Policy Type -->
+      <mat-chip-set>
+        <mat-chip>{{ policy()?.typeDisplayName }}</mat-chip>
+      </mat-chip-set> 
+    </mat-card-header>
 
-            <mat-card-subtitle>
-                <h4>Linked account</h4>
-                <!-- Account Number -->
-                <app-copy-to-clipboard class="center-container" [content]="policy()?.accountNumber">
-                </app-copy-to-clipboard>
-            </mat-card-subtitle>
-        </mat-card-content>
+    <mat-card-content>
+      <mat-card-title>
+        <h4>Policy</h4>
+        <!-- Policy Status -->
+        <span class="center-container {{ getPolicyStatusClass() }}">
+          <mat-icon>donut_large</mat-icon>
+        </span>
+        <!-- Policy Number -->
+        <app-copy-to-clipboard class="center-container" [content]="policy()?.policyNumber">
+        </app-copy-to-clipboard>
+      </mat-card-title>
 
-        <mat-card-footer>
-            <!-- View Details Button -->
-            <mat-card-actions>
-                <button mat-stroked-button
-                class="btn-card"
-                [disabled]="policy()?.statusCode !== 'ACTIVE'"
-                routerLink="/policy/{{ policy()?.id }}">
-                    View Details
-                </button>
-            </mat-card-actions>
-        </mat-card-footer>
+      <mat-card-subtitle>
+        <h4>Linked account</h4>
+        <!-- Account Number -->
+        <app-copy-to-clipboard class="center-container" [content]="policy()?.accountNumber">
+        </app-copy-to-clipboard>
+      </mat-card-subtitle>
+    </mat-card-content>
 
-    </mat-card>
+    <mat-card-footer>
+      <!-- View Details Button -->
+      <mat-card-actions>
+        <button mat-stroked-button
+        class="btn-card"
+        [disabled]="policy()?.statusCode !== 'ACTIVE'"
+        routerLink="/policy/{{ policy()?.id }}">
+          View Details
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+
+  </mat-card>
+
 }

@@ -1,75 +1,95 @@
-<form
-  [formGroup]="policyForm"
-  (ngSubmit)="createPolicy()"
->
+<mat-card>
+  <mat-card-content>
+    <!-- Title -->
+    <mat-card-title>
+      <h2>Subscribe to a new policy</h2>
+    </mat-card-title>
 
-  <h2>Subscribe to new policy</h2>
+    <!-- Required Fields -->
+    <mat-card-subtitle>
+      <h3>Required Fields</h3>
+    </mat-card-subtitle>
 
-  <div class="col-item">
-    <mat-form-field class="form-field-basic">
-      <mat-label>Linked Account</mat-label>
+    <!-- Form -->
+    <mat-card-subtitle>
+      <form
+        [formGroup]="policyForm"
+        (ngSubmit)="createPolicy()">
 
-      <mat-select formControlName="accountId">
-        @if (userAccounts?.length === 0) {
-          <mat-option value="" disabled>No accounts found</mat-option>
-        }
-        @else {
-          <mat-option value="" disabled></mat-option>
-          @for (account of userAccounts; track account.id) {
-            <mat-option [value]="account.id">
-              {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
-            </mat-option>
-          }
-        }
-      </mat-select>
+        <!-- Form Fields -->
+        <div class="col-item">
+          <!-- Linked Account -->
+          <mat-form-field class="form-field-basic">
+            <mat-label>Linked Account</mat-label>
+            <mat-select formControlName="accountId">
+              <!-- No accounts found -->
+              @if (userAccounts?.length === 0) {
+                <mat-option value="" disabled>No accounts found</mat-option>
+              }
+              <!-- Accounts Options -->
+              @else {
+                <mat-option value="" disabled></mat-option>
+                @for (account of userAccounts; track account.id) {
+                  <mat-option [value]="account.id">
+                    {{ account.accountNumber }} (${{ account.balance.toFixed(2) }})
+                  </mat-option>
+                }
+              }
+            </mat-select>
+            <!-- Errors -->
+            @if (policyForm.get('accountId')?.hasError('required')) {
+              <mat-error>Linked Account is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-      @if (policyForm.get('accountId')?.hasError('required')) {
-        <mat-error>Linked Account is required</mat-error>
-      }
-    </mat-form-field>
-  </div>
+        <!-- Policy Type -->
+        <div class="col-item">
+          <mat-form-field class="form-field-basic">
+            <mat-label>Policy Type</mat-label>
+            <mat-select formControlName="typeCode">
+                <mat-option value="" disabled></mat-option>
+                @for (type of policyTypes; track type.code) {
+                  <mat-option [value]="type.code">
+                    {{ type.displayName }}
+                  </mat-option>
+                }
+            </mat-select>
+            <!-- Errors -->
+            @if (policyForm.get('typeCode')?.hasError('required')) {
+              <mat-error>Policy Type is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-  <div class="col-item">
-    <mat-form-field class="form-field-basic">
-      <mat-label>Policy Type</mat-label>
+        <!-- Coverage Amount -->
+        <div class="col-item">
+          <mat-form-field class="form-field-basic">
+            <mat-label>Coverage Amount</mat-label>
+            <input matInput
+              formControlName="coverageAmount"
+              placeholder="Ex: 100" />
+            <!-- Errors -->
+            @if (policyForm.get('coverageAmount')?.hasError('required')) {
+              <mat-error>Coverage Amount is required</mat-error>
+            }
+            @if (policyForm.get('coverageAmount')?.hasError('pattern')) {
+              <mat-error>Coverage Amount must be a positive number</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-      <mat-select formControlName="typeCode">
-          <mat-option value="" disabled></mat-option>
-          @for (type of policyTypes; track type.code) {
-            <mat-option [value]="type.code">
-              {{ type.displayName }}
-            </mat-option>
-          }
-      </mat-select>
+        <mat-card-actions class="col-item">
+          <!-- Subscribe Button -->
+          <button mat-flat-button
+            type="submit"
+            [disabled]="!policyForm.valid">
+            Subscribe
+          </button>
+        </mat-card-actions>
 
-      @if (policyForm.get('typeCode')?.hasError('required')) {
-        <mat-error>Policy Type is required</mat-error>
-      }
-    </mat-form-field>
-  </div>
+      </form>
+    </mat-card-subtitle>
+  </mat-card-content>
 
-  <div class="col-item">
-    <mat-form-field class="form-field-basic">
-      <mat-label>Coverage Amount</mat-label>
-
-      <input matInput
-        formControlName="coverageAmount"
-        placeholder="Ex: 100"
-      />
-
-      @if (policyForm.get('coverageAmount')?.hasError('required')) {
-        <mat-error>Coverage Amount is required</mat-error>
-      }
-      @if (policyForm.get('coverageAmount')?.hasError('pattern')) {
-        <mat-error>Coverage Amount must be a positive number</mat-error>
-      }
-    </mat-form-field>
-  </div>
-
-  <div class="col-item">
-    <button mat-flat-button type="submit" [disabled]="!policyForm.valid">
-      Subscribe
-    </button>
-  </div>
-
-</form>
+</mat-card>

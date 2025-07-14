@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, Signal } from '@angular/core';
 import { CardItemPolicyComponent } from '../card-item-policy/card-item-policy.component';
 import { Policy } from '../../model';
 import { UserPoliciesService } from '../../service';
@@ -8,6 +8,13 @@ import { SortIconPipe } from '../../../shared/pipe/sort-icon.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 
+/**
+ * CardListPoliciesComponent
+ * 
+ * Displays a list of policies
+ * 
+ * @export
+ */
 @Component({
   selector: 'app-card-list-policies',
   imports: [
@@ -23,25 +30,61 @@ import { MatListModule } from '@angular/material/list';
 })
 export class CardListPoliciesComponent {
 
-  // Properties
-
-  // List of user policies
+  /**
+   * The list of policies
+   * Provided by the UserPoliciesService
+   * 
+   * @returns Signal<Policy[]>
+   */
   get policies(): Policy[] | undefined {return this.userPoliciesService.userPolicies(); }
 
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for user policies
+   * 
+   * @param userPoliciesService Service for user policies
+   */
   constructor(
-    private userPoliciesService: UserPoliciesService,
+    private readonly userPoliciesService: UserPoliciesService,
   ) { }
 
-  // Sorting
+  /**
+   * The field to sort by
+   * Provided by the UserPoliciesService
+   * 
+   * @returns Signal<keyof Policy>
+   */
+  get sortField(): Signal<keyof Policy> { return this.userPoliciesService.sortFieldValue; }
 
-  get sortField() { return this.userPoliciesService.sortFieldValue; }
-  get sortDirection() { return this.userPoliciesService.sortDirectionValue; }
+  /**
+   * The direction to sort by
+   * Provided by the UserPoliciesService
+   * 
+   * @returns Signal<'asc' | 'desc'>
+   */
+  get sortDirection(): Signal<'asc' | 'desc'> { return this.userPoliciesService.sortDirectionValue; }
 
+  /**
+   * Sorts policies by policy number
+   * Executed by the UserPoliciesService
+   * 
+   * @returns void
+   */
   toggleSortByPolicyNumber(): void { this.userPoliciesService.sortByField('policyNumber'); }
 
+  /**
+   * Sorts policies by account number
+   * Executed by the UserPoliciesService
+   * 
+   * @returns void
+   */
   toggleSortByAccountNumber(): void { this.userPoliciesService.sortByField('accountNumber'); }
 
+  /**
+   * Sorts policies by policy type
+   * Executed by the UserPoliciesService
+   * 
+   * @returns void
+   */
   toggleSortByPolicyType(): void { this.userPoliciesService.sortByField('typeCode'); }
 }

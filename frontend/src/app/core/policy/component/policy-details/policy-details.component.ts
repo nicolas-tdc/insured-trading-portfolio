@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { FormatAmountPipe } from '../../../currency/pipe/format-amount';
 import { EntityService } from '../../../entity/service';
 import { MatIconModule } from '@angular/material/icon';
 import { PolicyService } from '../../service';
+import { Policy } from '../../model';
 
 @Component({
   selector: 'app-policy-details',
@@ -25,17 +26,30 @@ import { PolicyService } from '../../service';
 })
 export class PolicyDetailsComponent {
 
-  // Properties
 
-  public get policy() { return this.policyService.userPolicy(); }
+  /**
+   * Get the policy
+   * Provided by the PolicyService
+   */
+  public get policy(): Policy | undefined | null { return this.policyService.userPolicy(); }
 
-  // Lifecycle
-
+  /**
+   * Initializes the component
+   * Injects required services for entities and policies
+   * 
+   * @param entityService Service for entities
+   * @param policyService Service for policies
+   */
   constructor(
-    private entityService: EntityService,
-    private policyService: PolicyService,
+    private readonly entityService: EntityService,
+    private readonly policyService: PolicyService,
   ) { }
 
+  /**
+   * Returns the class for the policy status
+   * 
+   * @returns string
+   */
   getPolicyStatusClass(): string {
     return this.entityService.getStatusClass(this.policy?.statusCode);
   }

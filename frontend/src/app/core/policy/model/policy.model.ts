@@ -1,4 +1,8 @@
-
+/**
+ * Policy model
+ * 
+ * @export
+ */
 export interface Policy {
   id: string;
   typeCode: string;
