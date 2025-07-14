@@ -75,12 +75,6 @@ public class Account extends BaseEntity {
     @Builder.Default
     private final Set<Transfer> incomingTransfers = new LinkedHashSet<>();
 
-    public Set<Transfer> getAllTransfers() {
-        Set<Transfer> all = new LinkedHashSet<>(outgoingTransfers);
-        all.addAll(incomingTransfers);
-        return all;
-    }
-
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Policy> policies = new LinkedHashSet<>();
