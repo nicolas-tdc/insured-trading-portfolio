@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
+import { ContactLinksComponent } from '../../../core/portfolio/contact-links/contact-links.component';
+import { AboutMeComponent } from '../../../core/portfolio/about-me/about-me.component';
+import { TechStackComponent } from '../../../core/portfolio/tech-stack/tech-stack.component';
 
 /**
  * FooterComponent
@@ -11,10 +11,9 @@ import { MatListModule } from '@angular/material/list';
 @Component({
   selector: 'app-footer',
   imports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-    MatIconModule,
+    ContactLinksComponent,
+    AboutMeComponent,
+    TechStackComponent,
   ],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
