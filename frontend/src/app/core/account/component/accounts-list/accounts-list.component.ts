@@ -4,6 +4,7 @@ import { AccountsListItemComponent } from '../accounts-list-item/accounts-list-i
 import { Account } from '../../model';
 import { UserAccountsService } from '../../service';
 import { AccountsListSortComponent } from '../accounts-list-sort/accounts-list-sort.component';
+import { AccountsListHeaderComponent } from '../accounts-list-header/accounts-list-header.component';
 
 /**
  * AccountsListComponent
@@ -16,6 +17,7 @@ import { AccountsListSortComponent } from '../accounts-list-sort/accounts-list-s
   selector: 'app-accounts-list',
   imports: [
     CommonModule,
+    AccountsListHeaderComponent,
     AccountsListSortComponent,
     AccountsListItemComponent,
   ],

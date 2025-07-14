@@ -1,15 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PoliciesListComponent } from '../../core/policy/component/policies-list/policies-list.component';
 import { AccountsListComponent } from '../../core/account/component/accounts-list/accounts-list.component';
-import { MatButtonModule } from '@angular/material/button';
 import { UserAccountsService } from '../../core/account/service';
 import { UserPoliciesService } from '../../core/policy/service';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../core/auth/service';
 import { Router } from '@angular/router';
-import { AccountsListHeaderComponent } from '../../core/account/component/accounts-list-header/accounts-list-header.component';
-import { PoliciesListHeaderComponent } from '../../core/policy/component/policies-list-header/policies-list-header.component';
 
 /**
  * DashboardComponent
@@ -23,12 +18,7 @@ import { PoliciesListHeaderComponent } from '../../core/policy/component/policie
   selector: 'app-dashboard',
   imports: [
     AccountsListComponent,
-    AccountsListHeaderComponent,
     PoliciesListComponent,
-    PoliciesListHeaderComponent,
-    MatCardModule,
-    MatButtonModule,
-    MatDividerModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

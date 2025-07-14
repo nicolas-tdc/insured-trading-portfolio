@@ -1,9 +1,13 @@
 @if (policies) {
 
+  <!-- Policies Header -->
+  <app-policies-list-header>
+  </app-policies-list-header>
+
   @if (policies.length > 1) {
 
     <!-- Sort Buttons -->
-    <app-policies-list-sort>
+    <app-policies-list-sort class="center-container">
     </app-policies-list-sort>
 
   }
@@ -15,8 +19,7 @@
 
       @for (policy of policies; track policy.id) {
         <!-- List Item -->
-        <app-policies-list-item
-          [policy]="policy">
+        <app-policies-list-item [policy]="policy">
         </app-policies-list-item>
       }
 

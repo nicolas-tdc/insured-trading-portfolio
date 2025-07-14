@@ -4,6 +4,7 @@ import { PoliciesListItemComponent } from '../policies-list-item/policies-list-i
 import { Policy } from '../../model';
 import { UserPoliciesService } from '../../service';
 import { PoliciesListSortComponent } from '../policies-list-sort/policies-list-sort.component';
+import { PoliciesListHeaderComponent } from '../policies-list-header/policies-list-header.component';
 
 /**
  * PoliciesListComponent
@@ -16,8 +17,9 @@ import { PoliciesListSortComponent } from '../policies-list-sort/policies-list-s
   selector: 'app-policies-list',
   imports: [
     CommonModule,
-    PoliciesListItemComponent,
+    PoliciesListHeaderComponent,
     PoliciesListSortComponent,
+    PoliciesListItemComponent,
   ],
   templateUrl: './policies-list.component.html',
   styleUrl: './policies-list.component.scss'
