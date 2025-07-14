@@ -1,12 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, Signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { PoliciesListItemComponent } from '../policies-list-item/policies-list-item.component';
 import { Policy } from '../../model';
 import { UserPoliciesService } from '../../service';
-import { MatIconModule } from '@angular/material/icon';
-import { SortIconPipe } from '../../../shared/pipe/sort-icon.pipe';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
+import { PoliciesListSortComponent } from '../policies-list-sort/policies-list-sort.component';
 
 /**
  * PoliciesListComponent
@@ -19,11 +16,8 @@ import { MatListModule } from '@angular/material/list';
   selector: 'app-policies-list',
   imports: [
     CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
     PoliciesListItemComponent,
-    SortIconPipe,
+    PoliciesListSortComponent,
   ],
   templateUrl: './policies-list.component.html',
   styleUrl: './policies-list.component.scss'
@@ -47,44 +41,4 @@ export class PoliciesListComponent {
   constructor(
     private readonly userPoliciesService: UserPoliciesService,
   ) { }
-
-  /**
-   * The field to sort by
-   * Provided by the UserPoliciesService
-   * 
-   * @returns Signal<keyof Policy>
-   */
-  get sortField(): Signal<keyof Policy> { return this.userPoliciesService.sortFieldValue; }
-
-  /**
-   * The direction to sort by
-   * Provided by the UserPoliciesService
-   * 
-   * @returns Signal<'asc' | 'desc'>
-   */
-  get sortDirection(): Signal<'asc' | 'desc'> { return this.userPoliciesService.sortDirectionValue; }
-
-  /**
-   * Sorts policies by policy number
-   * Executed by the UserPoliciesService
-   * 
-   * @returns void
-   */
-  toggleSortByPolicyNumber(): void { this.userPoliciesService.sortByField('policyNumber'); }
-
-  /**
-   * Sorts policies by account number
-   * Executed by the UserPoliciesService
-   * 
-   * @returns void
-   */
-  toggleSortByAccountNumber(): void { this.userPoliciesService.sortByField('accountNumber'); }
-
-  /**
-   * Sorts policies by policy type
-   * Executed by the UserPoliciesService
-   * 
-   * @returns void
-   */
-  toggleSortByPolicyType(): void { this.userPoliciesService.sortByField('typeCode'); }
 }
