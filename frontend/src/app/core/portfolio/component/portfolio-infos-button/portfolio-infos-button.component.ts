@@ -5,15 +5,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { PortfolioInfosDialogComponent } from '../portfolio-infos-dialog/portfolio-infos-dialog.component';
 
 @Component({
-  selector: 'app-portfolio-infos-header',
+  selector: 'app-portfolio-infos-button',
   imports: [
     MatIconModule,
     MatButtonModule,
   ],
-  templateUrl: './portfolio-infos-header.component.html',
-  styleUrl: './portfolio-infos-header.component.scss'
+  templateUrl: './portfolio-infos-button.component.html',
+  styleUrl: './portfolio-infos-button.component.scss'
 })
-export class PortfolioInfosHeaderComponent {
+export class PortfolioInfosButtonComponent {
 
   constructor(
     private readonly dialog: MatDialog,

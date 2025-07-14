@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UserHeaderComponent } from '../../../core/auth/component/user-header/user-header.component';
 import { LogoComponent } from '../../../core/shared/component/logo/logo.component';
 import { RouterLink } from '@angular/router';
-import { PortfolioInfosHeaderComponent } from '../../../core/portfolio/component/portfolio-infos-header/portfolio-infos-header.component';
+import { PortfolioInfosButtonComponent } from '../../../core/portfolio/component/portfolio-infos-button/portfolio-infos-button.component';
 
 /**
  * HeaderComponent
@@ -13,7 +13,7 @@ import { PortfolioInfosHeaderComponent } from '../../../core/portfolio/component
   selector: 'app-header',
   imports: [
     UserHeaderComponent,
-    PortfolioInfosHeaderComponent,
+    PortfolioInfosButtonComponent,
     LogoComponent,
     RouterLink,
   ],
