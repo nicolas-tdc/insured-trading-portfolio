@@ -14,14 +14,14 @@ import { FormatAmountSignedPipe } from '../../../currency/pipe/format-amount-sig
 import { EntityService } from '../../../entity/service';
 
 /**
- * CardItemAccountComponent
+ * AccountsListItemComponent
  * 
  * Displays a card for an account
  * 
  * @export
  */
 @Component({
-  selector: 'app-card-item-account',
+  selector: 'app-accounts-list-item',
   imports: [
     CommonModule,
     RouterLink,
@@ -33,10 +33,10 @@ import { EntityService } from '../../../entity/service';
     CopyToClipboardComponent,
     FormatAmountSignedPipe,
   ],
-  templateUrl: './card-item-account.component.html',
-  styleUrl: './card-item-account.component.scss'
+  templateUrl: './accounts-list-item.component.html',
+  styleUrl: './accounts-list-item.component.scss'
 })
-export class CardItemAccountComponent {
+export class AccountsListItemComponent {
 
   /**
    * The account to display

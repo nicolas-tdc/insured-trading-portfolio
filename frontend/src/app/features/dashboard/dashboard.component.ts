@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CardListPoliciesComponent } from '../../core/policy/component/card-list-policies/card-list-policies.component';
-import { CardListAccountsComponent } from '../../core/account/component/card-list-accounts/card-list-accounts.component';
+import { AccountsListComponent } from '../../core/account/component/accounts-list/accounts-list.component';
 import { FormCreateAccountComponent } from '../../core/account/component/form-create-account/form-create-account.component';
 import { FormCreatePolicyComponent } from '../../core/policy/component/form-create-policy/form-create-policy.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   imports: [
-    CardListAccountsComponent,
+    AccountsListComponent,
     CardListPoliciesComponent,
     MatCardModule,
     MatButtonModule,

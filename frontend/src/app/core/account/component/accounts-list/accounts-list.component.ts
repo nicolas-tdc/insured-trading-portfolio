@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Signal } from '@angular/core';
-import { CardItemAccountComponent } from '../card-item-account/card-item-account.component';
+import { AccountsListItemComponent } from '../accounts-list-item/accounts-list-item.component';
 import { Account } from '../../model';
 import { UserAccountsService } from '../../service';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,26 +9,26 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 
 /**
- * CardListAccountsComponent
+ * AccountsListComponent
  * 
  * Displays a list of user accounts
  * 
  * @export
  */
 @Component({
-  selector: 'app-card-list-accounts',
+  selector: 'app-accounts-list',
   imports: [
     CommonModule,
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    CardItemAccountComponent,
+    AccountsListItemComponent,
     SortIconPipe,
   ],
-  templateUrl: './card-list-accounts.component.html',
-  styleUrl: './card-list-accounts.component.scss'
+  templateUrl: './accounts-list.component.html',
+  styleUrl: './accounts-list.component.scss'
 })
-export class CardListAccountsComponent {
+export class AccountsListComponent {
 
   /**
    * List of user accounts
