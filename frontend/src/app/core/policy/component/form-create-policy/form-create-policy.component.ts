@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormCreateAccountComponent } from '../../../account/component/form-create-account/form-create-account.component';
 import { UserPoliciesService } from '../../service';
-import { UserAccountsService } from '../../../account/service';
+import { AccountService, UserAccountsService } from '../../../account/service';
 import { PolicyType } from '../../model/policy-type.model';
 import { Account } from '../../../account/model';
 import { MatCardModule } from '@angular/material/card';
@@ -48,6 +48,14 @@ export class FormCreatePolicyComponent implements OnInit {
   public policyTypes: PolicyType[] = [];
 
   /**
+   * Current user's account
+   * Provided by the account service
+   * 
+   * @returns Account
+   */
+  public get account(): Account | undefined | null { return this.accountService.userAccount(); }
+
+  /**
    * User accounts
    * 
    * @returns Account[]
@@ -66,6 +74,7 @@ export class FormCreatePolicyComponent implements OnInit {
   constructor(
     private readonly policyService: PolicyService,
     private readonly userPoliciesService: UserPoliciesService,
+    private readonly accountService: AccountService,
     private readonly userAccountsService: UserAccountsService,
     public readonly dialogRef: MatDialogRef<FormCreateAccountComponent>,
   ) { }
@@ -88,7 +97,7 @@ export class FormCreatePolicyComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[0-9]*$'),
       ]),
-      accountId: new FormControl('', [
+      accountId: new FormControl(this.account?.id, [
         Validators.required,
       ])
     });

@@ -1,4 +1,4 @@
-@if (account && account.policies.length > 0) {
+@if (account) {
 
   <!-- Account Policies -->
   <mat-card class="section-header">
@@ -9,19 +9,40 @@
         <h2>Policies</h2>
       </mat-card-title>
 
-      <!-- Policy Numbers -->
-      <mat-card-subtitle>
+      <mat-card-actions class="center-container">
+        <!-- Subscribe button -->
+        <button mat-flat-button
+          class="btn-basic"
+          (click)="openCreatePolicyFormDialog()">
+          Subscribe to a new Policy
+        </button>
 
-        @for (policyNumber of account.policies; track policyNumber) {
-          <!-- Policy Number -->
-          <mat-card-subtitle>
-            <app-copy-to-clipboard class="center-container"
-            [content]="policyNumber">
-            </app-copy-to-clipboard>
-          </mat-card-subtitle>
-        }
+      </mat-card-actions>
 
-      </mat-card-subtitle>
+      @if (account.policies.length < 1) {
+        <mat-card-subtitle>
+          <span class="span-md center-container">No policies found for this account.</span>
+        </mat-card-subtitle>
+      }
+
+      @if (account.policies.length > 0) {
+
+        <!-- Policy Numbers -->
+        <mat-card-subtitle>
+          @for (policyNumber of account.policies; track policyNumber) {
+
+            <!-- Policy Number -->
+            <mat-card-subtitle>
+              <app-copy-to-clipboard class="center-container"
+              [content]="policyNumber">
+              </app-copy-to-clipboard>
+            </mat-card-subtitle>
+
+          }
+        </mat-card-subtitle>
+
+      }
+
     </mat-card-content>
 
   </mat-card>

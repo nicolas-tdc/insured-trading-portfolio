@@ -5,6 +5,7 @@ import { Policy } from '../../model';
 import { UserPoliciesService } from '../../service';
 import { PoliciesListSortComponent } from '../policies-list-sort/policies-list-sort.component';
 import { PoliciesListHeaderComponent } from '../policies-list-header/policies-list-header.component';
+import { PoliciesListEmptyComponent } from '../policies-list-empty/policies-list-empty.component';
 
 /**
  * PoliciesListComponent
@@ -20,6 +21,7 @@ import { PoliciesListHeaderComponent } from '../policies-list-header/policies-li
     PoliciesListHeaderComponent,
     PoliciesListSortComponent,
     PoliciesListItemComponent,
+    PoliciesListEmptyComponent,
   ],
   templateUrl: './policies-list.component.html',
   styleUrl: './policies-list.component.scss'

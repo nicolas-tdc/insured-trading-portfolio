@@ -5,6 +5,7 @@ import { Account } from '../../model';
 import { UserAccountsService } from '../../service';
 import { AccountsListSortComponent } from '../accounts-list-sort/accounts-list-sort.component';
 import { AccountsListHeaderComponent } from '../accounts-list-header/accounts-list-header.component';
+import { AccountsListEmptyComponent } from '../accounts-list-empty/accounts-list-empty.component';
 
 /**
  * AccountsListComponent
@@ -20,6 +21,7 @@ import { AccountsListHeaderComponent } from '../accounts-list-header/accounts-li
     AccountsListHeaderComponent,
     AccountsListSortComponent,
     AccountsListItemComponent,
+    AccountsListEmptyComponent,
   ],
   templateUrl: './accounts-list.component.html',
   styleUrl: './accounts-list.component.scss'

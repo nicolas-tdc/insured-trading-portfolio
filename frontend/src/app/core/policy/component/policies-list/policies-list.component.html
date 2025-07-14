@@ -4,6 +4,14 @@
   <app-policies-list-header>
   </app-policies-list-header>
 
+  @if (policies.length < 1) {
+
+    <!-- No policies message -->
+    <app-policies-list-empty>
+    </app-policies-list-empty>
+
+  }
+
   @if (policies.length > 1) {
 
     <!-- Sort Buttons -->

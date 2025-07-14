@@ -4,6 +4,14 @@
   <app-accounts-list-header>
   </app-accounts-list-header>
 
+  @if (accounts.length < 1) {
+
+    <!-- No accounts message -->
+    <app-accounts-list-empty>
+    </app-accounts-list-empty>
+
+  }
+
   @if (accounts.length > 1) {
 
     <!-- Sort Buttons -->

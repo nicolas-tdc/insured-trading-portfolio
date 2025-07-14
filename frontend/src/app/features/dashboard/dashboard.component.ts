@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PoliciesListComponent } from '../../core/policy/component/policies-list/policies-list.component';
 import { AccountsListComponent } from '../../core/account/component/accounts-list/accounts-list.component';
 import { UserAccountsService } from '../../core/account/service';
@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
 
   /**
    * Initializes the component.
@@ -59,19 +59,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Reload user policies
     this.userPoliciesService.reloadUserPolicies();
-  }
-
-  /**
-   * Lifecycle hook called on component destruction.
-   * Clears user accounts and policies data.
-   * 
-   * @return void
-   */
-  ngOnDestroy(): void {
-    // Clear user accounts
-    this.userAccountsService.clearUserAccounts();
-
-    // Clear user policies
-    this.userPoliciesService.clearUserPolicies();
   }
 }
