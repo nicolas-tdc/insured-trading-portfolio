@@ -1,0 +1,40 @@
+# ================================
+# Environment & log files
+# ================================
+*.env*
+!*.env.production
+*.log
+*.tsbuildinfo
+
+# ================================
+# IDE & OS-specific files
+# ================================
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+*.swp
+
+# ================================
+# Version control & CI files
+# ================================
+.git
+.gitignore
+
+# ================================
+# Docker & local orchestration
+# ================================
+Dockerfile
+Dockerfile.*
+.dockerignore
+docker-compose.yml
+docker-compose*.yml
+compose.yaml
+compose*.yaml
+
+# ================================
+# Miscellaneous
+# ================================
+*.bak
+*.old
+*.tmp
