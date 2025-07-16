@@ -8,11 +8,11 @@
 			<version>3.5.3</version>
 			<relativePath/> <!-- lookup parent from repository -->
 		</parent>
-	<groupId>com.insurancebanking</groupId>
-	<artifactId>platform</artifactId>
+	<groupId>com.insuredtrading</groupId>
+	<artifactId>portfolio</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>InsuranceBankingPlatform</name>
-	<description>Full-stack platform for insurance &amp; banking services</description>
+	<name>InsuredTradingPortfolio</name>
+	<description>Full-stack developer portfolio for insured trading services</description>
 	<url/>
 	<licenses>
 		<license>

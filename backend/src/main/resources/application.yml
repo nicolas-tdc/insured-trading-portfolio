@@ -1,8 +1,8 @@
 spring:
   application:
-    name: InsuranceBankingPlatform
+    name: InsuredTradingPortfolio
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insurance_banking_db}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insured_trading_db}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
@@ -36,4 +36,4 @@ logging:
         web: DEBUG
     com:
       example:
-        insurancebanking: DEBUG
+        insuredtrading: DEBUG
