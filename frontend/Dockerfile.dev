@@ -3,7 +3,7 @@
 # =========================================
 
 # Define the Node.js version to use (Alpine for a small footprint)
-ARG NODE_VERSION=22.14.0-alpine
+ARG NODE_VERSION=22.14.0
 
 # Set the base image for development
 FROM node:${NODE_VERSION} AS dev
@@ -25,6 +25,17 @@ COPY . .
 
 # Expose the port Angular uses for the dev server (default is 4200)
 EXPOSE 4200
+
+# Install Google Chrome for Karma
+RUN apt-get update && apt-get install -y \
+    wget gnupg2 ca-certificates \
+ && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+ && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" \
+    > /etc/apt/sources.list.d/google-chrome.list \
+ && apt-get update && apt-get install -y google-chrome-stable
+
+# Set CHROME_BIN for Karma
+ENV CHROME_BIN=/usr/bin/google-chrome
 
 # Start the Angular dev server and bind it to all network interfaces
 CMD ["npm", "start", "--", "--host=0.0.0.0"]
