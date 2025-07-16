@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class Role extends BaseEntity {
 
     /**
-     * Unique name of the role (e.g., ROLE_ADMIN, ROLE_CUSTOMER).
+     * Unique name of the role (e.g. ROLE_CUSTOMER).
      */
     @Column(name = "name", unique = true, nullable = false)
     private String name;
