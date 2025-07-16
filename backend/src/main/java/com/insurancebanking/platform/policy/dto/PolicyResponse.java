@@ -6,6 +6,12 @@ import java.util.UUID;
 
 import com.insurancebanking.platform.policy.model.Policy;
 
+/**
+ * PolicyResponse
+ *
+ * Data Transfer Object (DTO) representing the detailed information
+ * of a policy to be sent in API responses.
+ */
 public record PolicyResponse(
     UUID id,
     String statusCode,
@@ -22,6 +28,14 @@ public record PolicyResponse(
     Instant startDate,
     Instant endDate
 ) {
+    /**
+     * Creates a PolicyResponse DTO from a Policy entity.
+     * Converts domain model attributes into a format suitable
+     * for API responses, including currency details.
+     *
+     * @param policy the Policy entity to convert
+     * @return a new PolicyResponse containing policy details
+     */
     public static PolicyResponse from(Policy policy) {
         String policyCurrencyCode = policy.getCurrencyCode();
         Currency currency = Currency.getInstance(policyCurrencyCode);

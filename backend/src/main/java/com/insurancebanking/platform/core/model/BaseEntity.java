@@ -14,10 +14,23 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * BaseEntity
+ *
+ * Abstract base class for JPA entities providing common fields:
+ * - id: UUID primary key, generated automatically
+ * - createdAt: timestamp when the entity was created
+ * - updatedAt: timestamp when the entity was last updated
+ *
+ * Uses Hibernate UUID generator and Spring Data auditing annotations for timestamps.
+ */
 @Getter
 @MappedSuperclass
 public abstract class BaseEntity {
 
+    /**
+     * Primary key identifier of type UUID, generated automatically and immutable.
+     */
     @Id
     @GeneratedValue(generator = "UUID")
     @UuidGenerator
@@ -26,10 +39,18 @@ public abstract class BaseEntity {
     @Getter
     protected UUID id;
 
+    /**
+     * Timestamp of entity creation, set once on creation and never updated.
+     * Defaults to current instant.
+     */
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Instant createdAt = Instant.now();
 
+    /**
+     * Timestamp of last entity update, updated automatically on modification.
+     * Defaults to current instant.
+     */
     @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt = Instant.now();

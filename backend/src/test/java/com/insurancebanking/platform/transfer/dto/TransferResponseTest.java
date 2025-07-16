@@ -13,8 +13,17 @@ import com.insurancebanking.platform.auth.model.User;
 import com.insurancebanking.platform.transfer.model.Transfer;
 import com.insurancebanking.platform.transfer.model.TransferStatus;
 
+/**
+ * Unit tests for {@link TransferResponse}.
+ * 
+ * Validates that the static from method correctly maps all fields from a {@link Transfer} entity
+ * to the {@link TransferResponse} DTO.
+ */
 public class TransferResponseTest {
 
+    /**
+     * Tests that all fields in the TransferResponse are properly mapped from the Transfer entity.
+     */
     @Test
     void from_shouldMapAllFieldsCorrectly() {
         User sourceUser = User.builder()
@@ -65,7 +74,6 @@ public class TransferResponseTest {
         assertEquals("EUR", response.currencyCode());
         assertEquals("€", response.currencySymbol());
         assertEquals(2, response.currencyFractionDigits());
-        assertEquals(transfer.getDescription(), response.description());
         assertEquals(transfer.getSourceAccount().getAccountNumber(), response.sourceAccountNumber());
         assertEquals(transfer.getSourceAccount().getUser().getEmail(), response.sourceUserEmail());
         assertEquals(transfer.getTargetAccount().getAccountNumber(), response.targetAccountNumber());

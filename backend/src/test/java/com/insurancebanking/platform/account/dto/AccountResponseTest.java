@@ -10,8 +10,20 @@ import com.insurancebanking.platform.account.model.Account;
 import com.insurancebanking.platform.account.model.AccountStatus;
 import com.insurancebanking.platform.account.model.AccountType;
 
+/**
+ * AccountResponseTest
+ *
+ * Unit test class for AccountResponse DTO.
+ * Verifies that the static from() method correctly maps all fields from
+ * an Account entity and list of policy numbers into an AccountResponse object.
+ */
 class AccountResponseTest {
 
+    /**
+     * Tests the from() method of AccountResponse.
+     * Creates a sample Account and list of policy numbers,
+     * then asserts all fields are correctly copied to the response DTO.
+     */
     @Test
     void from_shouldMapAllFieldsCorrectly() {
         Account account = Account.builder()

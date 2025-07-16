@@ -23,6 +23,11 @@ import com.insurancebanking.platform.transfer.dto.TransferValidateExternalReques
 import com.insurancebanking.platform.transfer.dto.TransferValidateInternalRequest;
 import com.insurancebanking.platform.auth.model.User;
 
+/**
+ * Unit tests for {@link TransferService}.
+ * 
+ * Tests cover all main use cases including creation, retrieval, and exception handling.
+ */
 public class TransferServiceTest {
 
     @Mock private BaseEntityService baseEntityService;
@@ -32,11 +37,25 @@ public class TransferServiceTest {
 
     @InjectMocks private TransferService transferService;
 
+    /**
+     * Initializes Mockito mocks before each test.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Mocks an account for testing.
+     * 
+     * @param id The account ID.
+     * @param number The account number.
+     * @param balance The account balance.
+     * @param currency The account currency.
+     * @param type The account type.
+     * @param status The account status.
+     * @return The mocked account.
+     */
     private Account mockAccount(
         UUID id, String number, BigDecimal balance, String currency, AccountType type, AccountStatus status) {
         Account account = mock(Account.class);
@@ -50,6 +69,9 @@ public class TransferServiceTest {
         return account;
     }
 
+    /**
+     * Tests that creating a transfer fails when the source account is inactive.
+     */
     @Test
     void createTransfer_shouldFail_whenSourceInactive() {
         UUID userId = UUID.randomUUID();
@@ -68,6 +90,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Source account is not active");
     }
 
+    /**
+     * Tests that creating a transfer fails when the target account is inactive.
+     */
     @Test
     void createTransfer_shouldFail_whenTargetInactive() {
         UUID userId = UUID.randomUUID();
@@ -86,6 +111,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Target account is not active");
     }
 
+    /**
+     * Tests that creating a transfer fails when the source account has insufficient balance.
+     */
     @Test
     void createTransfer_shouldFail_whenInsufficientBalance() {
         UUID userId = UUID.randomUUID();
@@ -104,6 +132,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Insufficient balance");
     }
 
+    /**
+     * Tests that creating a transfer fails when the source and target accounts have different currencies.
+     */
     @Test
     void createTransfer_shouldThrow_whenCurrencyMismatch() {
         UUID userId = UUID.randomUUID();
@@ -122,6 +153,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Source and target accounts must have the same currency");
     }
 
+    /**
+     * Tests that creating a transfer fails when the transfer number is exhausted.
+     */
     @Test
     void createTransfer_shouldThrow_whenTransferNumberExhausted() {
         UUID userId = UUID.randomUUID();
@@ -153,6 +187,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Failed to generate unique transfer number");
     }
 
+    /**
+     * Tests that creating a transfer fails when the source account is inactive.
+     */
     @Test
     void createTransfer_shouldThrow_whenSourceAccountInactive() {
         UUID userId = UUID.randomUUID();
@@ -178,6 +215,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Source account is not active");
     }
 
+    /**
+     * Tests that creating a transfer fails when the target account is inactive.
+     */
     @Test
     void createTransfer_shouldThrow_whenTargetAccountInactive() {
         UUID userId = UUID.randomUUID();
@@ -203,6 +243,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Target account is not active");
     }
 
+    /**
+     * Tests that creating a transfer fails when the source and target accounts are the same.
+     */
     @Test
     void createTransfer_shouldThrow_whenSourceAndTargetAccountsAreSame() {
         UUID userId = UUID.randomUUID();
@@ -227,6 +270,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Source and target accounts must be different");
     }
 
+    /**
+     * Tests that creating a transfer fails when the amount is negative.
+     */
     @Test
     void createTransfer_shouldThrow_whenAmountIsNegative() {
         UUID userId = UUID.randomUUID();
@@ -252,6 +298,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Transfer amount must be positive");
     }
 
+    /**
+     * Tests that creating a transfer fails when the amount exceeds the source account balance.
+     */
     @Test
     void createTransfer_shouldThrow_whenAmountExceedsBalance() {
         UUID userId = UUID.randomUUID();
@@ -277,6 +326,9 @@ public class TransferServiceTest {
             .hasMessageContaining("Insufficient balance");
     }
 
+    /**
+     * Tests that validateInternalTransferAccounts throws an exception when the source and target accounts belong to different users.
+     */
     @Test
     void validateInternalTransferAccounts_shouldThrow_whenAccountsBelongToDifferentUsers() {
         UUID userId = UUID.randomUUID();
@@ -309,6 +361,10 @@ public class TransferServiceTest {
             .hasMessageContaining("Source and target accounts must belong to the same user");
     }
 
+    /**
+     * Tests that validateExternalTransferAccounts throws an exception when the source account is not a checking account.
+     */
+    @Test
     void validateExternalTransferAccounts_shouldThrow_whenSourceAccountIsNotChecking() {
         UUID sourceUserId = UUID.randomUUID();
         UUID sourceAccountId = UUID.randomUUID();

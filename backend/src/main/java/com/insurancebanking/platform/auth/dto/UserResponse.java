@@ -22,6 +22,7 @@ public record UserResponse(UUID id, String email, List<String> roles) {
      * @return a UserResponse
      */
     public static UserResponse from(UserDetailsImpl userDetails) {
+        // Convert authorities to roles
         List<String> roles = userDetails.getAuthorities()
                                         .stream()
                                         .map(authority -> authority.getAuthority())

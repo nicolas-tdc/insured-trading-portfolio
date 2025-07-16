@@ -24,6 +24,12 @@ import com.insurancebanking.platform.policy.model.*;
 
 import com.insurancebanking.platform.policy.repository.PolicyRepository;
 
+/**
+ * Unit tests for {@link PolicyService}.
+ * 
+ * Tests cover retrieval of policies by user, creation of new policies,
+ * handling of errors such as user not found, and policy number generation logic.
+ */
 public class PolicyServiceTest {
 
     @Mock
@@ -41,11 +47,17 @@ public class PolicyServiceTest {
     @InjectMocks
     private PolicyService policyService;
 
+    /**
+     * Initializes Mockito mocks before each test.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Tests that getUserPolicies returns the list of policies associated with a user ID.
+     */
     @Test
     void getUserPolicies_shouldReturnUserPolicies() {
         UUID userId = UUID.randomUUID();
@@ -58,6 +70,9 @@ public class PolicyServiceTest {
         assertThat(result).isEqualTo(policies);
     }
 
+    /**
+     * Tests that getUserPolicyById returns the policy when it belongs to the given user.
+     */
     @Test
     void getUserPolicyById_shouldReturnPolicyIfUserMatches() {
         UUID userId = UUID.randomUUID();
@@ -77,6 +92,9 @@ public class PolicyServiceTest {
         assertThat(result).isEqualTo(policy);
     }
 
+    /**
+     * Tests that getUserPolicyById throws PolicyNotFoundException if the policy does not exist.
+     */
     @Test
     void getUserPolicyById_shouldThrowIfPolicyNotFound() {
         UUID policyId = UUID.randomUUID();
@@ -88,6 +106,9 @@ public class PolicyServiceTest {
             .isInstanceOf(PolicyNotFoundException.class);
     }
 
+    /**
+     * Tests that getUserPolicyById throws PolicyNotFoundException if the policy does not belong to the given user.
+     */
     @Test
     void getUserPolicyById_shouldThrowIfUserMismatch() {
         UUID policyId = UUID.randomUUID();
@@ -107,12 +128,18 @@ public class PolicyServiceTest {
             .isInstanceOf(PolicyNotFoundException.class);
     }
 
+    /**
+     * Tests that getPolicyTypes returns all PolicyType enum values.
+     */
     @Test
     void getPolicyTypes_shouldReturnAllTypes() {
         List<PolicyType> result = policyService.getPolicyTypes();
         assertThat(result).containsExactly(PolicyType.values());
     }
 
+    /**
+     * Tests that create creates a new policy and returns it with expected fields.
+     */
     @Test
     void create_shouldCreateAndReturnPolicy() {
         UUID userId = UUID.randomUUID();
@@ -159,6 +186,9 @@ public class PolicyServiceTest {
         assertThat(result.getPolicyStatus()).isEqualTo(PolicyStatus.PENDING);
     }
 
+    /**
+     * Tests that create throws PolicyCreationException if the user is not found.
+     */
     @Test
     void create_shouldThrowIfUserNotFound() {
         UUID userId = UUID.randomUUID();
@@ -171,6 +201,9 @@ public class PolicyServiceTest {
             .hasMessageContaining("User not found");
     }
 
+    /**
+     * Tests that policy number generation retries on duplicates and succeeds on second attempt.
+     */
     @Test
     void generatePolicyNumber_shouldRetryAndSucceedOnSecondAttempt() {
         UUID userId = UUID.randomUUID();
@@ -200,6 +233,9 @@ public class PolicyServiceTest {
         assertThat(policy.getPolicyNumber()).isEqualTo(goodNumber);
     }
 
+    /**
+     * Tests that policy number generation throws PolicyCreationException after max retries.
+     */
     @Test
     void generatePolicyNumber_shouldThrowAfterMaxRetries() {
         when(baseEntityService.generateEntityPublicIdentifier("POL"))
@@ -231,6 +267,9 @@ public class PolicyServiceTest {
             .hasMessageContaining("Unable to generate unique policy number");
     }
 
+    /**
+     * Tests that getAccountPoliciesNumbers returns the policy numbers for a given account ID.
+     */
     @Test
     void getAccountPoliciesNumbers_shouldReturnPolicyNumbers() {
         UUID accountId = UUID.randomUUID();

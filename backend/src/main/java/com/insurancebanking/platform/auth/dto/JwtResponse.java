@@ -8,6 +8,12 @@ package com.insurancebanking.platform.auth.dto;
  * @param user the authenticated user details
  */
 public record JwtResponse(String token, String type, UserResponse user) {
+    /**
+     * Default constructor for JWT response.
+     * 
+     * @param token
+     * @param user
+     */
     public JwtResponse(String token, UserResponse user) {
         this(token, "Bearer", user);
     }

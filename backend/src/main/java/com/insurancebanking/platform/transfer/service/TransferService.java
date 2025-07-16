@@ -22,6 +22,10 @@ import com.insurancebanking.platform.account.model.AccountStatus;
 import com.insurancebanking.platform.transfer.model.TransferStatus;
 import com.insurancebanking.platform.account.model.AccountType;
 
+/**
+ * Service class responsible for handling transfer-related operations.
+ * Includes validation, creation, and updating accounts involved in transfers.
+ */
 @Service
 @Transactional
 public class TransferService {
@@ -31,6 +35,14 @@ public class TransferService {
     @Autowired private AccountService accountService;
     @Autowired private AccountRepository accountRepository;
 
+    /**
+     * Validates accounts involved in an internal transfer for a given user.
+     *
+     * @param request the internal transfer validation request
+     * @param userId the user performing the transfer
+     * @return the validated target account
+     * @throws TransferValidationException if validation rules fail
+     */
     public Account validateInternalTransferAccounts(TransferValidateInternalRequest request, UUID userId) {
         Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
         Account target = accountService.getUserAccountById(request.targetAccountId(), userId);
@@ -41,6 +53,14 @@ public class TransferService {
         return target;
     }
 
+    /**
+     * Validates accounts involved in an external transfer for a given user.
+     *
+     * @param request the external transfer validation request
+     * @param userId the user performing the transfer
+     * @return the validated target account
+     * @throws TransferValidationException if validation rules fail
+     */
     public Account validateExternalTransferAccounts(TransferValidateExternalRequest request, UUID userId) {
         Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
         Account target = accountService.getAccountByAccountNumber(request.targetAccountNumber());
@@ -51,6 +71,15 @@ public class TransferService {
         return target;
     }
 
+    /**
+     * Creates a transfer record and updates the involved accounts accordingly.
+     *
+     * @param request the transfer request containing details
+     * @param userId the user performing the transfer
+     * @return the completed Transfer entity
+     * @throws TransferValidationException if validation fails
+     * @throws TransferCreationException if transfer number generation fails
+     */
     public Transfer createTransfer(TransferRequest request, UUID userId) {
         Account source = accountService.getUserAccountById(request.sourceAccountId(), userId);
         Account target = accountService.getAccountByAccountNumber(request.targetAccountNumber());
@@ -74,10 +103,19 @@ public class TransferService {
 
         updateAccounts(source, target, request.amount());
 
+        // Mark transfer as completed after updating accounts
         transfer.setTransferStatus(TransferStatus.COMPLETED);
         return transferRepository.save(transfer);
     }
 
+    /**
+     * Validates general transfer account rules such as existence, status,
+     * difference between accounts, and currency consistency.
+     *
+     * @param source the source account
+     * @param target the target account
+     * @throws TransferValidationException if any rule is violated
+     */
     private void validateTransferAccountsRules(Account source, Account target) {
         // Accounts must exist
         if (source == null) {
@@ -103,23 +141,44 @@ public class TransferService {
         }
     }
 
+    /**
+     * Validates that internal transfer accounts belong to the same user.
+     *
+     * @param source the source account
+     * @param target the target account
+     * @throws TransferValidationException if accounts belong to different users
+     */
     private void validateInternalTransferAccountsRules(Account source, Account target) {
-        // Source and target accounts must belong to the same user
         if (source.getUser() != target.getUser()) {
             throw new TransferValidationException("Source and target accounts must belong to the same user");
         }
     }
 
+    /**
+     * Validates that external transfer accounts belong to different users,
+     * and that the source account is a checking account.
+     *
+     * @param source the source account
+     * @param target the target account
+     * @throws TransferValidationException if validation rules are violated
+     */
     private void validateExternalTransferAccountsRules(Account source, Account target) {
-        // Source and target accounts must belong to different users
-        if (source.getUser() != target.getUser()) {
-            // Source account must be a checking account
-            if (source.getAccountType() != AccountType.CHECKING) {
-                throw new TransferValidationException("Source account must be a checking account for external transfers");
-            }
+        if (source.getUser() == target.getUser()) {
+            throw new TransferValidationException("Source and target accounts must belong to different users");
+        }
+        if (source.getAccountType() != AccountType.CHECKING) {
+            throw new TransferValidationException("Source account must be a checking account for external transfers");
         }
     }
 
+    /**
+     * Validates the transfer details such as positive amount and sufficient balance.
+     *
+     * @param request the transfer request details
+     * @param source the source account
+     * @param target the target account
+     * @throws TransferValidationException if any detail rule is violated
+     */
     private void validateTransferDetailsRules(TransferRequest request, Account source, Account target) {
         // Amount must be positive
         if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
@@ -131,16 +190,31 @@ public class TransferService {
         }
     }
 
+    /**
+     * Updates the balances of source and target accounts and persists them.
+     *
+     * @param source the source account
+     * @param target the target account
+     * @param amount the amount to transfer
+     */
     private void updateAccounts(Account source, Account target, BigDecimal amount) {
-        // Update account balances
+        // Deduct amount from source balance
         source.setBalance(source.getBalance().subtract(amount));
+        // Add amount to target balance
         target.setBalance(target.getBalance().add(amount));
 
-        // Save accounts
+        // Persist changes
         accountRepository.save(source);
         accountRepository.save(target);
     }
 
+    /**
+     * Generates a unique transfer number using the BaseEntityService.
+     * Retries a fixed number of times to ensure uniqueness.
+     *
+     * @return a unique transfer number
+     * @throws TransferCreationException if unable to generate a unique number
+     */
     private String generateTransferNumber() {
         int maxTries = 10;
         for (int i = 0; i < maxTries; i++) {

@@ -15,6 +15,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity representing a security role in the system.
+ * 
+ * Each role has a unique name and can be associated with multiple users.
+ * The class extends BaseEntity to inherit common entity fields like id.
+ */
 @Entity
 @Table(name = "roles")
 @Data
@@ -23,9 +29,16 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Role extends BaseEntity {
 
+    /**
+     * Unique name of the role (e.g., ROLE_ADMIN, ROLE_CUSTOMER).
+     */
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    /**
+     * Users associated with this role.
+     * This is the inverse side of the many-to-many relationship mapped by 'roles' field in User entity.
+     */
     @ManyToMany(mappedBy = "roles")
     @JsonBackReference
     @Builder.Default
@@ -39,6 +52,9 @@ public class Role extends BaseEntity {
                 "}";
     }
 
+    /**
+     * Equality based on non-null entity id.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,6 +63,9 @@ public class Role extends BaseEntity {
         return this.id != null && this.id.equals(role.id);
     }
 
+    /**
+     * Hash code based on entity id if present.
+     */
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;

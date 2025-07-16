@@ -12,8 +12,17 @@ import com.insurancebanking.platform.account.model.AccountType;
 import com.insurancebanking.platform.policy.model.Policy;
 import com.insurancebanking.platform.policy.model.PolicyType;
 
+/**
+ * Unit tests for {@link PolicyResponse}.
+ * 
+ * Tests that the from method correctly maps all relevant fields from Policy to PolicyResponse DTO.
+ */
 public class PolicyResponseTest {
 
+    /**
+     * Verifies mapping of all fields including
+     * policy status, type, currency details, and coverage amount.
+     */
     @Test
     void from_shouldMapAllFieldsCorrectly() {
         Account account = Account.builder()
