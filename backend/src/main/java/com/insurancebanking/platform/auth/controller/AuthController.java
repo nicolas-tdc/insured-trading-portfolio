@@ -1,5 +1,6 @@
 package com.insurancebanking.platform.auth.controller;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import com.insurancebanking.platform.account.model.Account;
+import com.insurancebanking.platform.account.model.AccountStatus;
+import com.insurancebanking.platform.account.model.AccountType;
+import com.insurancebanking.platform.account.service.AccountService;
 import com.insurancebanking.platform.auth.dto.JwtResponse;
 import com.insurancebanking.platform.auth.dto.LoginRequest;
 import com.insurancebanking.platform.auth.dto.SignupRequest;
@@ -33,19 +38,22 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final RoleService roleService;
+    private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
     public AuthController(
-            AuthenticationManager authenticationManager,
-            UserService userService,
-            RoleService roleService,
-            PasswordEncoder passwordEncoder,
-            JwtUtils jwtUtils
+        AuthenticationManager authenticationManager,
+        UserService userService,
+        RoleService roleService,
+        AccountService accountService,
+        PasswordEncoder passwordEncoder,
+        JwtUtils jwtUtils
     ) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.roleService = roleService;
+        this.accountService = accountService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
@@ -90,10 +98,23 @@ public class AuthController {
                 signupRequest.lastName()
         );
 
+        // Assign default role
         Role customerRole = roleService.findByName("ROLE_CUSTOMER");
         user.setRoles(Collections.singleton(customerRole));
 
         userService.saveUser(user);
+
+        // Create account for testing
+        Account account = Account.builder()
+                .user(user)
+                .accountType(AccountType.CHECKING)
+                .currencyCode("EUR")
+                .accountNumber(this.accountService.generateAccountNumber())
+                .accountStatus(AccountStatus.ACTIVE)
+                .balance(BigDecimal.valueOf(10000))
+                .build();
+
+        accountService.save(account);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }

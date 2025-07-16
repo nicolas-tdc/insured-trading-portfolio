@@ -100,7 +100,11 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    private String generateAccountNumber() {
+    public Account save(Account account) {
+        return accountRepository.save(account);
+    }
+
+    public String generateAccountNumber() {
         for (int i = 0; i < MAX_TRIES; i++) {
             String candidate = baseEntityService.generateEntityPublicIdentifier(ACCOUNT_PREFIX);
             if (!accountRepository.existsByAccountNumber(candidate)) {
