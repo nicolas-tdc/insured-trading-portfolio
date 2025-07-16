@@ -1,4 +1,4 @@
-# Insured trading platform
+# Insured trading portfolio
 
 *This project is a Java-Angular fullstack developer portfolio.*
 
