@@ -2,11 +2,13 @@
 
 **This project is a Java-Angular fullstack developer portfolio.**
 
+## Description
+
 It is built for scalability, security, and clean modular architecture using the latest technologies:
 
-- Backend: Java 21 & Spring Boot 3.5, with Spring Security and JWT for robust authentication and authorization.
+- Backend: Java 21 & Spring Boot 3.5, with Spring Security and JWT for robust authentication and authorization. Usage of Spring Test for services and dtos unit testing (launched at application start).
 
-- Frontend: Responsive Angular using signals and resources and keeping components fully independent and driven by services. Use of Angular Material for theming.
+- Frontend: Responsive Angular using signals and resources and keeping components fully independent and driven by services. Usage of Angular Material for theming. Usage of karma for unit testing services with `npm run test` command launched from its docker container.
 
 - UI: Angular Material for a clean, accessible, and responsive design supporting light/dark mode from user preferences.
 
@@ -18,11 +20,14 @@ It is built for scalability, security, and clean modular architecture using the 
 
 *It uses enum types to aggregate models that would otherwise each require their own model (e.g. BankingAccount and TradingAccount models instead of, in this application's case, Account model with "Banking" or "Trading" enum type field).*
 
+## Required installations
+
+- Docker Engine: `https://docs.docker.com/engine/`
+- Docker Compose: `https://docs.docker.com/compose/`
+
 ## Run the application
 
-Requires the installation of docker and docker compose.
-
-Launch from the application's root directory:
+Clone the repository to your local machine and move to its directory.
 
 ```
 docker compose up
@@ -30,7 +35,7 @@ docker compose up
 
 *Use --watch flag to enable hot-reload*
 
-## Description
+## Test the application
 
 - Register and login
 Create a user account and log in – no email verification is required.
