@@ -8,7 +8,7 @@
 
     <!-- Required fields -->
     <mat-card-subtitle>
-        <p class="italic">(*) Required fields</p>
+      <p class="italic">(*) Required fields</p>
     </mat-card-subtitle>
 
     <!-- Register Form -->
@@ -89,6 +89,13 @@
           </mat-form-field>
         </div>
 
+        <!-- Success message -->
+        @if (successMessage) {
+          <p class="valid">
+            {{ successMessage }}
+          </p>
+        }
+
         <mat-card-actions class="center-container">
           <!-- Register button -->
           <button mat-flat-button [disabled]="!registerForm.valid" type="submit">
@@ -98,6 +105,8 @@
 
       </form>
     </mat-card-subtitle>
+
+
   </mat-card-content>
 
 </mat-card>

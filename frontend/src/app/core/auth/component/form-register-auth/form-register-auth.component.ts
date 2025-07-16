@@ -42,6 +42,11 @@ export class FormRegisterAuthComponent implements OnInit {
   public hidePassword: boolean = true;
 
   /**
+   * Success message
+   */
+  public successMessage: string = '';
+
+  /**
    * Initializes the component
    * Injects required services for authentication
    * 
@@ -90,6 +95,8 @@ export class FormRegisterAuthComponent implements OnInit {
     this.authService.register(this.registerForm.value).subscribe({
       next: res => {
         // On success, reset form and disable
+        console.log(res);
+        this.successMessage = res.message;
         this.registerForm.reset();
         this.registerForm.disable();
       },
