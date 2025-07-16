@@ -9,6 +9,9 @@
       <mat-step>
         <ng-template matStepLabel>Select a target account</ng-template>
 
+        <!-- Required fields -->
+        <p class="italic">(*) Required fields</p>
+
         <!-- Select an internal account -->
         <p>Select a target from your accounts</p>
         <app-form-account-internal
@@ -34,6 +37,8 @@
       <mat-step>
         <!-- Transfer details -->
         <ng-template matStepLabel>Enter details</ng-template>
+
+        <!-- Transfer details form -->
         <app-form-transfer-details
           [transferDetailsForm]="transferDetailsForm"
           [stepper]="stepper">
