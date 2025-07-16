@@ -66,12 +66,13 @@ export class UserHeaderComponent {
    * @returns void
    */
   logout(): void {
-    // Logout using authentication service
-    this.authService.logout();
-  
-    // Clear entities
-    this.entityService.clearEntities();
-
+    if (this.isLoggedIn) {
+      // Logout using authentication service
+      this.authService.logout();
+    
+      // Clear entities
+      this.entityService.clearEntities();
+    }
     // Navigate to authentication
     this.router.navigate(['/authentication']);
   }
