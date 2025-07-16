@@ -1,0 +1,62 @@
+# ================================
+# Build output
+# ================================
+target
+build
+out
+
+# ================================
+# Testing & Coverage
+# ================================
+test-output
+reports
+coverage
+*.exec
+*.ec
+*.jacoco
+
+# ================================
+# Environment & log files
+# ================================
+*.env*
+!*.env.production
+*.log
+
+# ================================
+# IDE & OS-specific files
+# ================================
+.vscode
+.idea
+*.iml
+.DS_Store
+Thumbs.db
+*.swp
+
+# ================================
+# Version control & CI files
+# ================================
+.git
+.gitignore
+*.ci
+*.yml
+*.yaml
+
+# ================================
+# Docker & local orchestration
+# ================================
+Dockerfile
+Dockerfile.*
+.dockerignore
+docker-compose.yml
+docker-compose*.yml
+
+# ================================
+# Miscellaneous
+# ================================
+*.bak
+*.old
+*.tmp
+*.swp
+*.swo
+*.orig
+*.rej

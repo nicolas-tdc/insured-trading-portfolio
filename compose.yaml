@@ -1,0 +1,57 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/insurance_banking_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: 0d69b896ccbf14061ef777a04215099c4b8479d590bd60d46ac541cbd95d444063c6e5fced41ae3567d3819f72256f499e0a10e277f6cc43d747ab38b4ca97914aecd90247fb5c77f480960ceede1eb90fc8fa3b9ebd6b55c8b67b5a790f5880f383946f6e3a6f6de175e6768b9d49c6960acd5f84064d02a5e69920fca2d81243e9d4668de675d0ea2b617b84c3bcefd1ffdffdcbc8097ef36b033f5cd405038a9a91d497f9df53151340b1d97ff7e92233610c7a8f1f353b77496dfc3fde0c59477bbd84d63278be19ed0f2be5e7c342169760a72cff6642020191f65ba606c4ea0766260da7730aa6fed900eb4c9be4c69e6fee6d23edf8a43a80d4354b67
+      JWT_EXPIRATION: 86400000
+      SERVER_PORT: 8080
+      FRONTEND_URL: http://localhost:4200
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/src
+          target: /app/src
+        - action: sync
+          path: ./backend/pom.xml
+          target: /app/pom.xml
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4200:4200"
+    develop:
+      watch:
+        - action: sync
+          path: frontend/src
+          target: /app/src
+        - action: rebuild
+          path: frontend/package.json
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: insurance_banking_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
