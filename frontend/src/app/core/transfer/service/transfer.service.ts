@@ -77,17 +77,28 @@ export class TransferService {
   openCreateTransferFormDialog(accountId: string | undefined): void {
     // Check if account id is defined
     if (!accountId) return;
-    this.accountService.selectAccount(accountId);
+
+    let clearSelectedAccount: boolean = false;
+
+    console.log(this.accountService.selectedAccountId());
+    console.log(accountId);
+    if (this.accountService.selectedAccountId() !== accountId) {
+      console.log('selecting account');
+      this.accountService.selectAccount(accountId);
+      clearSelectedAccount = true;
+    }
 
     // Open the policy creation dialog form
     const dialogRef = this.dialog.open(FormCreateTransferComponent, {
       width: '600px',
       height: '550px',
     });
-
-    // Reload user account on form completion
+        // Reload user account on form completion
     dialogRef.afterClosed().subscribe((result: string) => {
-      if (result === 'completed') {
+      console.log('result: ' + result);
+      if (clearSelectedAccount && result === 'completed') {
+        console.log('clearing account');
+        this.accountService.selectAccount(null);
         this.accountService.reloadUserAccount();
       }
     });
