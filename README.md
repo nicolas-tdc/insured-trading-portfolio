@@ -14,7 +14,7 @@ It is built for scalability, security, and clean modular architecture using the 
 
 - **Database**: PostgreSQL, with JPA for data access.
 
-As this is not meant to be an entreprise-level application, it focuses on development skills, not on business logic or deployment facilities.
+As this is not meant to be an entreprise-level application, it focuses on development skills, not on actual business logic, trading features or deployment.
 
 It has a monolithic architecture, to avoid micro-services infrastructure complexity.
 
