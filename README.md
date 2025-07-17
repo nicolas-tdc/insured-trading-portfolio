@@ -1,14 +1,14 @@
 # Insured trading portfolio
 
-*This project is a Java-Angular fullstack developer portfolio.*
-
 ## Description
+
+This project is a Java-Angular fullstack developer portfolio.
 
 It is built for scalability, security, and clean modular architecture using the latest technologies:
 
 - **Backend**: Java 21 & Spring Boot 3.5, with Spring Security and JWT for robust authentication and authorization. Usage of Spring Test for services and dtos unit testing (launched at application start).
 
-- **Frontend**: Responsive Angular using signals and resources and keeping components fully independent and driven by services. Usage of Angular Material for theming. Usage of karma for unit testing services with `npm run test` command launched from its docker container.
+- **Frontend**: Responsive Angular 20 using signals and resources and keeping components fully independent and driven by services. Usage of Angular Material for theming. Usage of karma for unit testing services with `npm run test` command launched from its docker container.
 
 - **UI**: Angular Material for a clean, accessible, and responsive design supporting light/dark mode from user preferences.
 
