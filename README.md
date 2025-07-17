@@ -1,4 +1,4 @@
-# Insured trading portfolio
+# Insured Trading Portfolio
 
 ## Description
 
