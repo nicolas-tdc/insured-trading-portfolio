@@ -43,6 +43,11 @@ export class FormLoginAuthComponent implements OnInit {
   public hidePassword: boolean = true;
 
   /**
+   * Error message
+   */
+  public errorMessage: string = '';
+
+  /**
    * Initializes the component
    * Injects required services for routing and authentication
    * 
@@ -88,7 +93,7 @@ export class FormLoginAuthComponent implements OnInit {
         this.router.navigate(['/dashboard']);
       },
       error: err => {
-        console.error(err);
+        this.errorMessage = err.message;
       },
     });
   }

@@ -57,6 +57,13 @@
           </mat-form-field>
         </div>
 
+        <!-- Error message -->
+        @if (errorMessage) {
+          <div class="center-container">
+            <mat-error>{{ errorMessage }}</mat-error>
+          </div>
+        }
+
         <mat-card-actions class="center-container">
           <!-- Login button -->
           <button mat-flat-button

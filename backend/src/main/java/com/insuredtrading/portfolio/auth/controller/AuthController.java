@@ -23,6 +23,7 @@ import com.insuredtrading.portfolio.auth.dto.JwtResponse;
 import com.insuredtrading.portfolio.auth.dto.LoginRequest;
 import com.insuredtrading.portfolio.auth.dto.SignupRequest;
 import com.insuredtrading.portfolio.auth.dto.UserResponse;
+import com.insuredtrading.portfolio.auth.exception.BadCredentialsException;
 import com.insuredtrading.portfolio.auth.exception.EmailAlreadyInUseException;
 import com.insuredtrading.portfolio.auth.model.Role;
 import com.insuredtrading.portfolio.auth.model.User;
@@ -70,16 +71,21 @@ public class AuthController {
      */
     @PostMapping(value = "/signin", produces = "application/json")
     public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
+        try {
+            Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        UserResponse userResponse = UserResponse.from(userDetails);
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            UserResponse userResponse = UserResponse.from(userDetails);
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userResponse));
+            return ResponseEntity.ok(new JwtResponse(jwt, userResponse));
+
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid email or password");
+        }
     }
 
     /**
