@@ -37,6 +37,8 @@ docker compose up
 
 ## Test the application
 
+- **Access at**: http://localhost:4200
+
 - **Register and login**: Create a user account and log in – no email verification is required.
 
 - **Create new accounts**: Open banking, savings, and trading accounts to simulate a real user portfolio.
