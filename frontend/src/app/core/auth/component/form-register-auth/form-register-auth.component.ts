@@ -47,6 +47,16 @@ export class FormRegisterAuthComponent implements OnInit {
   public successMessage: string = '';
 
   /**
+   * Error message
+   */
+  public errorMessage: string = '';
+
+  /**
+   * Registered email
+   */
+  public registeredEmail: string = '';
+
+  /**
    * Initializes the component
    * Injects required services for authentication
    * 
@@ -95,13 +105,13 @@ export class FormRegisterAuthComponent implements OnInit {
     this.authService.register(this.registerForm.value).subscribe({
       next: res => {
         // On success, reset form and disable
-        console.log(res);
         this.successMessage = res.message;
+        this.registeredEmail = this.registerForm.value.email;
         this.registerForm.reset();
         this.registerForm.disable();
       },
       error: err => {
-        console.error(err);
+        this.errorMessage = err.message;
       },
     });
   }

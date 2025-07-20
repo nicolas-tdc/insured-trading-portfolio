@@ -94,6 +94,19 @@
           <p class="valid">
             {{ successMessage }}
           </p>
+
+          @if (registeredEmail) {
+            <p class="valid">
+              {{ registeredEmail }}
+            </p>
+          }
+        }
+
+        <!-- Error message -->
+        @if (errorMessage) {
+          <p class="error">
+            {{ errorMessage }}
+          </p>
         }
 
         <mat-card-actions class="center-container">
