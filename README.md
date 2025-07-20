@@ -35,6 +35,12 @@ docker compose up
 
 *Use --watch flag to enable hot-reload*
 
+Access will be available at:
+
+```
+http://localhost:4200
+```
+
 ## Test the application
 
 - **Register and login**: Create a user account and log in – no email verification is required.
