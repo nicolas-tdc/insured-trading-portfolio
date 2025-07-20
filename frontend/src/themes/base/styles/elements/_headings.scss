@@ -15,12 +15,17 @@ h4 { font-size: 1rem; }
 h5 { font-size: 0.875rem; }
 h6 { font-size: 0.75rem; }
 
-.section-header {
-  margin: $spacing-lg auto;
+.section-header-sm {
+  margin: $spacing-sm auto;
+  max-width: 30%;
+}
+
+.section-header-md {
+  margin: $spacing-md auto;
   max-width: 60%;
 }
 
-.details-card-header {
-  margin: $spacing-md auto;
+.section-header-xl {
+  margin: $spacing-lg auto;
   max-width: 100%;
 }

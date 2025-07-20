@@ -15,3 +15,8 @@
   @include center-flex();
   @include responsive-spacing(margin, $spacing-md);
 }
+
+.center-container-xs {
+  @include center-flex();
+  @include responsive-spacing(margin, $spacing-xs);
+}
