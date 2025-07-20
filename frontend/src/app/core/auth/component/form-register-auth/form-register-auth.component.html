@@ -89,24 +89,19 @@
           </mat-form-field>
         </div>
 
-        <!-- Success message -->
-        @if (successMessage) {
-          <p class="valid">
-            {{ successMessage }}
-          </p>
+        <!-- Response message -->
+        @if (responseMessage) {
 
-          @if (registeredEmail) {
-            <p class="valid">
-              {{ registeredEmail }}
-            </p>
-          }
-        }
+          <div class="center-container">
+            @if (responseType === 'success') {
+              <p class="valid">{{ responseMessage }}</p>
+            }
 
-        <!-- Error message -->
-        @if (errorMessage) {
-          <p class="error">
-            {{ errorMessage }}
-          </p>
+            @if (responseType === 'error') {
+              <mat-error>{{ responseMessage }}</mat-error>
+            }
+          </div>
+
         }
 
         <mat-card-actions class="center-container">

@@ -126,7 +126,7 @@ public class AuthController {
         accountService.save(account);
 
         URI location = URI.create("/api/users/" + user.getId());
-        return ResponseEntity.created(location).body(new MessageResponse("User registered successfully"));
+        return ResponseEntity.created(location).body(new MessageResponse(user.getEmail() + " registered successfully"));
     }
 
     /**

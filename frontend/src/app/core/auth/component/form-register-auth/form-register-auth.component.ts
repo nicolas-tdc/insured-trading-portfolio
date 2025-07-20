@@ -42,19 +42,14 @@ export class FormRegisterAuthComponent implements OnInit {
   public hidePassword: boolean = true;
 
   /**
-   * Success message
+   * Response message
    */
-  public successMessage: string = '';
+  public responseMessage: string = '';
 
   /**
-   * Error message
+   * Response message class
    */
-  public errorMessage: string = '';
-
-  /**
-   * Registered email
-   */
-  public registeredEmail: string = '';
+  public responseType: string = '';
 
   /**
    * Initializes the component
@@ -105,13 +100,14 @@ export class FormRegisterAuthComponent implements OnInit {
     this.authService.register(this.registerForm.value).subscribe({
       next: res => {
         // On success, reset form and disable
-        this.successMessage = res.message;
-        this.registeredEmail = this.registerForm.value.email;
+        this.responseMessage = res.message;
+        this.responseType = 'success';
         this.registerForm.reset();
         this.registerForm.disable();
       },
       error: err => {
-        this.errorMessage = err.message;
+        this.responseMessage = err.message;
+        this.responseType = 'error';
       },
     });
   }
