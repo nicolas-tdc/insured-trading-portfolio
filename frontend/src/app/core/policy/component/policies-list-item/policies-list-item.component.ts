@@ -1,7 +1,6 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Policy } from '../../model';
-import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -9,11 +8,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { CopyToClipboardComponent } from '../../../shared/component/copy-to-clipboard/copy-to-clipboard.component';
 import { EntityService } from '../../../entity/service';
+import { MatDialog } from '@angular/material/dialog';
+import { PolicyDetailsComponent } from '../policy-details/policy-details.component';
+import { PolicyService } from '../../service';
 
 @Component({
   selector: 'app-policies-list-item',
   imports: [
-    RouterLink,
     MatCardModule,
     MatButtonModule,
     MatChipsModule,
@@ -43,10 +44,13 @@ export class PoliciesListItemComponent {
    * 
    * @param clipboard Service for clipboard
    * @param entityService Service for entities
+   * @param dialog Service for dialog
    */
   constructor(
     private readonly clipboard: Clipboard,
     private readonly entityService: EntityService,
+    private readonly dialog: MatDialog,
+    private readonly policyService: PolicyService,
   ) { }
 
   /**
@@ -95,5 +99,28 @@ export class PoliciesListItemComponent {
    */
   getPolicyStatusClass(): string {
     return this.entityService.getStatusClass(this.policy()?.statusCode);
+  }
+
+  /**
+   * Opens the policy details dialog
+   * 
+   * @returns void
+   */
+  openPolicyDetailsDialog(): void {
+    // Select the policy
+    const policyId = this.policy()?.id;
+    if (!policyId) return;
+
+    if (policyId !== this.policyService.selectedPolicyIdValue) {
+      this.policyService.selectPolicy(policyId);
+    }
+
+    // Open the dialog
+    this.dialog.open(
+      PolicyDetailsComponent,
+      {
+        width: '600px',
+        height: '500px',
+      });
   }
 }

@@ -23,6 +23,11 @@ export class PolicyService {
   private selectedPolicyId: WritableSignal<string | null> = signal<string | null>(null);
 
   /**
+   * Get selected policy id
+   */
+  public get selectedPolicyIdValue(): string | null { return this.selectedPolicyId(); }
+
+  /**
    * Select policy
    * 
    * @param id Policy id

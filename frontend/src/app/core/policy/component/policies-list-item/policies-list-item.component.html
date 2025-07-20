@@ -33,10 +33,9 @@
     <mat-card-footer>
       <!-- View Details Button -->
       <mat-card-actions>
-        <button mat-stroked-button
-        class="btn-card"
-        [disabled]="policy()?.statusCode !== 'ACTIVE'"
-        routerLink="/policy/{{ policy()?.id }}">
+        <button mat-stroked-button class="btn-card"
+        (click)="openPolicyDetailsDialog()"
+        [disabled]="policy()?.statusCode !== 'ACTIVE'">
           View Details
         </button>
       </mat-card-actions>
