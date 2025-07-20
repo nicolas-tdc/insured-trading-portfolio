@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
 import { PoliciesListComponent } from '../../core/policy/component/policies-list/policies-list.component';
 import { AccountsListComponent } from '../../core/account/component/accounts-list/accounts-list.component';
 import { UserAccountsService } from '../../core/account/service';
 import { UserPoliciesService } from '../../core/policy/service';
 import { AuthService } from '../../core/auth/service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * DashboardComponent
@@ -19,6 +21,8 @@ import { Router } from '@angular/router';
   imports: [
     AccountsListComponent,
     PoliciesListComponent,
+    MatTabsModule,
+    MatIconModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

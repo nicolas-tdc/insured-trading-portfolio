@@ -1,7 +1,27 @@
-<!-- Accounts List -->
-<app-accounts-list>
-</app-accounts-list>
+<mat-tab-group>
 
-<!-- Policies list -->
-<app-policies-list>
-</app-policies-list>
+  <mat-tab>
+    <!-- Accounts Tab -->
+    <ng-template mat-tab-label>
+      <mat-icon>account_balance</mat-icon>
+      <h4>Accounts</h4>
+    </ng-template>
+
+    <!-- Accounts List -->
+    <app-accounts-list>
+    </app-accounts-list>
+  </mat-tab>
+
+  <mat-tab label="Policies">
+    <!-- Policies Tab -->
+    <ng-template mat-tab-label>
+      <mat-icon>security</mat-icon>
+      <h4>Policies</h4>
+    </ng-template>
+
+    <!-- Policies list -->
+    <app-policies-list>
+    </app-policies-list>
+  </mat-tab>
+
+</mat-tab-group>
