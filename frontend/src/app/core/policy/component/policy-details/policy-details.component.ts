@@ -9,6 +9,8 @@ import { EntityService } from '../../../entity/service';
 import { MatIconModule } from '@angular/material/icon';
 import { PolicyService } from '../../service';
 import { Policy } from '../../model';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-policy-details',
@@ -18,6 +20,7 @@ import { Policy } from '../../model';
     MatChipsModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     CopyToClipboardComponent,
     FormatAmountPipe,
   ],
@@ -39,10 +42,12 @@ export class PolicyDetailsComponent {
    * 
    * @param entityService Service for entities
    * @param policyService Service for policies
+   * @param dialogRef Service for dialog reference
    */
   constructor(
     private readonly entityService: EntityService,
     private readonly policyService: PolicyService,
+    private readonly dialogRef: MatDialogRef<PolicyDetailsComponent>,
   ) { }
 
   /**
@@ -52,5 +57,14 @@ export class PolicyDetailsComponent {
    */
   getPolicyStatusClass(): string {
     return this.entityService.getStatusClass(this.policy?.statusCode);
+  }
+
+  /**
+   * Closes the dialog
+   * 
+   * @returns void
+   */
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }

@@ -79,9 +79,15 @@
           </mat-form-field>
         </div>
 
-        <mat-card-actions class="col-item">
+        <mat-card-actions class="center-container">
+          <!-- Cancel Button -->
+          <button mat-flat-button class="btn-basic"
+            (click)="closeDialog()">
+            Cancel
+          </button>
+
           <!-- Subscribe Button -->
-          <button mat-flat-button
+          <button mat-flat-button class="btn-basic"
             type="submit"
             [disabled]="!policyForm.valid">
             Subscribe

@@ -19,16 +19,26 @@
           [stepper]="stepper">
         </app-form-account-internal>
 
-        <mat-divider></mat-divider>
-
         <!-- Enter an external account number if checking account -->
         @if (sourceAccount?.typeCode === 'CHECKING') {
+          <mat-divider></mat-divider>
+
           <p>Or enter an account number</p>
           <app-form-account-external
             [selectAccountForm]="selectAccountForm"
             [stepper]="stepper">
           </app-form-account-external>
         }
+
+        <mat-divider></mat-divider>
+
+        <!-- Cancel Button -->
+        <div class="center-container">
+          <button mat-flat-button class="btn-card"
+            (click)="closeDialog()">
+            Cancel Transfer
+          </button>
+        </div>
       </mat-step>
     }
 

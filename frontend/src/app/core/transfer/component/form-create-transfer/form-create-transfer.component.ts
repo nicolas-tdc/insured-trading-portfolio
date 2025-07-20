@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { Account } from '../../../account/model';
 import { AccountSecure } from '../../../account/model/account-secure.model';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
  * FormCreateTransferComponent
@@ -28,6 +30,7 @@ import { AccountSecure } from '../../../account/model/account-secure.model';
     MatStepperModule,
     MatFormFieldModule,
     MatDividerModule,
+    MatButtonModule,
     FormAccountExternalComponent,
     FormAccountInternalComponent,
     FormTransferDetailsComponent,
@@ -133,6 +136,14 @@ export class FormCreateTransferComponent {
         ]),
       })
     });
+  }
 
+  /**
+   * Closes the dialog
+   * 
+   * @returns void
+   */
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }

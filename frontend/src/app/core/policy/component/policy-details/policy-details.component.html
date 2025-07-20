@@ -1,10 +1,11 @@
 @if (policy) {
 
   <!-- Policy Card -->
-  <mat-card class="">
+  <mat-card>
 
     <mat-card-content>
-      <!-- Policy Details -->
+
+    <!-- Policy Details -->
       <mat-card-title>
         <h2>Policy Details</h2>
       </mat-card-title>
@@ -49,6 +50,14 @@
         <span class="center-container">End Date: {{ policy.endDate | date: 'mediumDate' }}</span>
       </mat-card-subtitle>
     </mat-card-content>
+
+    <mat-card-actions class="center-container">
+      <!-- Close Button -->
+      <button mat-flat-button class="btn-basic"
+        (click)="closeDialog()">
+        Back
+      </button>
+    </mat-card-actions>
 
   </mat-card>
 

@@ -103,6 +103,15 @@ export class FormCreateAccountComponent implements OnInit {
   }
 
   /**
+   * Closes the dialog
+   * 
+   * @returns void
+   */
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  /**
    * Loads account types
    * 
    * @returns void

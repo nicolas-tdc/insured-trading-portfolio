@@ -108,6 +108,15 @@ export class FormTransferDetailsComponent {
   }
 
   /**
+   * Close dialog
+   * 
+   * @returns void
+   */
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  /**
    * Create transfer
    * 
    * @returns void

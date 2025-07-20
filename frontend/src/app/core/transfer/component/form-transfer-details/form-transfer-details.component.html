@@ -1,5 +1,8 @@
 <!-- Back button -->
-<button mat-stroked-button (click)="stepBack()">Back to selection</button>
+<button mat-stroked-button
+  (click)="stepBack()">
+  Back to selection
+</button>
 
 @if (targetAccountError) {
 
@@ -55,12 +58,18 @@
       <mat-error>{{ apiError }}</mat-error>
     }
 
-    <!-- Transfer button -->
-    <div class="col-item">
+    <div class="center-container">
+      <!-- Cancel button -->
       <button mat-flat-button class="btn-basic"
-      [disabled]="!transferDetailsForm()?.valid || sourceAccount?.statusCode !== 'ACTIVE'"
-      type="submit">
-      Transfer
+        (click)="closeDialog()">
+        Cancel Transfer
+      </button>
+
+      <!-- Transfer button -->
+      <button mat-flat-button class="btn-basic"
+        [disabled]="!transferDetailsForm()?.valid || sourceAccount?.statusCode !== 'ACTIVE'"
+        type="submit">
+        Transfer
       </button>
     </div>
 

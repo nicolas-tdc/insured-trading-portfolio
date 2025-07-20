@@ -121,6 +121,15 @@ export class FormCreatePolicyComponent implements OnInit {
   }
 
   /**
+   * Close dialog
+   * 
+   * @returns void
+   */
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  /**
    * Loads policy types
    * 
    * @returns void
